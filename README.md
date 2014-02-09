@@ -25,12 +25,12 @@ Docker simple web UI
 
 * /etc/default/docker
 
-	> ```
+```
 DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock"
 ```
 
-	* ```-api-enable-cors=true``` 是為了要在 Browser 直接連 docker remote api
-	* ```-H tcp://0.0.0.0:4243``` 是要監聽所有網卡的 4243 Port
+	* -api-enable-cors=true 是為了要在 Browser 直接連 docker remote api
+	* -H tcp://0.0.0.0:4243 是要監聽所有網卡的 4243 Port
 
 [Shipyard]: https://github.com/shipyard/shipyard
 [Docker]: https://www.docker.io/
