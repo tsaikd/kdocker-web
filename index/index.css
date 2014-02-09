@@ -89,10 +89,22 @@ html, body {
 }
 
 *[ng-controller="ContainerCtrl"] td,
-*[ng-controller="ContainerCtrl"] th{
+*[ng-controller="ContainerCtrl"] th {
+	border: 1px solid;
 	padding: 0.2em 0.5em;
 }
 
 *[ng-controller="ContainerCtrl"] tr.stopped {
 	background: red;
+}
+
+*[ng-controller="ImageCtrl"] td,
+*[ng-controller="ImageCtrl"] th {
+	border: 1px solid;
+	padding: 0.2em 0.5em;
+}
+
+*[ng-controller="ConfigCtrl"] td,
+*[ng-controller="ConfigCtrl"] th {
+	padding: 0.2em 0.5em;
 }

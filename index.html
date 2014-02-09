@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>KDockerWeb</title>
-		<link rel="stylesheet" href="lib/bootstrap/3.1.0/bootstrap.min.css">
+		<link rel="stylesheet" href="lib/bootstrap/3.1.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="index/index.css">
 		<script src="lib/angular/1.2.12/angular.min.js"></script>
 		<script src="lib/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
@@ -41,7 +41,7 @@
 							<tr>
 								<th translate>Hostname</th>
 								<td>
-									<input type="text" ng-model="DockerData.host" ng-change="UpdateConfig('host')"/>
+									<input type="text" placeholder="127.0.0.1" ng-model="DockerData.host" ng-change="UpdateConfig('host')"/>
 								</td>
 							<tr>
 							</tr>
@@ -54,7 +54,10 @@
 					</div>
 					<div ng-controller="ContainerCtrl" ng-show="tab == 'Containers'">
 						<div>
-							<button ng-click="reload()" class="btn btn-primary" translate>Reload</button>
+							<span translate>Containers</span>
+							<button ng-click="reload()" class="btn btn-default">
+								<span class="glyphicon glyphicon-refresh"></span>
+							</button>
 							<button ng-show="curtab" ng-click="attach()" class="btn btn-primary" translate>Back</button>
 							<span ng-repeat="c in tabs">
 								<button class="btn btn-primary" title="{{c.Id}}" ng-click="attach(c)">{{c.name}}</button>
@@ -71,7 +74,7 @@
 								<th translate>Status</th>
 								<th translate>Action</th>
 							</tr>
-							<tr ng-repeat="c in containers" ng-class="{running: c.running, stopped: !c.running}">
+							<tr ng-repeat="c in DockerData.containers" ng-class="{running: c.running, stopped: !c.running}">
 								<td>
 									<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{c.Id}}">{{c.Id}}</span>
 								</td>
@@ -82,10 +85,12 @@
 									<span>{{c.Image}}</span>
 								</td>
 								<td>
-									<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{c.Command}}">{{c.Command}}</span>
+									<span class="ellipsis" style="display: inline-block; max-width: 10em;" tooltip="{{c.Command}}">{{c.Command}}</span>
 								</td>
 								<td>
-									<div ng-repeat="p in c.Ports">{{p.Type}}: {{p.PublicPort}} -&gt; {{p.PrivatePort}}</div>
+									<div ng-repeat="p in c.Ports"><a href="http://{{DockerData.host}}:{{p.PublicPort}}/" target="_blank">
+										<span ng-show="p.Type != 'tcp'">{{p.Type}}: </span>{{p.PublicPort}} -&gt; {{p.PrivatePort}}
+									</a></div>
 								</td>
 								<td>
 									<span>{{c.Status}}</span>
@@ -96,6 +101,39 @@
 							</tr>
 						</table>
 						<div ng-repeat="c in tabs" id="{{c.Id}}_terminal" ng-show="curtab.Id === c.Id"></div>
+					</div>
+					<div ng-controller="ImageCtrl" ng-show="tab == 'Images'">
+						<div>
+							<span translate>Images</span>
+							<button ng-click="reload()" class="btn btn-default">
+								<span class="glyphicon glyphicon-refresh"></span>
+							</button>
+						</div>
+						<table>
+							<tr>
+								<th translate>ID</th>
+								<th translate>Tags</th>
+								<th translate>Size</th>
+								<th translate>Create Time</th>
+								<th translate>Action</th>
+							</tr>
+							<tr ng-repeat="img in DockerData.images">
+								<td>
+									<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{img.Id}}">{{img.Id}}</span>
+								</td>
+								<td>
+									<span ng-repeat="tag in img.RepoTags">{{tag}}</span>
+								</td>
+								<td>
+									<span>{{img.VirtualSize | humanSize}}</span>
+								</td>
+								<td>
+									<span>{{img.Created * 1000 | date:'yyyy-MM-dd HH:mm'}}</span>
+								</td>
+								<td>
+								</td>
+							</tr>
+						</table>
 					</div>
 				</td>
 			</tr>

@@ -1,6 +1,17 @@
 angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht.translate"
 	, "angular-websocket", "LocalStorageModule"])
 
+.filter("humanSize", function () {
+	return function (bytes, index) {
+		if (bytes <= 0) {
+			return 0;
+		}
+		var s = ["bytes", "kB", "MB", "GB", "TB", "PB"];
+		var e = Math.floor(Math.log(bytes) / Math.log(1024));
+		return (bytes / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e];
+	};
+})
+
 .controller("MainCtrl", ["$scope", "DockerData"
 	, function($scope, DockerData) {
 
@@ -17,7 +28,6 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 
 	$scope.UpdateConfig = UpdateConfig;
 	$scope.DockerData = DockerData;
-	$scope.containers = [];
 	$scope.tabs = [];
 	$scope.curtab = null;
 
@@ -33,12 +43,16 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 				v.name = v.Names.join().substr(1);
 				v.running = !!v.Status.match(/^Up /);
 			});
-			$scope.containers = data;
+			$scope.DockerData.containers = data;
+			UpdateConfig("containers");
 		})
 		.error(function(data, status) {
 			console.error("Get container list failed", data, status);
 		});
 	};
+	if (!$scope.DockerData.containers.length) {
+		$scope.reload();
+	}
 
 	$scope.attach = function(container) {
 		$scope.curtab = container;
@@ -103,7 +117,31 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 		}
 	};
 
-	$scope.reload();
+}])
+
+.controller("ImageCtrl", ["$scope", "DockerData", "UpdateConfig", "$http"
+	, function($scope, DockerData, UpdateConfig, $http) {
+
+	$scope.UpdateConfig = UpdateConfig;
+	$scope.DockerData = DockerData;
+
+	$scope.reload = function() {
+		if (!DockerData.host) {
+			return;
+		}
+		$http
+		.get("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/images/json?all=0")
+		.success(function(data) {
+			$scope.DockerData.images = data;
+			UpdateConfig("images");
+		})
+		.error(function(data, status) {
+			console.error("Get image list failed", data, status);
+		});
+	};
+	if (!$scope.DockerData.images.length) {
+		$scope.reload();
+	}
 
 }])
 
