@@ -1,0 +1,1 @@
+http://gregpike.net/demos/angular-local-storage/angular-local-storage.js

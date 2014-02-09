@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-TW" ng-app="KDockerWeb">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>KDockerWeb</title>
+		<link rel="stylesheet" href="lib/bootstrap/3.1.0/bootstrap.min.css">
+		<link rel="stylesheet" href="index/index.css">
+		<script src="lib/angular/1.2.12/angular.min.js"></script>
+		<script src="lib/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+		<script src="lib/angular-websocket/angular-websocket.js"></script>
+		<script src="lib/term.js/term.js"></script>
+		<script src="lib/angular-local-storage/angular-local-storage.js"></script>
+		<script src="lib/angular-translate/1.1.1/angular-translate.js"></script>
+		<script src="lib/config.js"></script>
+		<script src="index/index.js"></script>
+	</head>
+	<body ng-controller="MainCtrl" style="padding: 10px;">
+		<table style="width: 100%; height: 100%;">
+			<tr style="height: 1em;">
+				<td>
+					<a href="index.html"><button class="btn btn-primary" translate>Reload</button></a>
+				</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: top; width: 10em; padding-top: 1em; line-height: 3em;">
+					<div>
+						<button ng-model="tab" btn-radio="'Containers'" class="btn btn-primary">{{"Containers" | translate}}</button>
+					</div>
+					<div>
+						<button ng-model="tab" btn-radio="'Images'" class="btn btn-primary">{{"Images" | translate}}</button>
+					</div>
+					<div>
+						<button ng-model="tab" btn-radio="'Config'" class="btn btn-primary">{{"Config" | translate}}</button>
+					</div>
+				</td>
+				<td style="vertical-align: top;">
+					<div ng-controller="ConfigCtrl" ng-show="tab == 'Config'">
+						<table>
+							<tr>
+								<th translate>Hostname</th>
+								<td>
+									<input type="text" ng-model="DockerData.host" ng-change="UpdateConfig('host')"/>
+								</td>
+							<tr>
+							</tr>
+								<th translate>Port</th>
+								<td>
+									<input type="number" ng-model="DockerData.port" ng-change="UpdateConfig('port')"/>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div ng-controller="ContainerCtrl" ng-show="tab == 'Containers'">
+						<div>
+							<button ng-click="reload()" class="btn btn-primary" translate>Reload</button>
+							<button ng-show="curtab" ng-click="attach()" class="btn btn-primary" translate>Back</button>
+							<span ng-repeat="c in tabs">
+								<button class="btn btn-primary" title="{{c.Id}}" ng-click="attach(c)">{{c.name}}</button>
+								<button class="btn btn-primary" ng-click="closeContainer(c)">X</button>
+							</span>
+						</div>
+						<table ng-show="!curtab">
+							<tr>
+								<th translate>ID</th>
+								<th translate>Description</th>
+								<th translate>Image</th>
+								<th translate>Command</th>
+								<th translate>Port</th>
+								<th translate>Status</th>
+								<th translate>Action</th>
+							</tr>
+							<tr ng-repeat="c in containers" ng-class="{running: c.running, stopped: !c.running}">
+								<td>
+									<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{c.Id}}">{{c.Id}}</span>
+								</td>
+								<td>
+									<span>{{c.name}}</span>
+								</td>
+								<td>
+									<span>{{c.Image}}</span>
+								</td>
+								<td>
+									<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{c.Command}}">{{c.Command}}</span>
+								</td>
+								<td>
+									<div ng-repeat="p in c.Ports">{{p.Type}}: {{p.PublicPort}} -&gt; {{p.PrivatePort}}</div>
+								</td>
+								<td>
+									<span>{{c.Status}}</span>
+								</td>
+								<td>
+									<button ng-click="attach(c)" class="btn btn-primary" translate>Attach</button>
+								</td>
+							</tr>
+						</table>
+						<div ng-repeat="c in tabs" id="{{c.Id}}_terminal" ng-show="curtab.Id === c.Id"></div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

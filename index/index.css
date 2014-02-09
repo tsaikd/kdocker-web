@@ -1,0 +1,98 @@
+html, body {
+	height: 100%;
+}
+
+.ellipsis {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.terminal {
+	border: #000 solid 5px;
+	font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+	font-size: 11px;
+	color: #f0f0f0;
+	background: #000;
+}
+
+.reverse-video {
+	color: #000;
+	background: #f0f0f0;
+}
+
+/* https://github.com/cferdinandi/spinners */
+/*  The class that applies the animation. */
+.spinner {
+	display: none;
+	-webkit-animation: spin 2s infinite linear;
+	-moz-animation: spin 2s infinite linear;
+	-ms-animation: spin 2s infinite linear;
+	-o-animation: spin 2s infinite linear;
+	animation: spin 2s infinite linear;
+}
+
+.spinner.active {
+	display: inline-block;
+}
+
+/*  The vendor-specific and generic animation keyframes.
+ *  These control the direction and nature of the animation. */
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@-moz-keyframes spin {
+	0% {
+		-moz-transform: rotate(0deg);
+	}
+
+	100% {
+		-moz-transform: rotate(360deg);
+	}
+}
+
+@-ms-keyframes spin {
+	0% {
+		-ms-transform: rotate(0deg);
+	}
+
+	100% {
+		-ms-transform: rotate(360deg);
+	}
+}
+
+@-o-keyframes spin {
+	0% {
+		-o-transform: rotate(0deg);
+	}
+
+	100% {
+		-o-transform: rotate(360deg);
+	}
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+*[ng-controller="ContainerCtrl"] td,
+*[ng-controller="ContainerCtrl"] th{
+	padding: 0.2em 0.5em;
+}
+
+*[ng-controller="ContainerCtrl"] tr.stopped {
+	background: red;
+}

@@ -1,0 +1,1 @@
+http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js

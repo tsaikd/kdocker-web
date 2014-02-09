@@ -1,0 +1,1 @@
+https://rawgithub.com/gdi2290/angular-websocket/master/angular-websocket.js
