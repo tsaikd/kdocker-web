@@ -37,6 +37,10 @@
 				</td>
 				<td style="vertical-align: top;">
 					<div ng-controller="ConfigCtrl" ng-show="tab == 'Config'">
+						<div>
+							<span translate>Config</span>
+							<button ng-click="DockerData.reset()" class="btn btn-primary">Reset</button>
+						</div>
 						<table>
 							<tr>
 								<th translate>Hostname</th>
@@ -48,6 +52,12 @@
 								<th translate>Port</th>
 								<td>
 									<input type="number" ng-model="DockerData.port" ng-change="UpdateConfig('port')"/>
+								</td>
+							</tr>
+							</tr>
+								<th translate>API Version</th>
+								<td>
+									<input type="text" placeholder="v1.9" ng-model="DockerData.apiver" ng-change="UpdateConfig('apiver')"/>
 								</td>
 							</tr>
 						</table>
