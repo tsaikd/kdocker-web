@@ -63,6 +63,51 @@
 						</table>
 					</div>
 					<div ng-controller="ContainerCtrl" ng-show="tab == 'Containers'">
+						<script type="text/ng-template" id="CreateContainerModalContent.html">
+<div class="CreateContainerModal">
+	<div class="modal-header">
+		<h3 translate>Create a container</h3>
+	</div>
+	<div class="modal-body">
+		<table>
+			<tr>
+				<th translate>Image</th>
+				<td>
+					<select ng-options="img.Id as img.RepoTags[0] for img in DockerData.images" ng-model="param.Image"></select>
+				</td>
+			</tr>
+			<tr>
+				<th translate>Name</th>
+				<td>
+					<input type="text" ng-model="param.Name" placeholder="Container name"/>
+				</td>
+			</tr>
+			<tr ng-repeat="key in ['Hostname', 'User']">
+				<th translate>{{key}}</th>
+				<td>
+					<input type="text" ng-model="param[key]"/>
+				</td>
+			</tr>
+			<tr ng-repeat="key in ['Memory', 'MemorySwap']">
+				<th translate>{{key}}</th>
+				<td>
+					<input type="number" ng-model="param[key]"/>
+				</td>
+			</tr>
+			<tr ng-repeat="key in ['AttachStdin', 'AttachStdout', 'AttachStderr', 'Tty', 'OpenStdin', 'StdinOnce']">
+				<th translate>{{key}}</th>
+				<td>
+					<input type="checkbox" ng-model="param[key]"/>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="ok()" translate>OK</button>
+		<button class="btn btn-warning" ng-click="cancel()" translate>Cancel</button>
+	</div>
+</div>
+						</script>
 						<div>
 							<span translate>Containers</span>
 							<button ng-click="reload()" class="btn btn-default">
@@ -73,6 +118,7 @@
 								<button class="btn btn-primary" title="{{c.Id}}" ng-click="attach(c)">{{c.name}}</button>
 								<button class="btn btn-primary" ng-click="closeContainer(c)">X</button>
 							</span>
+							<button ng-click="openCreateContainerModal()" class="btn btn-info" translate>Create</button>
 						</div>
 						<table ng-show="!curtab">
 							<tr>
@@ -107,6 +153,9 @@
 								</td>
 								<td>
 									<button ng-click="attach(c)" class="btn btn-primary" translate>Attach</button>
+									<button ng-click="start(c)" ng-show="!c.running" class="btn btn-info" translate>Start</button>
+									<button ng-click="stop(c)" ng-show="c.running" class="btn btn-warning" translate>Stop</button>
+									<button ng-click="remove(c)" ng-show="!c.running" class="btn btn-danger" translate>Remove</button>
 								</td>
 							</tr>
 						</table>

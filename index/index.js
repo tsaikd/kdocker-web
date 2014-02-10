@@ -23,8 +23,8 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 
 }])
 
-.controller("ContainerCtrl", ["$scope", "$translate", "$http", "DockerData", "WebSocket", "UpdateConfig"
-	, function($scope, $translate, $http, DockerData, WebSocket, UpdateConfig) {
+.controller("ContainerCtrl", ["$scope", "$translate", "$http", "DockerData", "WebSocket", "UpdateConfig", "$modal"
+	, function($scope, $translate, $http, DockerData, WebSocket, UpdateConfig, $modal) {
 
 	$scope.UpdateConfig = UpdateConfig;
 	$scope.DockerData = DockerData;
@@ -73,6 +73,39 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 		}
 	};
 
+	$scope.start = function(container) {
+		$http
+		.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/start")
+		.success(function(data) {
+			$scope.reload();
+		})
+		.error(function(data, status) {
+			console.error("Start container failed", data, status);
+		});
+	};
+
+	$scope.stop = function(container) {
+		$http
+		.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/stop")
+		.success(function(data) {
+			$scope.reload();
+		})
+		.error(function(data, status) {
+			console.error("Stop container failed", data, status);
+		});
+	};
+
+	$scope.remove = function(container) {
+		$http
+		.delete("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "?v=1")
+		.success(function(data) {
+			$scope.reload();
+		})
+		.error(function(data, status) {
+			console.error("Remove container failed", data, status);
+		});
+	};
+
 	$scope.setupWebsocket = function(container) {
 		if (!document.getElementById(container.Id + "_terminal")) {
 			setTimeout(function() {
@@ -106,6 +139,28 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 		});
 	};
 
+	$scope.openCreateContainerModal = function() {
+		$modal.open({
+			templateUrl: "CreateContainerModalContent.html",
+			controller: "CreateContainerModalCtrl"
+		})
+		.result
+			.then(function(param) {
+				var query = "";
+				if (param.Name) {
+					query = "?name=" + param.Name;
+				}
+				$http
+				.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/create" + query, param)
+				.success(function(data) {
+					$scope.start(data);
+				})
+				.error(function(data, status) {
+					console.error("Create container failed", data, status);
+				});
+			});
+	};
+
 	$scope.closeContainer = function(container) {
 		for (var i=0 ; i<$scope.tabs.length ; i++) {
 			if (container.Id === $scope.tabs[i].Id) {
@@ -115,6 +170,35 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 				return;
 			}
 		}
+	};
+
+}])
+
+.controller("CreateContainerModalCtrl", ["$scope", "$modalInstance", "DockerData"
+	, function($scope, $modalInstance, DockerData) {
+
+	$scope.DockerData = DockerData;
+	$scope.param = {
+		Memory: 0,
+		MemorySwap: 0,
+		AttachStdin: true,
+		AttachStdout: true,
+		AttachStderr: true,
+		Tty: true,
+		OpenStdin: true,
+		StdinOnce: false
+	};
+
+	if (DockerData.images[0]) {
+		$scope.param.Image = DockerData.images[0].Id;
+	}
+
+	$scope.ok = function () {
+		$modalInstance.close($scope.param);
+	};
+
+	$scope.cancel = function () {
+		$modalInstance.dismiss("cancel");
 	};
 
 }])

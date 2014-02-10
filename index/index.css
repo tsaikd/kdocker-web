@@ -108,3 +108,8 @@ html, body {
 *[ng-controller="ConfigCtrl"] th {
 	padding: 0.2em 0.5em;
 }
+
+.CreateContainerModal th,
+.CreateContainerModal td {
+	padding: 0.2em 0.5em;
+}
