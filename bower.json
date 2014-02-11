@@ -1,0 +1,23 @@
+{
+  "name": "kdocker-web",
+  "version": "0.0.1",
+  "homepage": "https://github.com/tsaikd/kdocker-web",
+  "authors": [
+    "tsaikd <tsaikd@gmail.com>"
+  ],
+  "description": "Simple Docker Web UI",
+  "main": "index.html",
+  "keywords": [
+    "Docker"
+  ],
+  "license": "LGPLv3",
+  "dependencies": {
+    "bootstrap": ">=3",
+    "angular": ">=1.2",
+    "angular-translate": ">=1",
+    "angular-local-storage": null,
+    "angular-ui-bootstrap-bower": ">=0",
+    "angular-websocket": ">=0",
+    "term.js": ">=0"
+  }
+}
