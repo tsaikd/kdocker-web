@@ -6,10 +6,21 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>KDockerWeb</title>
 		<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="index/index.min.css"/>
+		<!-- build:css index/index.min.css -->
+		<link rel="stylesheet" href="index/index.css">
+		<!-- endbuild -->
 		<script src="lib/angular/angular.min.js"></script>
 		<script src="lib/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
-		<script src="index/index.min.js"></script>
+		<!-- build:js index/index.min.js -->
+		<script src="lib/angular-websocket/angular-websocket.js"></script>
+		<script src="lib/angular-local-storage/angular-local-storage.js"></script>
+		<script src="lib/angular-translate/angular-translate.js"></script>
+		<script src="lib/term.js/src/term.js"></script>
+		<script src="lib/config.js"></script>
+		<script src="index/CreateContainerModalCtrl.js"></script>
+		<script src="index/StartContainerModalCtrl.js"></script>
+		<script src="index/index.js"></script>
+		<!-- endbuild -->
 	</head>
 	<body ng-controller="IndexCtrl" style="padding: 10px;">
 		<table style="width: 100%; height: 100%;">

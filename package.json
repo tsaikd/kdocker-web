@@ -1,0 +1,18 @@
+{
+  "name": "kdocker-web",
+  "version": "0.0.1",
+  "description": "Simple Docker Web UI",
+  "devDependencies": {
+    "grunt": ">=0",
+    "grunt-contrib-clean": ">=0",
+    "grunt-contrib-copy": ">=0",
+    "grunt-contrib-concat": ">=0",
+    "grunt-contrib-cssmin": ">=0",
+    "grunt-contrib-uglify": ">=0",
+    "grunt-usemin": ">=2",
+    "load-grunt-tasks": ">=0"
+  },
+  "author": "tsaikd <tsaikd@gmail.com>",
+  "license": "LGPLv3",
+  "homepage": "https://github.com/tsaikd/kdocker-web"
+}

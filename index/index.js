@@ -1,5 +1,4 @@
-angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht.translate"
-	, "angular-websocket", "LocalStorageModule"])
+angular.module("KDockerWeb")
 
 .filter("humanSize", function () {
 	return function (bytes, index) {
@@ -12,7 +11,7 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 	};
 })
 
-.controller("MainCtrl", ["$scope", "DockerData"
+.controller("IndexCtrl", ["$scope", "DockerData"
 	, function($scope, DockerData) {
 
 	if (DockerData.host) {
@@ -144,7 +143,7 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 
 	$scope.openCreateContainerModal = function() {
 		$modal.open({
-			templateUrl: "CreateContainerModalContent.html",
+			templateUrl: "index/CreateContainerModalContent.html",
 			controller: "CreateContainerModalCtrl"
 		})
 		.result
@@ -166,7 +165,7 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 
 	$scope.openStartContainerModal = function(container) {
 		$modal.open({
-			templateUrl: "StartContainerModalContent.html",
+			templateUrl: "index/StartContainerModalContent.html",
 			controller: "StartContainerModalCtrl",
 			resolve: {
 				container: function() {
@@ -191,75 +190,6 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 				return;
 			}
 		}
-	};
-
-}])
-
-.controller("CreateContainerModalCtrl", ["$scope", "$modalInstance", "DockerData"
-	, function($scope, $modalInstance, DockerData) {
-
-	$scope.DockerData = DockerData;
-	$scope.param = {
-		Memory: 0,
-		MemorySwap: 0,
-		AttachStdin: true,
-		AttachStdout: true,
-		AttachStderr: true,
-		Tty: true,
-		OpenStdin: true,
-		StdinOnce: false
-	};
-
-	if (DockerData.images[0]) {
-		$scope.param.Image = DockerData.images[0].Id;
-	}
-
-	$scope.ok = function () {
-		$modalInstance.close($scope.param);
-	};
-
-	$scope.cancel = function () {
-		$modalInstance.dismiss("cancel");
-	};
-
-}])
-
-.controller("StartContainerModalCtrl", ["$scope", "$modalInstance", "DockerData", "container"
-	, function($scope, $modalInstance, DockerData, container) {
-
-	$scope.DockerData = DockerData;
-	$scope.param = {
-		PortBindings: {}
-	};
-	$scope.PortBindings = [{}];
-
-	$scope.ok = function () {
-		angular.forEach($scope.PortBindings, function(v) {
-			v.pubports = (v.pubports || "").trim();
-			v.priport = (v.priport || "").trim();
-			if (v.priport && !v.priport.match(/\D/)) {
-				var pbs = [];
-				if (v.pubports) {
-					angular.forEach(v.pubports.split(/\D+/), function(p) {
-						pbs.push({
-							HostPort: p
-						});
-					});
-				}
-				if (!pbs.length) {
-					pbs.push({});
-				}
-				$scope.param.PortBindings[v.priport + "/" + v.porttype.toLowerCase()] = pbs;
-			}
-		});
-		$modalInstance.close({
-			container: container,
-			param: $scope.param
-		});
-	};
-
-	$scope.cancel = function () {
-		$modalInstance.dismiss("cancel");
 	};
 
 }])

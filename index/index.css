@@ -88,9 +88,13 @@ html, body {
 	}
 }
 
+.tab-header-bar {
+	margin-bottom: 1em;
+}
+
 *[ng-controller="ContainerCtrl"] td,
 *[ng-controller="ContainerCtrl"] th {
-	border: 1px solid;
+	border: 1px solid #888;
 	padding: 0.2em 0.5em;
 }
 
@@ -100,25 +104,12 @@ html, body {
 
 *[ng-controller="ImageCtrl"] td,
 *[ng-controller="ImageCtrl"] th {
-	border: 1px solid;
+	border: 1px solid #888;
 	padding: 0.2em 0.5em;
 }
 
 *[ng-controller="ConfigCtrl"] td,
 *[ng-controller="ConfigCtrl"] th {
+	border: 1px solid #888;
 	padding: 0.2em 0.5em;
-}
-
-.CreateContainerModal th,
-.CreateContainerModal td {
-	padding: 0.2em 0.5em;
-}
-
-.StartContainerModal th,
-.StartContainerModal td {
-	padding: 0.2em 0.5em;
-}
-
-.StartContainerModal th {
-	white-space: nowrap;
 }
