@@ -73,13 +73,14 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 		}
 	};
 
-	$scope.start = function(container) {
+	$scope.start = function(container, param) {
 		$http
-		.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/start")
+		.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/start", param)
 		.success(function(data) {
 			$scope.reload();
 		})
 		.error(function(data, status) {
+			$scope.reload();
 			console.error("Start container failed", data, status);
 		});
 	};
@@ -91,6 +92,7 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 			$scope.reload();
 		})
 		.error(function(data, status) {
+			$scope.reload();
 			console.error("Stop container failed", data, status);
 		});
 	};
@@ -102,6 +104,7 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 			$scope.reload();
 		})
 		.error(function(data, status) {
+			$scope.reload();
 			console.error("Remove container failed", data, status);
 		});
 	};
@@ -153,7 +156,7 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 				$http
 				.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/create" + query, param)
 				.success(function(data) {
-					$scope.start(data);
+					$scope.reload();
 				})
 				.error(function(data, status) {
 					console.error("Create container failed", data, status);
@@ -161,11 +164,29 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 			});
 	};
 
+	$scope.openStartContainerModal = function(container) {
+		$modal.open({
+			templateUrl: "StartContainerModalContent.html",
+			controller: "StartContainerModalCtrl",
+			resolve: {
+				container: function() {
+					return container;
+				}
+			}
+		})
+		.result
+			.then(function(data) {
+				$scope.start(data.container, data.param);
+			});
+	};
+
 	$scope.closeContainer = function(container) {
 		for (var i=0 ; i<$scope.tabs.length ; i++) {
 			if (container.Id === $scope.tabs[i].Id) {
 				var c = $scope.tabs.splice(i, 1)[0];
-				c.websocket.close();
+				if (c.websocket) {
+					c.websocket.close();
+				}
 				$scope.curtab = null;
 				return;
 			}
@@ -195,6 +216,46 @@ angular.module("KDockerWeb", ["KDockerWeb-config", "ui.bootstrap", "pascalprecht
 
 	$scope.ok = function () {
 		$modalInstance.close($scope.param);
+	};
+
+	$scope.cancel = function () {
+		$modalInstance.dismiss("cancel");
+	};
+
+}])
+
+.controller("StartContainerModalCtrl", ["$scope", "$modalInstance", "DockerData", "container"
+	, function($scope, $modalInstance, DockerData, container) {
+
+	$scope.DockerData = DockerData;
+	$scope.param = {
+		PortBindings: {}
+	};
+	$scope.PortBindings = [{}];
+
+	$scope.ok = function () {
+		angular.forEach($scope.PortBindings, function(v) {
+			v.pubports = (v.pubports || "").trim();
+			v.priport = (v.priport || "").trim();
+			if (v.priport && !v.priport.match(/\D/)) {
+				var pbs = [];
+				if (v.pubports) {
+					angular.forEach(v.pubports.split(/\D+/), function(p) {
+						pbs.push({
+							HostPort: p
+						});
+					});
+				}
+				if (!pbs.length) {
+					pbs.push({});
+				}
+				$scope.param.PortBindings[v.priport + "/" + v.porttype.toLowerCase()] = pbs;
+			}
+		});
+		$modalInstance.close({
+			container: container,
+			param: $scope.param
+		});
 	};
 
 	$scope.cancel = function () {

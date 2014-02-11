@@ -113,3 +113,12 @@ html, body {
 .CreateContainerModal td {
 	padding: 0.2em 0.5em;
 }
+
+.StartContainerModal th,
+.StartContainerModal td {
+	padding: 0.2em 0.5em;
+}
+
+.StartContainerModal th {
+	white-space: nowrap;
+}
