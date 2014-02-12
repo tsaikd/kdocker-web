@@ -24,11 +24,20 @@ module.exports = function(grunt) {
 		},
 		usemin: {
 			html: ["index.html"]
+		},
+		ngtemplates: {
+			"KDockerWeb": {
+				src: ["index/*.html"],
+				dest: "index/index.ngtpl.tmp.js",
+				options: {
+					usemin: "index/index.min.js"
+				}
+			}
 		}
 	});
 
 	require("load-grunt-tasks")(grunt);
-	grunt.registerTask("build", ["copy", "useminPrepare", "concat", "cssmin", "uglify", "usemin"]);
+	grunt.registerTask("build", ["copy", "ngtemplates", "useminPrepare", "concat", "cssmin", "uglify", "usemin"]);
 	grunt.registerTask("default", ["clean", "sync", "build"]);
 
 };
