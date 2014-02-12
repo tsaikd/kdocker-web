@@ -27,7 +27,7 @@
 						<tr>
 							<th translate>Port Type</th>
 							<th translate>Public Port</th>
-							<th translate>Private Port</th>
+							<th>*<span translate>Private Port</span></th>
 						</tr>
 						<tr ng-repeat="pb in PortBindings">
 							<td>
@@ -45,6 +45,14 @@
 						</tr>
 					</table>
 				</td>
+			</tr>
+			<tr>
+				<th>PublishAllPorts</th>
+				<td><input type="checkbox" ng-model="param.PublishAllPorts"/></td>
+			</tr>
+			<tr>
+				<th><span title="Give extended privileges to this container">Privileged</span></th>
+				<td><input type="checkbox" ng-model="param.Privileged"/></td>
 			</tr>
 		</table>
 	</div>

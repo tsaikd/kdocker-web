@@ -94,7 +94,7 @@
 									<span class="ellipsis" style="display: inline-block; max-width: 10em;" tooltip="{{c.Command}}">{{c.Command}}</span>
 								</td>
 								<td>
-									<div ng-repeat="p in c.Ports">
+									<div ng-repeat="p in c.Ports" style="white-space: nowrap;">
 										<a ng-show="p.PublicPort && p.PrivatePort" href="http://{{DockerData.host}}:{{p.PublicPort}}/" target="_blank">
 											<span ng-show="p.Type != 'tcp'">{{p.Type}}: </span>{{p.PublicPort}} -&gt; {{p.PrivatePort}}
 										</a>
@@ -145,6 +145,7 @@
 									<span>{{img.Created * 1000 | date:'yyyy-MM-dd HH:mm'}}</span>
 								</td>
 								<td>
+									<button ng-click="remove(img)" class="btn btn-danger btn-xs" translate>Remove</button>
 								</td>
 							</tr>
 						</table>

@@ -214,6 +214,19 @@ angular.module("KDockerWeb")
 			console.error("Get image list failed", data, status);
 		});
 	};
+
+	$scope.remove = function(image) {
+		$http
+		.delete("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/images/" + image.Id)
+		.success(function(data) {
+			$scope.reload();
+		})
+		.error(function(data, status) {
+			$scope.reload();
+			console.error("Remove image failed", data, status);
+		});
+	};
+
 	if (!$scope.DockerData.images.length) {
 		$scope.reload();
 	}

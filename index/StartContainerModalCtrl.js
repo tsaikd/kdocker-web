@@ -5,7 +5,9 @@ angular.module("KDockerWeb")
 
 	$scope.DockerData = DockerData;
 	$scope.param = {
-		PortBindings: {}
+		PortBindings: {},
+		PublishAllPorts: false,
+		Privileged: false
 	};
 	$scope.PortBindings = [{}];
 
@@ -23,7 +25,9 @@ angular.module("KDockerWeb")
 					});
 				}
 				if (!pbs.length) {
-					pbs.push({});
+					pbs.push({
+						"HostPort": "0"
+					});
 				}
 				$scope.param.PortBindings[v.priport + "/" + v.porttype.toLowerCase()] = pbs;
 			}
