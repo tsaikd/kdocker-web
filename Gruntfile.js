@@ -29,6 +29,6 @@ module.exports = function(grunt) {
 
 	require("load-grunt-tasks")(grunt);
 	grunt.registerTask("build", ["copy", "useminPrepare", "concat", "cssmin", "uglify", "usemin"]);
-	grunt.registerTask("default", ["clean", "build"]);
+	grunt.registerTask("default", ["clean", "sync", "build"]);
 
 };
