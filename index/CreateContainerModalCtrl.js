@@ -12,7 +12,17 @@ angular.module("KDockerWeb")
 		AttachStderr: true,
 		Tty: true,
 		OpenStdin: true,
-		StdinOnce: false
+		StdinOnce: false,
+		Volumes: {}
+	};
+	$scope.startconfig = {
+		Binds: [],
+		PortBindings: {},
+		PublishAllPorts: true
+	};
+	$scope.extra = {
+		Volumes: "",
+		Ports: ""
 	};
 
 	if (DockerData.images[0]) {
@@ -20,7 +30,36 @@ angular.module("KDockerWeb")
 	}
 
 	$scope.ok = function () {
-		$modalInstance.close($scope.param);
+		angular.forEach($scope.extra.Volumes.split(/\s+/), function(v) {
+			v = (v || "").trim();
+			if (v) {
+				if (v.match(/:/)) {
+					$scope.param.Volumes[v.split(/:/)[1].trim()] = {};
+					$scope.startconfig.Binds.push(v);
+				} else {
+					$scope.param.Volumes[v] = {};
+				}
+			}
+		});
+		angular.forEach($scope.extra.Ports.split(/\s+/), function(v) {
+			v = (v || "").trim();
+			if (v) {
+				if (v.match(/:/)) {
+					var hostPort = v.split(/:/)[0].trim();
+					var containerPort = v.split(/:/)[1].trim();
+					$scope.startconfig.PortBindings[containerPort] = $scope.startconfig.PortBindings[containerPort] || [];
+					$scope.startconfig.PortBindings[containerPort].push({
+						HostPort: hostPort
+					});
+				} else {
+					$scope.startconfig.PortBindings[v] = [{}];
+				}
+			}
+		});
+		$modalInstance.close({
+			param: $scope.param,
+			startconfig: $scope.startconfig
+		});
 	};
 
 	$scope.cancel = function () {

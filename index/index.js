@@ -37,7 +37,6 @@ angular.module("KDockerWeb")
 	$scope.curtab = null;
 
 	$scope.reload = function() {
-		$scope.curtab = null;
 		if (!DockerData.host) {
 			return;
 		}
@@ -137,6 +136,10 @@ angular.module("KDockerWeb")
 			container.terminal.destroy();
 			delete container.terminal;
 			delete container.websocket;
+			$scope.closeContainer(container);
+			setTimeout(function() {
+				$scope.reload();
+			}, 500);
 		})
 		.onmessage(function(e) {
 			container.terminal.write(e.data);
@@ -153,15 +156,15 @@ angular.module("KDockerWeb")
 			controller: "CreateContainerModalCtrl"
 		})
 		.result
-			.then(function(param) {
+			.then(function(data) {
 				var query = "";
-				if (param.Name) {
-					query = "?name=" + param.Name;
+				if (data.param.Name) {
+					query = "?name=" + data.param.Name;
 				}
 				$http
-				.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/create" + query, param)
-				.success(function(data) {
-					$scope.reload();
+				.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/create" + query, data.param)
+				.success(function(retcontainer) {
+					$scope.start(retcontainer, data.startconfig);
 				})
 				.error(function(data, status) {
 					console.error("Create container failed", data, status);

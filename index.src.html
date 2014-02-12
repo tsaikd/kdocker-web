@@ -72,7 +72,7 @@
 					<div ng-controller="ContainerCtrl" ng-show="tab == 'Containers'">
 						<div class="tab-header-bar">
 							<span translate>Containers</span>
-							<button ng-click="reload()" class="btn btn-default">
+							<button ng-click="curtab=null;reload()" class="btn btn-default">
 								<span class="glyphicon glyphicon-refresh"></span>
 							</button>
 							<button ng-show="curtab" ng-click="attach()" class="btn btn-primary" translate>Back</button>

@@ -43,6 +43,29 @@
 					<input type="checkbox" ng-model="param[key]"/>
 				</td>
 			</tr>
+			<tr>
+				<td colspan="2">
+					<div style="margin-top: 1em;" translate>Init start config</div>
+				</td>
+			</tr>
+			<tr>
+				<th translate>Volumes</th>
+				<td>
+					<input type="text" ng-model="extra.Volumes" placeholder="/host/path:/container/path" style="width: 15em;"/>
+				</td>
+			</tr>
+			<tr>
+				<th translate>Ports</th>
+				<td>
+					<input type="text" ng-model="extra.Ports" placeholder="49080:80 hostPort:containerPort" style="width: 15em;"/>
+				</td>
+			</tr>
+			<tr>
+				<th translate>PublishAllPorts</th>
+				<td>
+					<input type="checkbox" ng-model="startconfig.PublishAllPorts"/>
+				</td>
+			</tr>
 		</table>
 	</div>
 	<div class="modal-footer">
