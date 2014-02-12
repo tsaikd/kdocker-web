@@ -11,14 +11,21 @@ angular.module("KDockerWeb")
 	};
 })
 
-.controller("IndexCtrl", ["$scope", "DockerData", "$http"
-	, function($scope, DockerData, $http) {
+.controller("IndexCtrl", ["$scope", "DockerData", "$http", "$translate"
+	, function($scope, DockerData, $http, $translate) {
+
+	$scope.DockerData = DockerData;
 
 	if (DockerData.host) {
 		$scope.tab = "Containers";
 	} else {
 		$scope.tab = "Config";
 	}
+
+	$scope.locale = $translate.uses();
+	$scope.updateLocale = function() {
+		$translate.uses($scope.locale);
+	};
 
 	$http
 	.post("package.json")

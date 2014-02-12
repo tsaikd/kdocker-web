@@ -17,6 +17,7 @@
 			<tr style="height: 1em;">
 				<td>
 					<a href="."><button class="btn btn-primary">KDocker-Web</button></a>
+					<select ng-model="locale" ng-options="lang.id as lang.name for lang in DockerData.locales" ng-change="updateLocale()" style="position: absolute; top: 1em; right: 1em;"></select>
 				</td>
 			</tr>
 			<tr>
