@@ -27,11 +27,13 @@ angular.module("KDockerWeb")
 		$translate.uses($scope.locale);
 	};
 
-	$http
-	.post("package.json")
-	.success(function(data) {
-		$scope.version = data.version;
-	});
+	if (DockerData.version == "0") {
+		$http
+		.post("package.json")
+		.success(function(data) {
+			DockerData.version = data.version + "-dev";
+		});
+	}
 
 }])
 
