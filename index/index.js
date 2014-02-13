@@ -28,6 +28,36 @@ angular.module("KDockerWeb")
 		$translate.uses($scope.locale);
 	};
 
+	$scope.alerts = [];
+	$scope.log = function() {
+		var exists = false;
+		var alertmsg = Array.prototype.join.call(arguments, " ");
+		for (var i=0 ; i<$scope.alerts.length ; i++) {
+			var a = $scope.alerts[i];
+			if (a.type == "info" && a.msg == alertmsg) {
+				return;
+			}
+		}
+		$scope.alerts.push({
+			type: "info",
+			msg: alertmsg
+		});
+	};
+	$scope.error = function() {
+		var exists = false;
+		var alertmsg = Array.prototype.join.call(arguments, " ");
+		for (var i=0 ; i<$scope.alerts.length ; i++) {
+			var a = $scope.alerts[i];
+			if (a.type == "danger" && a.msg == alertmsg) {
+				return;
+			}
+		}
+		$scope.alerts.push({
+			type: "danger",
+			msg: alertmsg
+		});
+	};
+
 	if (DockerData.version == "0") {
 		$http
 		.post("package.json")
@@ -52,16 +82,15 @@ angular.module("KDockerWeb")
 			return;
 		}
 		$http
-		.get("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/json?all=1")
+		.get("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/json?all=1", {
+			errmsg: "Get container list failed"
+		})
 		.success(function(data) {
 			angular.forEach(data, function(v) {
 				v.name = v.Names.join().substr(1);
 				v.running = !!v.Status.match(/^Up /);
 			});
 			$scope.DockerData.containers = data;
-		})
-		.error(function(data, status) {
-			console.error("Get container list failed", data, status);
 		});
 	};
 
@@ -99,37 +128,40 @@ angular.module("KDockerWeb")
 
 	$scope.start = function(container, param) {
 		$http
-		.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/start", param)
-		.success(function(data) {
+		.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/start", param, {
+			errmsg: "Start container failed"
+		})
+		.success(function() {
 			$scope.reload();
 		})
-		.error(function(data, status) {
+		.error(function() {
 			$scope.reload();
-			console.error("Start container failed", data, status);
 		});
 	};
 
 	$scope.stop = function(container) {
 		$http
-		.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/stop")
-		.success(function(data) {
+		.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/stop", {}, {
+			errmsg: "Stop container failed"
+		})
+		.success(function() {
 			$scope.reload();
 		})
-		.error(function(data, status) {
+		.error(function() {
 			$scope.reload();
-			console.error("Stop container failed", data, status);
 		});
 	};
 
 	$scope.remove = function(container) {
 		$http
-		.delete("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "?v=1")
-		.success(function(data) {
+		.delete("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "?v=1", {
+			errmsg: "Remove container failed"
+		})
+		.success(function() {
 			$scope.reload();
 		})
-		.error(function(data, status) {
+		.error(function() {
 			$scope.reload();
-			console.error("Remove container failed", data, status);
 		});
 	};
 
@@ -182,12 +214,11 @@ angular.module("KDockerWeb")
 					query = "?name=" + data.param.Name;
 				}
 				$http
-				.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/create" + query, data.param)
+				.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/create" + query, data.param, {
+					errmsg: "Create container failed"
+				})
 				.success(function(retcontainer) {
 					$scope.start(retcontainer, data.startconfig);
-				})
-				.error(function(data, status) {
-					console.error("Create container failed", data, status);
 				});
 			});
 	};
@@ -234,12 +265,11 @@ angular.module("KDockerWeb")
 			return;
 		}
 		$http
-		.get("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/images/json?all=0")
+		.get("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/images/json?all=0", {
+			errmsg: "Get image list failed"
+		})
 		.success(function(data) {
 			$scope.DockerData.images = data;
-		})
-		.error(function(data, status) {
-			console.error("Get image list failed", data, status);
 		});
 	};
 
@@ -258,13 +288,14 @@ angular.module("KDockerWeb")
 
 	$scope.remove = function(image) {
 		$http
-		.delete("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/images/" + image.Id)
+		.delete("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/images/" + image.Id, {
+			errmsg: "Remove image failed"
+		})
 		.success(function(data) {
 			$scope.reload();
 		})
 		.error(function(data, status) {
 			$scope.reload();
-			console.error("Remove image failed", data, status);
 		});
 	};
 

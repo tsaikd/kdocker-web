@@ -10,6 +10,10 @@
 <div class="CreateContainerModal">
 	<div class="modal-header">
 		<h3 translate>Create a container</h3>
+		<span style="position: absolute; top: 1em; right: 1em;">
+			<label for="moreOptions" translate>More options</label>
+			<input type="checkbox" ng-model="moreOptions" id="moreOptions"/>
+		</span>
 	</div>
 	<div class="modal-body">
 		<table>
@@ -25,19 +29,19 @@
 					<input type="text" ng-model="param.Name" placeholder="Container name"/>
 				</td>
 			</tr>
-			<tr ng-repeat="key in ['Hostname', 'User']">
+			<tr ng-repeat="key in ['Hostname', 'User']" ng-show="moreOptions">
 				<th translate>{{key}}</th>
 				<td>
 					<input type="text" ng-model="param[key]"/>
 				</td>
 			</tr>
-			<tr ng-repeat="key in ['Memory', 'MemorySwap']">
+			<tr ng-repeat="key in ['Memory', 'MemorySwap']" ng-show="moreOptions">
 				<th translate>{{key}}</th>
 				<td>
 					<input type="number" ng-model="param[key]"/>
 				</td>
 			</tr>
-			<tr ng-repeat="key in ['AttachStdin', 'AttachStdout', 'AttachStderr', 'Tty', 'OpenStdin', 'StdinOnce']">
+			<tr ng-repeat="key in ['AttachStdin', 'AttachStdout', 'AttachStderr', 'Tty', 'OpenStdin', 'StdinOnce']" ng-show="moreOptions">
 				<th translate>{{key}}</th>
 				<td>
 					<input type="checkbox" ng-model="param[key]"/>

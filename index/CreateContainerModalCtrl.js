@@ -24,6 +24,7 @@ angular.module("KDockerWeb")
 		Volumes: "",
 		Ports: ""
 	};
+	$scope.moreOptions = false;
 
 	if (DockerData.images[0]) {
 		$scope.param.Image = DockerData.images[0].Id;
