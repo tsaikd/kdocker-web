@@ -15,6 +15,7 @@ angular.module("KDockerWeb")
 	, function($scope, DockerData, $http, $translate) {
 
 	$scope.DockerData = DockerData;
+	DockerData.IndexCtrl = $scope;
 
 	if (DockerData.host) {
 		$scope.tab = "Containers";
@@ -37,11 +38,12 @@ angular.module("KDockerWeb")
 
 }])
 
-.controller("ContainerCtrl", ["$scope", "$translate", "$http", "DockerData", "WebSocket", "UpdateConfig", "$modal"
-	, function($scope, $translate, $http, DockerData, WebSocket, UpdateConfig, $modal) {
+.controller("ContainerCtrl", ["$scope", "$translate", "$http", "DockerData", "WebSocket", "$modal"
+	, function($scope, $translate, $http, DockerData, WebSocket, $modal) {
 
-	$scope.UpdateConfig = UpdateConfig;
 	$scope.DockerData = DockerData;
+	DockerData.ContainerCtrl = $scope;
+
 	$scope.tabs = [];
 	$scope.curtab = null;
 
@@ -57,15 +59,24 @@ angular.module("KDockerWeb")
 				v.running = !!v.Status.match(/^Up /);
 			});
 			$scope.DockerData.containers = data;
-			UpdateConfig("containers");
 		})
 		.error(function(data, status) {
 			console.error("Get container list failed", data, status);
 		});
 	};
-	if (!$scope.DockerData.containers.length) {
-		$scope.reload();
-	}
+
+	$scope.checkReload = function() {
+		if (!$scope.DockerData.containers.length) {
+			$scope.reload();
+		}
+	};
+	$scope.checkReload();
+
+	$scope.$watch("DockerData.IndexCtrl.tab", function(tab) {
+		if (tab == "Containers") {
+			$scope.checkReload();
+		}
+	});
 
 	$scope.attach = function(container) {
 		$scope.curtab = container;
@@ -212,11 +223,11 @@ angular.module("KDockerWeb")
 
 }])
 
-.controller("ImageCtrl", ["$scope", "DockerData", "UpdateConfig", "$http"
-	, function($scope, DockerData, UpdateConfig, $http) {
+.controller("ImageCtrl", ["$scope", "DockerData", "$http"
+	, function($scope, DockerData, $http) {
 
-	$scope.UpdateConfig = UpdateConfig;
 	$scope.DockerData = DockerData;
+	DockerData.ImageCtrl = $scope;
 
 	$scope.reload = function() {
 		if (!DockerData.host) {
@@ -226,12 +237,24 @@ angular.module("KDockerWeb")
 		.get("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/images/json?all=0")
 		.success(function(data) {
 			$scope.DockerData.images = data;
-			UpdateConfig("images");
 		})
 		.error(function(data, status) {
 			console.error("Get image list failed", data, status);
 		});
 	};
+
+	$scope.checkReload = function() {
+		if (!$scope.DockerData.images.length) {
+			$scope.reload();
+		}
+	};
+	$scope.checkReload();
+
+	$scope.$watch("DockerData.IndexCtrl.tab", function(tab) {
+		if (tab == "Images") {
+			$scope.checkReload();
+		}
+	});
 
 	$scope.remove = function(image) {
 		$http
@@ -245,18 +268,13 @@ angular.module("KDockerWeb")
 		});
 	};
 
-	if (!$scope.DockerData.images.length) {
-		$scope.reload();
-	}
-
 }])
 
-.controller("ConfigCtrl", ["$scope", "DockerData", "UpdateConfig"
-	, function($scope, DockerData, UpdateConfig) {
+.controller("ConfigCtrl", ["$scope", "DockerData"
+	, function($scope, DockerData) {
 
 	$scope.DockerData = DockerData;
-
-	$scope.UpdateConfig = UpdateConfig;
+	DockerData.ConfigCtrl = $scope;
 
 }])
 
