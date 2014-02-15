@@ -76,11 +76,13 @@ angular.module("KDockerWeb")
 
 	$scope.tabs = [];
 	$scope.curtab = null;
+	$scope.loading = false;
 
 	$scope.reload = function() {
-		if (!DockerData.host) {
+		if (!DockerData.host || $scope.loading) {
 			return;
 		}
+		$scope.loading = true;
 		$http
 		.get("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/json?all=1", {
 			errmsg: "Get container list failed"
@@ -91,6 +93,10 @@ angular.module("KDockerWeb")
 				v.running = !!v.Status.match(/^Up /);
 			});
 			$scope.DockerData.containers = data;
+			$scope.loading = false;
+		})
+		.error(function() {
+			$scope.loading = false;
 		});
 	};
 
@@ -260,16 +266,23 @@ angular.module("KDockerWeb")
 	$scope.DockerData = DockerData;
 	DockerData.ImageCtrl = $scope;
 
+	$scope.loading = false;
+
 	$scope.reload = function() {
-		if (!DockerData.host) {
+		if (!DockerData.host || $scope.loading) {
 			return;
 		}
+		$scope.loading = true;
 		$http
 		.get("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/images/json?all=0", {
 			errmsg: "Get image list failed"
 		})
 		.success(function(data) {
 			$scope.DockerData.images = data;
+			$scope.loading = false;
+		})
+		.error(function() {
+			$scope.loading = false;
 		});
 	};
 

@@ -1,6 +1,6 @@
 {
   "name": "kdocker-web",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "homepage": "https://github.com/tsaikd/kdocker-web",
   "authors": [
     "tsaikd <tsaikd@gmail.com>"
@@ -13,6 +13,7 @@
   "dependencies": {
     "bootstrap": ">=3",
     "angular": ">=1.2",
+    "angular-animate": ">=1.2",
     "angular-translate": ">=1",
     "angular-local-storage": null,
     "angular-ui-bootstrap-bower": ">=0",

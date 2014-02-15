@@ -92,6 +92,30 @@ html, body {
 	margin-bottom: 1em;
 }
 
+.loading-block {
+	background: #000;
+}
+
+.loading-block.ng-hide-add,
+.loading-block.ng-hide-remove {
+	-webkit-transition:all linear 0.5s;
+	-moz-transition:all linear 0.5s;
+	-o-transition:all linear 0.5s;
+	transition:all linear 0.5s;
+	display: block !important;
+}
+
+.loading-block.ng-hide-add.ng-hide-add-active,
+.loading-block.ng-hide-remove {
+	opacity: 0;
+}
+
+.loading-block,
+.loading-block.ng-hide-add,
+.loading-block.ng-hide-remove.ng-hide-remove-active {
+	opacity: 0.5;
+}
+
 *[ng-controller="ContainerCtrl"] td,
 *[ng-controller="ContainerCtrl"] th {
 	border: 1px solid #888;

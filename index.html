@@ -5,6 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>KDockerWeb</title>
+		<link rel="shortcut icon" href="favicon.png">
 		<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="index/index.min.css"/>
 		<script src="lib/angular/angular.min.js"></script>
@@ -12,7 +13,7 @@
 		<script src="index/index.min.js"></script>
 	</head>
 	<body ng-controller="IndexCtrl" style="padding: 10px;">
-		<div style="position: absolute; left: 1em; bottom: 1em;">v{{DockerData.version}}</div>
+		<div style="position: fixed; left: 1em; bottom: 1em;">v{{DockerData.version}}</div>
 		<table style="width: 100%; height: 100%;">
 			<tr style="height: 1em;">
 				<td colspan="2">
@@ -47,7 +48,7 @@
 					<div ng-controller="ConfigCtrl" ng-show="tab == 'Config'">
 						<div class="tab-header-bar">
 							<span translate>Config</span>
-							<button ng-click="DockerData.reset()" class="btn btn-primary">Reset</button>
+							<button ng-click="DockerData.reset()" class="btn btn-primary" translate>Reset</button>
 						</div>
 						<table>
 							<tr>
@@ -74,7 +75,7 @@
 						<div class="tab-header-bar">
 							<span translate>Containers</span>
 							<button ng-click="curtab=null;reload()" class="btn btn-default">
-								<span class="glyphicon glyphicon-refresh"></span>
+								<span ng-class="{spinner: loading, active: loading}" class="glyphicon glyphicon-refresh"></span>
 							</button>
 							<button ng-show="curtab" ng-click="attach()" class="btn btn-primary" translate>Back</button>
 							<span ng-repeat="c in tabs">
@@ -83,85 +84,91 @@
 							</span>
 							<button ng-click="openCreateContainerModal()" class="btn btn-info" translate>Create</button>
 						</div>
-						<table ng-show="!curtab">
-							<tr>
-								<th translate>ID</th>
-								<th translate>Description</th>
-								<th translate>Image</th>
-								<th translate>Command</th>
-								<th translate>Port</th>
-								<th translate>Status</th>
-								<th translate>Action</th>
-							</tr>
-							<tr ng-repeat="c in DockerData.containers" ng-class="{running: c.running, stopped: !c.running}">
-								<td>
-									<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{c.Id}}">{{c.Id}}</span>
-								</td>
-								<td>
-									<span>{{c.name}}</span>
-								</td>
-								<td>
-									<span>{{c.Image}}</span>
-								</td>
-								<td>
-									<span class="ellipsis" style="display: inline-block; max-width: 10em;" tooltip="{{c.Command}}">{{c.Command}}</span>
-								</td>
-								<td>
-									<div ng-repeat="p in c.Ports" style="white-space: nowrap;">
-										<a ng-show="p.PublicPort && p.PrivatePort" href="http://{{DockerData.host}}:{{p.PublicPort}}/" target="_blank">
-											<span ng-show="p.Type != 'tcp'">{{p.Type}}: </span>{{p.PublicPort}} -&gt; {{p.PrivatePort}}
-										</a>
-										<span ng-show="!p.PublicPort || !p.PrivatePort">
-											<span ng-show="p.Type != 'tcp'">{{p.Type}}: </span> -&gt; {{p.PublicPort}}{{p.PrivatePort}}
-										</span>
-									</div>
-								</td>
-								<td>
-									<span>{{c.Status}}</span>
-								</td>
-								<td>
-									<button ng-click="attach(c)" class="btn btn-primary btn-xs" translate>Attach</button>
-									<button ng-click="openStartContainerModal(c)" ng-show="!c.running" class="btn btn-info btn-xs" translate>Start</button>
-									<button ng-click="stop(c)" ng-show="c.running" class="btn btn-warning btn-xs" translate>Stop</button>
-									<button ng-click="remove(c)" ng-show="!c.running" class="btn btn-danger btn-xs" translate>Remove</button>
-								</td>
-							</tr>
-						</table>
+						<div style="position: relative;">
+							<table ng-show="!curtab">
+								<tr>
+									<th translate>ID</th>
+									<th translate>Description</th>
+									<th translate>Image</th>
+									<th translate>Command</th>
+									<th translate>Port</th>
+									<th translate>Status</th>
+									<th translate>Action</th>
+								</tr>
+								<tr ng-repeat="c in DockerData.containers" ng-class="{running: c.running, stopped: !c.running}">
+									<td>
+										<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{c.Id}}">{{c.Id}}</span>
+									</td>
+									<td>
+										<span>{{c.name}}</span>
+									</td>
+									<td>
+										<span>{{c.Image}}</span>
+									</td>
+									<td>
+										<span class="ellipsis" style="display: inline-block; max-width: 10em;" tooltip="{{c.Command}}">{{c.Command}}</span>
+									</td>
+									<td>
+										<div ng-repeat="p in c.Ports" style="white-space: nowrap;">
+											<a ng-show="p.PublicPort && p.PrivatePort" href="http://{{DockerData.host}}:{{p.PublicPort}}/" target="_blank">
+												<span ng-show="p.Type != 'tcp'">{{p.Type}}: </span>{{p.PublicPort}} -&gt; {{p.PrivatePort}}
+											</a>
+											<span ng-show="!p.PublicPort || !p.PrivatePort">
+												<span ng-show="p.Type != 'tcp'">{{p.Type}}: </span> -&gt; {{p.PublicPort}}{{p.PrivatePort}}
+											</span>
+										</div>
+									</td>
+									<td>
+										<span>{{c.Status}}</span>
+									</td>
+									<td>
+										<button ng-click="attach(c)" class="btn btn-primary btn-xs" translate>Attach</button>
+										<button ng-click="openStartContainerModal(c)" ng-show="!c.running" class="btn btn-info btn-xs" translate>Start</button>
+										<button ng-click="stop(c)" ng-show="c.running" class="btn btn-warning btn-xs" translate>Stop</button>
+										<button ng-click="remove(c)" ng-show="!c.running" class="btn btn-danger btn-xs" translate>Remove</button>
+									</td>
+								</tr>
+							</table>
+							<div ng-show="loading" class="loading-block" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></div>
+						</div>
 						<div ng-repeat="c in tabs" id="{{c.Id}}_terminal" ng-show="curtab.Id === c.Id"></div>
 					</div>
 					<div ng-controller="ImageCtrl" ng-show="tab == 'Images'">
 						<div class="tab-header-bar">
 							<span translate>Images</span>
 							<button ng-click="reload()" class="btn btn-default">
-								<span class="glyphicon glyphicon-refresh"></span>
+								<span ng-class="{spinner: loading, active: loading}" class="glyphicon glyphicon-refresh"></span>
 							</button>
 						</div>
-						<table>
-							<tr>
-								<th translate>ID</th>
-								<th translate>Tags</th>
-								<th translate>Size</th>
-								<th translate>Create Time</th>
-								<th translate>Action</th>
-							</tr>
-							<tr ng-repeat="img in DockerData.images">
-								<td>
-									<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{img.Id}}">{{img.Id}}</span>
-								</td>
-								<td>
-									<span ng-repeat="tag in img.RepoTags">{{tag}}</span>
-								</td>
-								<td>
-									<span>{{img.VirtualSize | humanSize}}</span>
-								</td>
-								<td>
-									<span>{{img.Created * 1000 | date:'yyyy-MM-dd HH:mm'}}</span>
-								</td>
-								<td>
-									<button ng-click="remove(img)" class="btn btn-danger btn-xs" translate>Remove</button>
-								</td>
-							</tr>
-						</table>
+						<div style="position: relative;">
+							<table>
+								<tr>
+									<th translate>ID</th>
+									<th translate>Tags</th>
+									<th translate>Size</th>
+									<th translate>Create Time</th>
+									<th translate>Action</th>
+								</tr>
+								<tr ng-repeat="img in DockerData.images">
+									<td>
+										<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{img.Id}}">{{img.Id}}</span>
+									</td>
+									<td>
+										<span ng-repeat="tag in img.RepoTags">{{tag}}</span>
+									</td>
+									<td>
+										<span>{{img.VirtualSize | humanSize}}</span>
+									</td>
+									<td>
+										<span>{{img.Created * 1000 | date:'yyyy-MM-dd HH:mm'}}</span>
+									</td>
+									<td>
+										<button ng-click="remove(img)" class="btn btn-danger btn-xs" translate>Remove</button>
+									</td>
+								</tr>
+							</table>
+							<div ng-show="loading" class="loading-block" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></div>
+						</div>
 					</div>
 				</td>
 			</tr>
