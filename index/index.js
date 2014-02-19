@@ -25,9 +25,9 @@ angular.module("KDockerWeb")
 		$scope.tab = "Config";
 	}
 
-	$scope.locale = $translate.uses();
+	$scope.locale = $translate.use();
 	$scope.updateLocale = function() {
-		$translate.uses($scope.locale);
+		$translate.use($scope.locale);
 	};
 
 	$scope.alerts = [];
