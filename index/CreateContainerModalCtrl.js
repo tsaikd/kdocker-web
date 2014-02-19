@@ -5,6 +5,10 @@ angular.module("KDockerWeb")
 
 	$scope.DockerData = DockerData;
 	$scope.param = {
+		Name: "",
+		Cmd: "",
+		Hostname: "",
+		User: "",
 		Memory: 0,
 		MemorySwap: 0,
 		AttachStdin: true,
@@ -26,11 +30,14 @@ angular.module("KDockerWeb")
 	};
 	$scope.moreOptions = false;
 
-	if (DockerData.images[0]) {
+	if (DockerData.lastCreateImage) {
+		$scope.param.Image = DockerData.lastCreateImage;
+	} else if (DockerData.images[0]) {
 		$scope.param.Image = DockerData.images[0].Id;
 	}
 
 	$scope.ok = function () {
+		DockerData.lastCreateImage = $scope.param.Image;
 		angular.forEach($scope.extra.Volumes.split(/\s+/), function(v) {
 			v = (v || "").trim();
 			if (v) {

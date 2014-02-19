@@ -28,6 +28,9 @@
 		<!-- endbuild -->
 	</head>
 	<body ng-controller="IndexCtrl" style="padding: 10px;">
+		<div ng-show="devMode" style="position: fixed; left: 1em; bottom: 3em; font-size: 0.8em;">
+			<a href="http://docs.docker.io/en/latest/reference/api/docker_remote_api/" target="_blank">Docker Remote API</a>
+		</div>
 		<div style="position: fixed; left: 1em; bottom: 1em;">v{{DockerData.version}}</div>
 		<table style="width: 100%; height: 100%;">
 			<tr style="height: 1em;">

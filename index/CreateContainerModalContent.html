@@ -5,6 +5,10 @@
 	padding: 0.2em 0.5em;
 }
 
+.CreateContainerModal input[type="text"] {
+	text-indent: 0.3em;
+}
+
 </style>
 
 <div class="CreateContainerModal">
@@ -27,6 +31,15 @@
 				<th translate>Name</th>
 				<td>
 					<input type="text" ng-model="param.Name" placeholder="Container name"/>
+				</td>
+			</tr>
+			<tr>
+				<th translate>Cmd</th>
+				<td>
+					<input type="text" ng-model="param.Cmd" placeholder="/bin/bash"/>
+					<button ng-click="param.Cmd = '/bin/bash'" class="btn btn-info btn-xs">
+						<span class="glyphicon glyphicon-arrow-left"></span>
+					</button>
 				</td>
 			</tr>
 			<tr ng-repeat="key in ['Hostname', 'User']" ng-show="moreOptions">
@@ -55,13 +68,13 @@
 			<tr>
 				<th translate>Volumes</th>
 				<td>
-					<input type="text" ng-model="extra.Volumes" placeholder="/host/path:/container/path" style="width: 15em;"/>
+					<input type="text" ng-model="extra.Volumes" placeholder="/host/path:/container/path" style="width: 20em;"/>
 				</td>
 			</tr>
 			<tr>
 				<th translate>Ports</th>
 				<td>
-					<input type="text" ng-model="extra.Ports" placeholder="49080:80 hostPort:containerPort" style="width: 15em;"/>
+					<input type="text" ng-model="extra.Ports" placeholder="49080:80 hostPort:containerPort" style="width: 20em;"/>
 				</td>
 			</tr>
 			<tr>

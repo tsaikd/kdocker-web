@@ -17,6 +17,8 @@ angular.module("KDockerWeb")
 	$scope.DockerData = DockerData;
 	DockerData.IndexCtrl = $scope;
 
+	$scope.devMode = false;
+
 	if (DockerData.host) {
 		$scope.tab = "Containers";
 	} else {
@@ -59,6 +61,7 @@ angular.module("KDockerWeb")
 	};
 
 	if (DockerData.version == "0") {
+		$scope.devMode = true;
 		$http
 		.post("package.json")
 		.success(function(data) {
