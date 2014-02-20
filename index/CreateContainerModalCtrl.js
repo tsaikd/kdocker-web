@@ -17,7 +17,8 @@ angular.module("KDockerWeb")
 		Tty: true,
 		OpenStdin: true,
 		StdinOnce: false,
-		Volumes: {}
+		Volumes: {},
+		ExposedPorts: {}
 	};
 	$scope.startconfig = {
 		Binds: [],
@@ -29,6 +30,9 @@ angular.module("KDockerWeb")
 		Ports: ""
 	};
 	$scope.moreOptions = false;
+	$scope.form = {
+		ExposedPorts: ""
+	};
 
 	if (DockerData.lastCreateImage) {
 		$scope.param.Image = DockerData.lastCreateImage;
@@ -38,6 +42,12 @@ angular.module("KDockerWeb")
 
 	$scope.ok = function () {
 		DockerData.lastCreateImage = $scope.param.Image;
+		angular.forEach($scope.form.ExposedPorts.split(/\s+/), function(v) {
+			v = (v || "").trim();
+			if (v) {
+				$scope.param.ExposedPorts[v] = {};
+			}
+		});
 		angular.forEach($scope.extra.Volumes.split(/\s+/), function(v) {
 			v = (v || "").trim();
 			if (v) {
