@@ -3,39 +3,46 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("bower.json"),
 		meta: {
+			bowerrc: grunt.file.readJSON(".bowerrc"),
+			lib: "<%= meta.bowerrc.directory %>",
 			dist: "."
 		},
 		clean: {
-			dist: [".tmp", "index/*.min.*", "index.html"]
+			dist: [
+				".tmp",
+				"<%= meta.dist %>/index/*.min.*",
+				"<%= meta.dist %>/index/*.tmp.*",
+				"<%= meta.dist %>/index.html"
+			]
 		},
 		copy: {
 			index: {
-				src: "index.src.html",
-				dest: "index.html"
+				src: "<%= meta.dist %>/index.src.html",
+				dest: "<%= meta.dist %>/index.html"
 			}
 		},
 		useminPrepare: {
 			index: {
-				src: "index.html"
+				src: "<%= meta.dist %>/index.html"
 			},
 			options: {
-				dest: "."
+				dest: "<%= meta.dist %>"
 			}
 		},
 		usemin: {
-			html: ["index.html"]
+			html: ["<%= meta.dist %>/index.html"]
 		},
 		version: {
 			dist: {
-				src: ["index/index.min.js"]
+				src: ["<%= meta.dist %>/index/index.min.js"]
 			}
 		},
 		ngtemplates: {
-			"KDockerWeb": {
-				src: ["index/*.html"],
-				dest: "index/index.ngtpl.tmp.js",
+			"index": {
+				src: ["<%= meta.dist %>/index/*.html"],
+				dest: "<%= meta.dist %>/index/index.ngtpl.tmp.js",
 				options: {
-					usemin: "index/index.min.js"
+					usemin: "<%= meta.dist %>/index/index.min.js"
 				}
 			}
 		}
