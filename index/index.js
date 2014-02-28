@@ -11,8 +11,8 @@ app
 	};
 })
 
-.controller("IndexCtrl", ["$scope", "DockerData", "$http", "$translate"
-	, function($scope, DockerData, $http, $translate) {
+.controller("IndexCtrl", ["$scope", "DockerData", "$http", "$translate", "LocationHash"
+	, function($scope, DockerData, $http, $translate, LocationHash) {
 
 	$scope.DockerData = DockerData;
 	DockerData.IndexCtrl = $scope;
@@ -20,7 +20,7 @@ app
 	$scope.devMode = false;
 
 	if (DockerData.host) {
-		$scope.tab = "Containers";
+		$scope.tab = LocationHash.tab || "Containers";
 	} else {
 		$scope.tab = "Config";
 	}
@@ -59,6 +59,10 @@ app
 			msg: alertmsg
 		});
 	};
+
+	$scope.$watch("tab", function(val) {
+		LocationHash.tab = val;
+	}, true);
 
 	if (DockerData.version == "0") {
 		$scope.devMode = true;

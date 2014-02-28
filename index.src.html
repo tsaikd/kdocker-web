@@ -43,7 +43,7 @@
 								<alert style="margin: 0em; padding: 0.4em 1em;" ng-repeat="alert in alerts" type="alert.type" close="alerts.splice($index, 1)" ng-click="alerts.splice($index, 1)">{{alert.msg}}</alert>
 							</td>
 							<td style="vertical-align: top; width: 1em;">
-								<select ng-model="locale" ng-options="lang.id as lang.name for lang in DockerData.locales" ng-change="updateLocale()"></select>
+								<select ng-model="locale" ng-options="lang.id as lang.name for lang in DockerData.locales" ng-change="updateLocale()" class="form-control input-sm" style="width: auto;"></select>
 							</td>
 						</tr>
 					</table>
@@ -71,33 +71,35 @@
 							<tr>
 								<th translate>Nickname</th>
 								<td style="white-space: nowrap;">
-									<input type="text" placeholder="My home server" ng-model="DockerData.nickname" style="width: auto;"/>
-									<button ng-click="addDocker()" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-plus"></span></button>
+									<input type="text" placeholder="My home server" ng-model="DockerData.nickname" class="form-control input-sm"/>
 								</td>
 							</tr>
 							<tr>
 								<th><span translate>Hostname</span>*</th>
 								<td>
-									<input type="text" placeholder="127.0.0.1" ng-model="DockerData.host"/>
+									<input type="text" placeholder="127.0.0.1" ng-model="DockerData.host" class="form-control input-sm"/>
 								</td>
 							</tr>
 							<tr>
 								<th translate>Port</th>
 								<td>
-									<input type="number" ng-model="DockerData.port"/>
+									<input type="number" ng-model="DockerData.port" class="form-control input-sm"/>
 								</td>
 							</tr>
 							<tr>
 								<th translate>API Version</th>
 								<td>
-									<input type="text" placeholder="v1.9" ng-model="DockerData.apiver"/>
+									<input type="text" placeholder="v1.9" ng-model="DockerData.apiver" class="form-control input-sm"/>
 								</td>
 							</tr>
 							<tr>
-								<td ng-show="DockerData.apiurl" colspan="2">{{DockerData.apiurl}}</td>
+								<td ng-show="DockerData.apiurl" colspan="2">
+									<span>{{DockerData.apiurl}}</span>
+									<button ng-click="addDocker()" class="btn btn-info btn-xs" style="float: right;" translate><span class="glyphicon glyphicon-plus"></span></button>
+								</td>
 							</tr>
 						</table>
-						<div style="float: left; margin-left: 1em;">
+						<div style="float: left; margin-left: 2em;">
 							<div translate>Tips:</div>
 							<div translate>If you connect to docker remote api failed, try the following steps:</div>
 							<ul>
@@ -106,7 +108,7 @@
 								<li style="list-style-type: decimal;" translate>Click Reset button and try again.</li>
 							</ul>
 						</div>
-						<table class="table table-bordered table-striped table-hover table-condensed" style="float: left; clear: both; margin-top: 2em; width: auto;">
+						<table ng-show="DockerData.dockerList && DockerData.dockerList.length" class="table table-bordered table-striped table-hover table-condensed" style="float: left; clear: both; margin-top: 2em; width: auto;">
 							<thead>
 								<tr>
 									<th translate>Nickname</th>
@@ -155,7 +157,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="c in DockerData.containers" ng-class="{warning: !c.running}">
+									<tr ng-repeat="c in DockerData.containers" ng-class="{danger: !c.running}">
 										<td>
 											<span class="ellipsis" style="display: inline-block; max-width: 8em;" title="{{c.Id}}">{{c.Id}}</span>
 										</td>

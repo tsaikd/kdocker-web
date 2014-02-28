@@ -115,7 +115,6 @@ html, body {
 	opacity: 0.5;
 }
 
-*[ng-controller="ConfigCtrl"] input {
-	width: 100%;
-	text-indent: 0.2em;
+*[ng-controller="ConfigCtrl"] .table>tbody>tr>th {
+	vertical-align: middle;
 }
