@@ -42,7 +42,10 @@ module.exports = function(grunt) {
 				src: ["<%= meta.dist %>/index/*.html"],
 				dest: "<%= meta.dist %>/index/index.ngtpl.tmp.js",
 				options: {
-					usemin: "<%= meta.dist %>/index/index.min.js"
+					usemin: "<%= meta.dist %>/index/index.min.js",
+					bootstrap: function(module, script) {
+						return "app.run(['$templateCache', function($templateCache) {" + script + "}]);";
+					}
 				}
 			}
 		}

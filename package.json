@@ -1,6 +1,6 @@
 {
   "name": "kdocker-web",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Simple Docker Web UI",
   "devDependencies": {
     "grunt": ">=0",
