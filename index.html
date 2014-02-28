@@ -53,7 +53,7 @@
 							<span translate>Config</span>
 							<button ng-click="DockerData.reset()" class="btn btn-primary" translate>Reset</button>
 						</div>
-						<table>
+						<table style="float: left;">
 							<tr>
 								<th translate>Hostname</th>
 								<td>
@@ -72,7 +72,19 @@
 									<input type="text" placeholder="v1.9" ng-model="DockerData.apiver" ng-change="UpdateConfig('apiver')"/>
 								</td>
 							</tr>
+							</tr>
+								<td colspan="2">{{DockerData.apiurl}}</td>
+							</tr>
 						</table>
+						<div style="float: left; margin-left: 1em;">
+							<div translate>Tips:</div>
+							<div translate>If you connect to docker remote api failed, try the following steps:</div>
+							<ul>
+								<li style="list-style-type: decimal;" translate>Check docker remote api port is opened, and not blocked by firewall.</li>
+								<li style="list-style-type: decimal;" translate>Downgrade the api version, like v1.8, v1.7...etc, or keep empty.</li>
+								<li style="list-style-type: decimal;" translate>Click Reset button and try again.</li>
+							</ul>
+						</div>
 					</div>
 					<div ng-controller="ContainerCtrl" ng-show="tab == 'Containers'">
 						<div class="tab-header-bar">
@@ -100,7 +112,7 @@
 								</tr>
 								<tr ng-repeat="c in DockerData.containers" ng-class="{running: c.running, stopped: !c.running}">
 									<td>
-										<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{c.Id}}">{{c.Id}}</span>
+										<span class="ellipsis" style="display: inline-block; max-width: 8em;" title="{{c.Id}}">{{c.Id}}</span>
 									</td>
 									<td>
 										<span>{{c.name}}</span>
