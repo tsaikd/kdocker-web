@@ -1,4 +1,4 @@
-angular.module("KDockerWeb")
+app
 
 .filter("humanSize", function () {
 	return function (bytes, index) {
@@ -87,7 +87,7 @@ angular.module("KDockerWeb")
 		}
 		$scope.loading = true;
 		$http
-		.get("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/json?all=1", {
+		.get(DockerData.apiurl + "/containers/json?all=1", {
 			errmsg: "Get container list failed"
 		})
 		.success(function(data) {
@@ -137,7 +137,7 @@ angular.module("KDockerWeb")
 
 	$scope.start = function(container, param) {
 		$http
-		.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/start", param, {
+		.post(DockerData.apiurl + "/containers/" + container.Id + "/start", param, {
 			errmsg: "Start container failed"
 		})
 		.success(function() {
@@ -150,7 +150,7 @@ angular.module("KDockerWeb")
 
 	$scope.stop = function(container) {
 		$http
-		.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/stop", {}, {
+		.post(DockerData.apiurl + "/containers/" + container.Id + "/stop", {}, {
 			errmsg: "Stop container failed"
 		})
 		.success(function() {
@@ -163,7 +163,7 @@ angular.module("KDockerWeb")
 
 	$scope.remove = function(container) {
 		$http
-		.delete("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "?v=1", {
+		.delete(DockerData.apiurl + "/containers/" + container.Id + "?v=1", {
 			errmsg: "Remove container failed"
 		})
 		.success(function() {
@@ -185,7 +185,7 @@ angular.module("KDockerWeb")
 		container.terminal.open(document.getElementById(container.Id + "_terminal"));
 
 		container.websocket = WebSocket
-		.new("ws://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/" + container.Id + "/attach/ws?logs=0&stderr=1&stdout=1&stream=1&stdin=1")
+		.new(DockerData.apiurl.replace(/^http/, "ws") + "/containers/" + container.Id + "/attach/ws?logs=0&stderr=1&stdout=1&stream=1&stdin=1")
 		.onopen(function(e) {
 			container.terminal.write($translate("WebSocket connected: {{url}}", {url: e.target.URL}));
 		})
@@ -223,7 +223,7 @@ angular.module("KDockerWeb")
 					query = "?name=" + data.param.Name;
 				}
 				$http
-				.post("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/containers/create" + query, data.param, {
+				.post(DockerData.apiurl + "/containers/create" + query, data.param, {
 					errmsg: "Create container failed"
 				})
 				.success(function(retcontainer) {
@@ -277,7 +277,7 @@ angular.module("KDockerWeb")
 		}
 		$scope.loading = true;
 		$http
-		.get("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/images/json?all=0", {
+		.get(DockerData.apiurl + "/images/json?all=0", {
 			errmsg: "Get image list failed"
 		})
 		.success(function(data) {
@@ -297,14 +297,14 @@ angular.module("KDockerWeb")
 	$scope.checkReload();
 
 	$scope.$watch("DockerData.IndexCtrl.tab", function(tab) {
-		if (tab == "Images") {
+		if (tab in {"Images":1, "Container":1}) {
 			$scope.checkReload();
 		}
 	});
 
 	$scope.remove = function(image) {
 		$http
-		.delete("http://" + DockerData.host + ":" + DockerData.port + "/" + DockerData.apiver + "/images/" + image.Id, {
+		.delete(DockerData.apiurl + "/images/" + image.Id, {
 			errmsg: "Remove image failed"
 		})
 		.success(function(data) {

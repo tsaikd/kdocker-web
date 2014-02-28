@@ -1,4 +1,4 @@
-angular.module("KDockerWeb")
+app
 
 .controller("StartContainerModalCtrl", ["$scope", "$modalInstance", "DockerData", "container"
 	, function($scope, $modalInstance, DockerData, container) {

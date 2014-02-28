@@ -136,3 +136,8 @@ html, body {
 	border: 1px solid #888;
 	padding: 0.2em 0.5em;
 }
+
+*[ng-controller="ConfigCtrl"] input {
+	width: 100%;
+	text-indent: 0.2em;
+}
