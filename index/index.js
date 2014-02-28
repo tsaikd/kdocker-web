@@ -71,8 +71,8 @@ app
 
 }])
 
-.controller("ContainerCtrl", ["$scope", "$translate", "$http", "DockerData", "WebSocket", "$modal"
-	, function($scope, $translate, $http, DockerData, WebSocket, $modal) {
+.controller("ContainerCtrl", ["$scope", "$filter", "$http", "DockerData", "$modal"
+	, function($scope, $filter, $http, DockerData, $modal) {
 
 	$scope.DockerData = DockerData;
 	DockerData.ContainerCtrl = $scope;
@@ -184,16 +184,15 @@ app
 
 		container.terminal.open(document.getElementById(container.Id + "_terminal"));
 
-		container.websocket = WebSocket
-		.new(DockerData.apiurl.replace(/^http/, "ws") + "/containers/" + container.Id + "/attach/ws?logs=0&stderr=1&stdout=1&stream=1&stdin=1")
-		.onopen(function(e) {
-			container.terminal.write($translate("WebSocket connected: {{url}}", {url: e.target.URL}));
-		})
-		.onerror(function(e) {
-			container.terminal.write($translate("WebSocket error: {{url}}", {url: e.target.URL}));
-		})
-		.onclose(function(e) {
-			container.terminal.write($translate("WebSocket closed: {{url}}", {url: e.target.URL}));
+		container.websocket = new WebSocket(DockerData.apiurl.replace(/^http/, "ws") + "/containers/" + container.Id + "/attach/ws?logs=0&stderr=1&stdout=1&stream=1&stdin=1");
+		container.websocket.onopen = function(e) {
+			container.terminal.write($filter("translate")("WebSocket connected: {{url}}", {url: e.target.URL}));
+		};
+		container.websocket.onerror = function(e) {
+			container.terminal.write($filter("translate")("WebSocket error: {{url}}", {url: e.target.URL}));
+		};
+		container.websocket.onclose = function(e) {
+			container.terminal.write($filter("translate")("WebSocket closed: {{url}}", {url: e.target.URL}));
 			container.terminal.destroy();
 			delete container.terminal;
 			delete container.websocket;
@@ -201,10 +200,10 @@ app
 			setTimeout(function() {
 				$scope.reload();
 			}, 500);
-		})
-		.onmessage(function(e) {
+		};
+		container.websocket.onmessage = function(e) {
 			container.terminal.write(e.data);
-		});
+		};
 
 		container.terminal.on("data", function(data) {
 			container.websocket.send(data);
