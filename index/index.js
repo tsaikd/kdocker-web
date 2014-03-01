@@ -11,8 +11,8 @@ app
 	};
 })
 
-.controller("IndexCtrl", ["$scope", "DockerData", "$http", "$translate", "LocationHash"
-	, function($scope, DockerData, $http, $translate, LocationHash) {
+.controller("IndexCtrl", ["$scope", "DockerData", "$http", "$translate", "LocationHash", "$filter"
+	, function($scope, DockerData, $http, $translate, LocationHash, $filter) {
 
 	$scope.DockerData = DockerData;
 	DockerData.IndexCtrl = $scope;
@@ -63,6 +63,43 @@ app
 	$scope.$watch("tab", function(val) {
 		LocationHash.tab = val;
 	}, true);
+
+	if (XMLHttpRequest) {
+		$scope.xhr = new XMLHttpRequest();
+		$scope.xhr.readlen = 0;
+		$scope.xhr.open("GET", DockerData.apiurl + "/events?since=" + (Math.floor(new Date().getTime() / 1000) - 30));
+		$scope.xhr.onprogress = function() {
+			var textarea = $scope.xhr.responseText.substr($scope.xhr.readlen);
+			$scope.xhr.readlen += textarea.length;
+			if (textarea) {
+				var texts = textarea.match(/{.*?}/g);
+				if (texts && texts.length) {
+					var reloadContainer = false;
+					var reloadImage = false;
+					angular.forEach(texts, function(jsontext) {
+						try {
+							if (!reloadContainer || !reloadImage) {
+								var json = JSON.parse(jsontext);
+								reloadContainer = !!(json.status in {create:1, start:1, stop:1, kill:1, die:1, destroy:1});
+								reloadImage = !!(json.status in {delete:1});
+							}
+						} catch(e) {}
+					});
+					if (reloadContainer && DockerData.ContainerCtrl) {
+						DockerData.ContainerCtrl.reload();
+					}
+					if (reloadImage && DockerData.ImageCtrl) {
+						DockerData.ImageCtrl.reload();
+					}
+				}
+			}
+		};
+		$scope.xhr.onerror = function() {
+			$scope.error($filter("translate")("Disconnect to docker web service."), $filter("translate")("Please check network and refresh page."));
+			$scope.$digest();
+		};
+		$scope.xhr.send(null);
+	}
 
 	if (DockerData.version == "0") {
 		$scope.devMode = true;
@@ -146,9 +183,6 @@ app
 		})
 		.success(function() {
 			$scope.reload();
-		})
-		.error(function() {
-			$scope.reload();
 		});
 	};
 
@@ -159,9 +193,6 @@ app
 		})
 		.success(function() {
 			$scope.reload();
-		})
-		.error(function() {
-			$scope.reload();
 		});
 	};
 
@@ -171,9 +202,6 @@ app
 			errmsg: "Remove container failed"
 		})
 		.success(function() {
-			$scope.reload();
-		})
-		.error(function() {
 			$scope.reload();
 		});
 	};
@@ -201,9 +229,6 @@ app
 			delete container.terminal;
 			delete container.websocket;
 			$scope.closeContainer(container);
-			setTimeout(function() {
-				$scope.reload();
-			}, 500);
 		};
 		container.websocket.onmessage = function(e) {
 			container.terminal.write(e.data);
@@ -311,9 +336,6 @@ app
 			errmsg: "Remove image failed"
 		})
 		.success(function(data) {
-			$scope.reload();
-		})
-		.error(function(data, status) {
 			$scope.reload();
 		});
 	};
