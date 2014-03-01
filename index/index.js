@@ -19,12 +19,6 @@ app
 
 	$scope.devMode = false;
 
-	if (DockerData.host) {
-		$scope.tab = LocationHash.tab || "Containers";
-	} else {
-		$scope.tab = "Config";
-	}
-
 	$scope.locale = $translate.use();
 	$scope.updateLocale = function() {
 		$translate.use($scope.locale);
@@ -60,11 +54,11 @@ app
 		});
 	};
 
-	$scope.$watch("tab", function(val) {
-		LocationHash.tab = val;
-	}, true);
-
-	if (XMLHttpRequest) {
+	$scope.connectEvents = function() {
+		if (!XMLHttpRequest) {
+			return;
+		}
+		$scope.closeConnectEvents();
 		$scope.xhr = new XMLHttpRequest();
 		$scope.xhr.readlen = 0;
 		$scope.xhr.open("GET", DockerData.apiurl + "/events?since=" + (Math.floor(new Date().getTime() / 1000) - 30));
@@ -99,6 +93,37 @@ app
 			$scope.$digest();
 		};
 		$scope.xhr.send(null);
+	};
+
+	$scope.closeConnectEvents = function() {
+		if ($scope.xhr) {
+			$scope.xhr.abort();
+			delete $scope.xhr;
+		}
+	};
+
+	$scope.checkConnectEvents = function() {
+		if (!XMLHttpRequest) {
+			return;
+		}
+		if (!$scope.xhr) {
+			$scope.connectEvents();
+		}
+	};
+
+	$scope.$watch("DockerData.apiurl", function(val) {
+		$scope.closeConnectEvents();
+	}, true);
+
+	$scope.$watch("tab", function(val) {
+		LocationHash.tab = val;
+		$scope.checkConnectEvents();
+	}, true);
+
+	if (DockerData.host) {
+		$scope.tab = LocationHash.tab || "Containers";
+	} else {
+		$scope.tab = "Config";
 	}
 
 	if (DockerData.version == "0") {
@@ -149,13 +174,6 @@ app
 			$scope.reload();
 		}
 	};
-	$scope.checkReload();
-
-	$scope.$watch("DockerData.IndexCtrl.tab", function(tab) {
-		if (tab == "Containers") {
-			$scope.checkReload();
-		}
-	});
 
 	$scope.attach = function(container) {
 		$scope.curtab = container;
@@ -289,6 +307,12 @@ app
 		}
 	};
 
+	$scope.$watch("DockerData.IndexCtrl.tab", function(tab) {
+		if (tab == "Containers") {
+			$scope.checkReload();
+		}
+	});
+
 }])
 
 .controller("ImageCtrl", ["$scope", "DockerData", "$http"
@@ -322,13 +346,6 @@ app
 			$scope.reload();
 		}
 	};
-	$scope.checkReload();
-
-	$scope.$watch("DockerData.IndexCtrl.tab", function(tab) {
-		if (tab in {"Images":1, "Container":1}) {
-			$scope.checkReload();
-		}
-	});
 
 	$scope.remove = function(image) {
 		$http
@@ -339,6 +356,12 @@ app
 			$scope.reload();
 		});
 	};
+
+	$scope.$watch("DockerData.IndexCtrl.tab", function(tab) {
+		if (tab in {"Images":1, "Containers":1}) {
+			$scope.checkReload();
+		}
+	});
 
 }])
 
@@ -373,6 +396,7 @@ app
 	};
 
 	$scope.setDocker = function(docker) {
+		docker = angular.copy(docker);
 		angular.forEach(["nickname", "host", "port", "apiver", "containers", "images", "lastCreateImage"], function(key) {
 			DockerData[key] = docker[key];
 		});
