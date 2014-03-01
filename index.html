@@ -99,13 +99,17 @@
 								<tr>
 									<th translate>Nickname</th>
 									<th translate>API Url</th>
+									<th translate>Containers</th>
+									<th translate>Images</th>
 									<th translate>Action</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat="docker in DockerData.dockerList">
+								<tr ng-repeat="docker in DockerData.dockerList" ng-class="{info: (docker.apiurl == DockerData.apiurl)}">
 									<td ng-click="setDocker(docker)" style="cursor: pointer;">{{docker.nickname}}</td>
 									<td ng-click="setDocker(docker)" style="cursor: pointer;">{{docker.apiurl}}</td>
+									<td ng-click="setDocker(docker)" style="cursor: pointer;">{{docker.containers.length}}</td>
+									<td ng-click="setDocker(docker)" style="cursor: pointer;">{{docker.images.length}}</td>
 									<td>
 										<button ng-click="delDocker($index)" class="btn btn-danger btn-xs" translate><span class="glyphicon glyphicon-remove"></span></button>
 										<button ng-click="moveUp($index)" ng-show="$index > 0" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-up"></span></button>
