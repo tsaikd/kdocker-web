@@ -55,7 +55,7 @@ app
 	};
 
 	$scope.connectEvents = function() {
-		if (!XMLHttpRequest) {
+		if (!XMLHttpRequest || !DockerData.apiurl) {
 			return;
 		}
 		$scope.closeConnectEvents();
