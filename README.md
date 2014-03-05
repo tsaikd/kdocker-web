@@ -5,6 +5,8 @@ Docker simple web UI
 
 [Shipyard]: https://github.com/shipyard/shipyard
 [Docker]: https://www.docker.io/
+[Docker Remote API]: http://docs.docker.io/en/latest/reference/api/docker_remote_api/
+[Mat Lee]: http://www.hackingthursday.org/user:matlinuxer2
 
 ## DEMO
 
@@ -20,11 +22,19 @@ DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/dock
 
 ## Install
 
+In fact, you can open http://tsaikd.github.io/kdocker-web/ instead of installation. :D
+
 Just put the whole project to any web site, like: nginx, apache.
 
 Open your browser and go to the project folder.
 
 Enjoy!
+
+Another method by [Mat Lee]:
+
+```
+KDPORT="127.0.0.1:9527"; ( php -S $KDPORT -t `git rev-parse --show-toplevel` &) ; "xdg-open http://$KDPORT"
+```
 
 ## Warning
 
@@ -43,19 +53,27 @@ Please use the firewall for security by hand.
 DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock"
 ```
 
-	* -api-enable-cors=true 是為了要在 Browser 直接連 docker remote api
+	* -api-enable-cors=true 是為了要在 Browser 直接連 [Docker Remote API]
 	* -H tcp://0.0.0.0:4243 是要監聽所有網卡的 4243 Port
 	* 更多的設定項目請參考 [Docker] 官網
 
 ## 安裝
 
+事實上，你可以直接打開 http://tsaikd.github.io/kdocker-web/ ，直接就可以用，省下一整個安裝的過程。 ^_^
+
 把整個 Project 丟到 nginx 或是 apache 之類的目錄
 
 用瀏覽器直接連網址就可以了
 
-一開始會跳到設定頁面去設定 Docker remote API 的參數
+一開始會跳到設定頁面去設定 [Docker Remote API] 的參數
 
 重新載入頁面就可以用了
+
+[Mat Lee] 另外提供了一個單行指令給大家參考:
+
+```
+KDPORT="127.0.0.1:9527"; ( php -S $KDPORT -t `git rev-parse --show-toplevel` &) ; "xdg-open http://$KDPORT"
+```
 
 ## 注意
 
