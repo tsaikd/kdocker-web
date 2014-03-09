@@ -1,5 +1,9 @@
-kdocker-web
+kdocker-web [![GitHub version](https://badge.fury.io/gh/tsaikd%2Fkdocker-web.png)](http://badge.fury.io/gh/tsaikd%2Fkdocker-web)
 ===========
+[![Dependency Status](https://david-dm.org/tsaikd/kdocker-web.png)](https://david-dm.org/tsaikd/kdocker-web)
+[![devDependency Status](https://david-dm.org/tsaikd/kdocker-web/dev-status.png)](https://david-dm.org/tsaikd/kdocker-web#info=devDependencies)
+[![Build Status](https://travis-ci.org/tsaikd/kdocker-web.png)](https://travis-ci.org/tsaikd/kdocker-web)
+[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 Docker simple web UI
 
