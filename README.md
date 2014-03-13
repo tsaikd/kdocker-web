@@ -85,6 +85,10 @@ KDPORT="127.0.0.1:9527"; ( php -S $KDPORT -t `git rev-parse --show-toplevel` &) 
 
 就自行用防火牆來處理安全性的問題吧
 
+## 參考畫面
+
+![](kdocker-web.png)
+
 ## KD 碎碎唸
 
 本來都用 [Shipyard] 在管 [Docker]

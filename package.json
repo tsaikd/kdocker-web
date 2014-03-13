@@ -20,10 +20,10 @@
   },
   "author": "tsaikd <tsaikd@gmail.com>",
   "license": "LGPLv3",
-  "homepage": "https://github.com/tsaikd/kdocker-web",
+  "homepage": "https://github.com/tsaikd/kdocker-web/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tsaikd/kdocker-web"
+    "url": "https://github.com/tsaikd/kdocker-web/"
   },
   "main": "index.html"
 }
