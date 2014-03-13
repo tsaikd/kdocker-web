@@ -129,7 +129,7 @@ app
 	if (DockerData.version == "0") {
 		$scope.devMode = true;
 		$http
-		.post("package.json")
+		.get("package.json?" + new Date().getTime())
 		.success(function(data) {
 			DockerData.version = data.version + "-dev";
 		});

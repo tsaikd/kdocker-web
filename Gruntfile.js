@@ -48,11 +48,34 @@ module.exports = function(grunt) {
 					}
 				}
 			}
+		},
+		connect: {
+			server: {
+				options: {
+					port: 9000,
+					debug : true,
+					livereload : true
+				}
+			}
+		},
+		watch: {
+			livereload: {
+				options: {
+					livereload: true
+				},
+				files: [
+					"*.json",
+					"**/*.html",
+					"**/*.js",
+					"**/*.css"
+				]
+			}
 		}
 	});
 
 	require("load-grunt-tasks")(grunt);
 	grunt.registerTask("build", ["copy", "ngtemplates", "useminPrepare", "concat", "cssmin", "uglify", "usemin", "version"]);
 	grunt.registerTask("default", ["clean", "sync", "build"]);
+	grunt.registerTask("dev", ["connect", "watch"]);
 
 };
