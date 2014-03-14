@@ -1,9 +1,15 @@
 module.exports = function(grunt) {
 
 	grunt.initConfig({
-		pkg: grunt.file.readJSON("bower.json"),
+		pkg: grunt.file.readJSON("package.json"),
 		meta: {
 			bowerrc: grunt.file.readJSON(".bowerrc"),
+			banner: [
+				"/* <%= pkg.name %> v<%= pkg.version %> <%= grunt.template.today('yyyy-mm-dd') %>",
+				" * <%= pkg.homepage %>",
+				" * License: <%= pkg.license %>",
+				" */\n"
+			].join("\n"),
 			lib: "<%= meta.bowerrc.directory %>",
 			dist: "."
 		},
@@ -14,6 +20,11 @@ module.exports = function(grunt) {
 				"<%= meta.dist %>/index/*.tmp.*",
 				"<%= meta.dist %>/index.html"
 			]
+		},
+		sync: {
+			options: {
+				include: ["name", "version", "description", "authors", "license", "homepage", "main"]
+			}
 		},
 		copy: {
 			index: {
@@ -27,6 +38,16 @@ module.exports = function(grunt) {
 			},
 			options: {
 				dest: "<%= meta.dist %>"
+			}
+		},
+		cssmin: {
+			options: {
+				banner: "<%= meta.banner %>"
+			}
+		},
+		uglify: {
+			options: {
+				banner: "<%= meta.banner %>"
 			}
 		},
 		usemin: {

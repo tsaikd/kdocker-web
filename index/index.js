@@ -216,7 +216,7 @@ app
 
 	$scope.remove = function(container) {
 		$http
-		.delete(DockerData.apiurl + "/containers/" + container.Id + "?v=1", {
+		.delete(DockerData.apiurl + "/containers/" + container.Id + "?v=1&force=1", {
 			errmsg: "Remove container failed"
 		})
 		.success(function() {

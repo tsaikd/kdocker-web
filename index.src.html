@@ -17,7 +17,8 @@
 		<script src="lib/angular-local-storage/angular-local-storage.js"></script>
 		<script src="lib/angular-translate/angular-translate.js"></script>
 		<script src="lib/term.js/src/term.js"></script>
-		<script src="lib/config.js"></script>
+		<script src="lib/app.js"></script>
+		<script src="lib/locale.js"></script>
 		<script src="index/CreateContainerModalCtrl.js"></script>
 		<script src="index/StartContainerModalCtrl.js"></script>
 		<script src="index/index.js"></script>
@@ -104,7 +105,7 @@
 							<div translate>If you connect to docker remote api failed, try the following steps:</div>
 							<ul>
 								<li style="list-style-type: decimal;" translate>Check docker remote api port is opened, and not blocked by firewall.</li>
-								<li style="list-style-type: decimal;" translate>Downgrade the api version, like v1.8, v1.7...etc, or keep empty.</li>
+								<li style="list-style-type: decimal;" translate>Downgrade the api version, like v1.9, v1.8...etc, or keep empty.</li>
 								<li style="list-style-type: decimal;" translate>Click Reset button and try again.</li>
 							</ul>
 						</div>
@@ -191,7 +192,7 @@
 											<button ng-click="attach(c)" class="btn btn-primary btn-xs" translate>Attach</button>
 											<button ng-click="openStartContainerModal(c)" ng-show="!c.running" class="btn btn-info btn-xs" translate>Start</button>
 											<button ng-click="stop(c)" ng-show="c.running" class="btn btn-warning btn-xs" translate>Stop</button>
-											<button ng-click="remove(c)" ng-show="!c.running" class="btn btn-danger btn-xs" translate>Remove</button>
+											<button ng-click="remove(c)" class="btn btn-danger btn-xs" translate>Remove</button>
 										</td>
 									</tr>
 								</tbody>
