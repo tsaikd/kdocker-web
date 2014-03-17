@@ -123,7 +123,7 @@
 						<div class="tab-header-bar">
 							<span translate>Containers</span>
 							<span ng-show="DockerData.nickname">in {{DockerData.nickname}}</span>
-							<button ng-click="curtab=null;reload()" class="btn btn-default">
+							<button ng-click="curtab=null;reload($event)" tooltip="{{'Press [SHIFT] to reload image list too.' | translate}}" class="btn btn-default">
 								<span ng-class="{spinner: loading, active: loading}" class="glyphicon glyphicon-refresh"></span>
 							</button>
 							<button ng-show="curtab" ng-click="attach()" class="btn btn-primary" translate>Back</button>
@@ -190,7 +190,7 @@
 						<div class="tab-header-bar">
 							<span translate>Images</span>
 							<span ng-show="DockerData.nickname">in {{DockerData.nickname}}</span>
-							<button ng-click="reload()" class="btn btn-default">
+							<button ng-click="reload($event)" tooltip="{{'Press [SHIFT] to reload container list too.' | translate}}" class="btn btn-default">
 								<span ng-class="{spinner: loading, active: loading}" class="glyphicon glyphicon-refresh"></span>
 							</button>
 						</div>
