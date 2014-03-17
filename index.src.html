@@ -7,23 +7,27 @@
 		<title>KDockerWeb</title>
 		<link rel="shortcut icon" href="favicon.png">
 		<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
-		<!-- build:css index/index.min.css -->
-		<link rel="stylesheet" href="index/index.css">
+		<!-- build:css index/main.min.css -->
+		<link rel="stylesheet" href="lib/animate.css/animate.css">
+		<link rel="stylesheet" href="index/main.css">
 		<!-- endbuild -->
 		<script src="lib/angular/angular.min.js"></script>
 		<script src="lib/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
-		<!-- build:js index/index.min.js -->
+		<!-- build:js index/main.min.js -->
 		<script src="lib/angular-animate/angular-animate.js"></script>
 		<script src="lib/angular-local-storage/angular-local-storage.js"></script>
 		<script src="lib/angular-translate/angular-translate.js"></script>
 		<script src="lib/term.js/src/term.js"></script>
 		<script src="lib/app.js"></script>
 		<script src="lib/locale.js"></script>
+		<script src="index/ConfigCtrl.js"></script>
+		<script src="index/ContainerCtrl.js"></script>
 		<script src="index/CreateContainerModalCtrl.js"></script>
+		<script src="index/ImageCtrl.js"></script>
 		<script src="index/StartContainerModalCtrl.js"></script>
-		<script src="index/index.js"></script>
+		<script src="index/main.js"></script>
 		<!-- no load in dev mode
-		<script src="index/index.ngtpl.tmp.js"></script>
+		<script src="index/angular-template.tmp.js"></script>
 		-->
 		<!-- endbuild -->
 	</head>
@@ -53,16 +57,17 @@
 			<tr>
 				<td style="vertical-align: top; width: 10em; padding-top: 1em; line-height: 3em;">
 					<div>
-						<button ng-model="tab" btn-radio="'Containers'" class="btn btn-primary">{{"Containers" | translate}}</button>
+						<button ng-class="{'animated tada': loadingCtrl.container}" ng-model="tab" btn-radio="'Containers'" class="btn btn-primary">{{"Containers" | translate}}</button>
 					</div>
 					<div>
-						<button ng-model="tab" btn-radio="'Images'" class="btn btn-primary">{{"Images" | translate}}</button>
+						<button ng-class="{'animated tada': loadingCtrl.image}" ng-model="tab" btn-radio="'Images'" class="btn btn-primary">{{"Images" | translate}}</button>
 					</div>
 					<div>
 						<button ng-model="tab" btn-radio="'Config'" class="btn btn-primary">{{"Config" | translate}}</button>
 					</div>
 				</td>
 				<td style="vertical-align: top;">
+
 					<div ng-controller="ConfigCtrl" ng-show="tab == 'Config'">
 						<div class="tab-header-bar">
 							<span translate>Config</span>
@@ -134,12 +139,13 @@
 							</tbody>
 						</table>
 					</div>
+
 					<div ng-controller="ContainerCtrl" ng-show="tab == 'Containers'">
 						<div class="tab-header-bar">
 							<span translate>Containers</span>
 							<span ng-show="DockerData.nickname">in {{DockerData.nickname}}</span>
 							<button ng-click="curtab=null;reload($event)" tooltip="{{'Press [SHIFT] to reload image list too.' | translate}}" class="btn btn-default">
-								<span ng-class="{spinner: loading, active: loading}" class="glyphicon glyphicon-refresh"></span>
+								<span ng-class="{spinner: loadingCtrl.container}" class="glyphicon glyphicon-refresh"></span>
 							</button>
 							<button ng-show="curtab" ng-click="attach()" class="btn btn-primary" translate>Back</button>
 							<span ng-repeat="c in tabs">
@@ -201,12 +207,13 @@
 						</div>
 						<div ng-repeat="c in tabs" id="{{c.Id}}_terminal" ng-show="curtab.Id === c.Id"></div>
 					</div>
+
 					<div ng-controller="ImageCtrl" ng-show="tab == 'Images'">
 						<div class="tab-header-bar">
 							<span translate>Images</span>
 							<span ng-show="DockerData.nickname">in {{DockerData.nickname}}</span>
 							<button ng-click="reload($event)" tooltip="{{'Press [SHIFT] to reload container list too.' | translate}}" class="btn btn-default">
-								<span ng-class="{spinner: loading, active: loading}" class="glyphicon glyphicon-refresh"></span>
+								<span ng-class="{spinner: loadingCtrl.image}" class="glyphicon glyphicon-refresh"></span>
 							</button>
 						</div>
 						<div style="position: relative;">
@@ -243,6 +250,7 @@
 							<div ng-show="loading" class="loading-block" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></div>
 						</div>
 					</div>
+
 				</td>
 			</tr>
 		</table>

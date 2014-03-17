@@ -16,24 +16,15 @@ html, body {
 	background: #000;
 }
 
-.reverse-video {
-	color: #000;
-	background: #f0f0f0;
-}
-
 /* https://github.com/cferdinandi/spinners */
 /*  The class that applies the animation. */
 .spinner {
 	display: none;
-	-webkit-animation: spin 2s infinite linear;
-	-moz-animation: spin 2s infinite linear;
-	-ms-animation: spin 2s infinite linear;
-	-o-animation: spin 2s infinite linear;
-	animation: spin 2s infinite linear;
-}
-
-.spinner.active {
-	display: inline-block;
+	-webkit-animation: spin 1.5s infinite linear;
+	-moz-animation: spin 1.5s infinite linear;
+	-ms-animation: spin 1.5s infinite linear;
+	-o-animation: spin 1.5s infinite linear;
+	animation: spin 1.5s infinite linear;
 }
 
 /*  The vendor-specific and generic animation keyframes.
@@ -86,6 +77,10 @@ html, body {
 	100% {
 		transform: rotate(360deg);
 	}
+}
+
+.glyphicon-refresh {
+	display: inline-block;
 }
 
 .tab-header-bar {

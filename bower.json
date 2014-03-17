@@ -13,6 +13,7 @@
   "dependencies": {
     "bootstrap": ">=3",
     "angular": ">=1.2",
+    "animate.css": ">=1.2",
     "angular-animate": ">=1.2",
     "angular-translate": ">=2",
     "angular-local-storage": null,
