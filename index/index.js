@@ -137,8 +137,9 @@ app
 
 }])
 
-.controller("ContainerCtrl", ["$scope", "$filter", "$http", "DockerData", "$modal"
-	, function($scope, $filter, $http, DockerData, $modal) {
+.controller("ContainerCtrl"
+	, [       "$scope", "$filter", "$http", "DockerData", "$modal", "$rootScope"
+	, function($scope,   $filter,   $http,   DockerData,   $modal,   $rootScope) {
 
 	$scope.DockerData = DockerData;
 	DockerData.ContainerCtrl = $scope;
@@ -147,11 +148,14 @@ app
 	$scope.curtab = null;
 	$scope.loading = false;
 
-	$scope.reload = function() {
+	$scope.reload = function(evt) {
 		if (!DockerData.host || $scope.loading) {
 			return;
 		}
 		$scope.loading = true;
+		if (evt && evt.shiftKey) {
+			$rootScope.$emit("reload-image");
+		}
 		$http
 		.get(DockerData.apiurl + "/containers/json?all=1", {
 			errmsg: "Get container list failed"
@@ -307,6 +311,10 @@ app
 		}
 	};
 
+	$rootScope.$on("reload-container", function() {
+		$scope.reload();
+	});
+
 	$scope.$watch("DockerData.IndexCtrl.tab", function(tab) {
 		if (tab == "Containers") {
 			$scope.checkReload();
@@ -315,19 +323,23 @@ app
 
 }])
 
-.controller("ImageCtrl", ["$scope", "DockerData", "$http"
-	, function($scope, DockerData, $http) {
+.controller("ImageCtrl"
+	, [       "$scope", "DockerData", "$http", "$rootScope"
+	, function($scope,   DockerData,   $http,   $rootScope) {
 
 	$scope.DockerData = DockerData;
 	DockerData.ImageCtrl = $scope;
 
 	$scope.loading = false;
 
-	$scope.reload = function() {
+	$scope.reload = function(evt) {
 		if (!DockerData.host || $scope.loading) {
 			return;
 		}
 		$scope.loading = true;
+		if (evt && evt.shiftKey) {
+			$rootScope.$emit("reload-container");
+		}
 		$http
 		.get(DockerData.apiurl + "/images/json?all=0", {
 			errmsg: "Get image list failed"
@@ -356,6 +368,10 @@ app
 			$scope.reload();
 		});
 	};
+
+	$rootScope.$on("reload-image", function() {
+		$scope.reload();
+	});
 
 	$scope.$watch("DockerData.IndexCtrl.tab", function(tab) {
 		if (tab in {"Images":1, "Containers":1}) {
