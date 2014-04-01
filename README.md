@@ -14,7 +14,7 @@ Docker simple web UI
 
 ## DEMO
 
-http://tsaikd.github.io/kdocker-web/
+http://tsaikd.org/kdocker-web/
 
 ## Config Docker Startup Options (ex: Ubuntu)
 
@@ -26,7 +26,7 @@ DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/dock
 
 ## Install
 
-In fact, you can open http://tsaikd.github.io/kdocker-web/ instead of installation. :D
+In fact, you can open http://tsaikd.org/kdocker-web/ instead of installation. :D
 
 Just put the whole project to any web site, like: nginx, apache.
 
@@ -63,7 +63,9 @@ DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/dock
 
 ## 安裝
 
-事實上，你可以直接打開 http://tsaikd.github.io/kdocker-web/ ，直接就可以用，省下一整個安裝的過程。 ^_^
+事實上，你可以直接打開 http://tsaikd.org/kdocker-web/
+
+直接就可以用，省下一整個安裝的過程。 ^_^
 
 把整個 Project 丟到 nginx 或是 apache 之類的目錄
 
