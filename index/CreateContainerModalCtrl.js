@@ -23,7 +23,8 @@ app
 	$scope.startconfig = {
 		Binds: [],
 		PortBindings: {},
-		PublishAllPorts: true
+		PublishAllPorts: true,
+		Privileged: false
 	};
 	$scope.extra = {
 		Volumes: "",

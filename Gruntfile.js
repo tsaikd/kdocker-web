@@ -97,6 +97,6 @@ module.exports = function(grunt) {
 	require("load-grunt-tasks")(grunt);
 	grunt.registerTask("build", ["copy", "ngtemplates", "useminPrepare", "concat", "cssmin", "uglify", "usemin", "version"]);
 	grunt.registerTask("default", ["clean", "sync", "build"]);
-	grunt.registerTask("dev", ["build", "connect", "watch"]);
+	grunt.registerTask("dev", ["default", "connect", "watch"]);
 
 };
