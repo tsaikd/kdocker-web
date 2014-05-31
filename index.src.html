@@ -15,6 +15,7 @@
 		<script src="lib/angular/angular.min.js"></script>
 		<script src="lib/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
 		<!-- build:js index/main.min.js -->
+		<script src="lib/ga.js"></script>
 		<script src="lib/angular-animate/angular-animate.js"></script>
 		<script src="lib/angular-local-storage/angular-local-storage.js"></script>
 		<script src="lib/angular-translate/angular-translate.js"></script>
@@ -74,7 +75,7 @@
 							<span translate>Config</span>
 							<button ng-click="DockerData.reset()" class="btn btn-primary" translate>Reset</button>
 						</div>
-						<table class="table table-hover table-condensed" style="float: left; width: auto;">
+						<table class="table table-hover table-condensed" style="float: left; width: auto; min-width: 20em;">
 							<tr>
 								<th translate>Nickname</th>
 								<td style="white-space: nowrap;">
