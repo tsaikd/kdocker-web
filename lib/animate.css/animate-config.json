@@ -86,7 +86,9 @@
     "slideInRight": true,
     "slideOutLeft": true,
     "slideOutRight": true,
-    "slideOutUp": true
+    "slideOutUp": true,
+    "slideInUp": true,
+    "slideOutDown": true
   },
 
   "specials": {
