@@ -172,7 +172,7 @@
 								<tbody>
 									<tr ng-repeat="c in DockerData.containers" ng-class="{danger: !c.running}">
 										<td>
-											<span class="ellipsis" style="display: inline-block; max-width: 8em;" title="{{c.Id}}">{{c.Id}}</span>
+											<span title="{{c.Id}}" style="white-space: nowrap;">{{c.Id.substr(0, 8)}} ...</span>
 										</td>
 										<td>
 											<span>{{c.name}}</span>
@@ -181,7 +181,7 @@
 											<span>{{c.Image}}</span>
 										</td>
 										<td>
-											<span class="ellipsis" style="display: inline-block; max-width: 10em;" tooltip="{{c.Command}}">{{c.Command}}</span>
+											<span>{{c.Command}}</span>
 										</td>
 										<td>
 											<div ng-repeat="p in c.Ports" style="white-space: nowrap;">
@@ -232,10 +232,10 @@
 								<tbody>
 									<tr ng-repeat="img in DockerData.images">
 										<td>
-											<span class="ellipsis" style="display: inline-block; max-width: 10em;" title="{{img.Id}}">{{img.Id}}</span>
+											<span title="{{img.Id}}" style="white-space: nowrap;">{{img.Id.substr(0, 8)}} ...</span>
 										</td>
 										<td>
-											<span ng-repeat="tag in img.RepoTags">{{tag}}</span>
+											<div ng-repeat="tag in img.RepoTags">{{tag}}</div>
 										</td>
 										<td>
 											<span>{{img.VirtualSize | humanSize}}</span>
