@@ -197,7 +197,7 @@
 											<span>{{c.Status}}</span>
 										</td>
 										<td>
-											<button ng-click="attach(c)" class="btn btn-primary btn-xs" translate>Attach</button>
+											<button ng-click="attach($event, c)" tooltip="{{'Press [SHIFT] to load full logs.' | translate}}" tooltip-placement="left" class="btn btn-primary btn-xs" translate>Attach</button>
 											<button ng-click="openStartContainerModal(c)" ng-show="!c.running" class="btn btn-info btn-xs" translate>Start</button>
 											<button ng-click="stop(c)" ng-show="c.running" class="btn btn-warning btn-xs" translate>Stop</button>
 											<button ng-click="remove(c)" class="btn btn-danger btn-xs" translate>Remove</button>

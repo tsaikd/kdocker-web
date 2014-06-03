@@ -41,7 +41,7 @@ app
 		}
 	};
 
-	$scope.attach = function(container) {
+	$scope.attach = function(evt, container) {
 		$scope.curtab = container;
 		if (!container) {
 			return;
@@ -56,7 +56,7 @@ app
 
 		if (!container.terminal) {
 			container.terminal = new Terminal();
-			$scope.setupWebsocket(container);
+			$scope.setupWebsocket(evt, container);
 		}
 	};
 
@@ -90,17 +90,23 @@ app
 		});
 	};
 
-	$scope.setupWebsocket = function(container) {
+	$scope.setupWebsocket = function(evt, container) {
 		if (!document.getElementById(container.Id + "_terminal")) {
 			setTimeout(function() {
-				$scope.setupWebsocket(container);
+				$scope.setupWebsocket(evt, container);
 			}, 500);
 			return;
 		}
 
 		container.terminal.open(document.getElementById(container.Id + "_terminal"));
 
-		container.websocket = new WebSocket(DockerData.apiurl.replace(/^http/, "ws") + "/containers/" + container.Id + "/attach/ws?logs=0&stderr=1&stdout=1&stream=1&stdin=1");
+		evt.shiftKey
+		container.websocket = new WebSocket(
+			DockerData.apiurl.replace(/^http/, "ws")
+				+ "/containers/"
+				+ container.Id
+				+ "/attach/ws?stderr=1&stdout=1&stream=1&stdin=1"
+				+ (evt.shiftKey ? "&logs=1" : "&logs=0"));
 		container.websocket.onopen = function(e) {
 			container.terminal.write($filter("translate")("WebSocket connected: {{url}}", {url: e.target.URL}));
 		};
