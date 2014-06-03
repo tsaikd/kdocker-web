@@ -44,6 +44,16 @@ app
 		});
 	};
 
+	$scope.removeTag = function(tag) {
+		$http
+		.delete(DockerData.apiurl + "/images/" + tag, {
+			errmsg: "Remove tag failed"
+		})
+		.success(function(data) {
+			$scope.reload();
+		});
+	};
+
 	$rootScope.$on("reload-image", function() {
 		$scope.reload();
 	});

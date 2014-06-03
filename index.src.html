@@ -235,7 +235,10 @@
 											<span title="{{img.Id}}" style="white-space: nowrap;">{{img.Id.substr(0, 8)}} ...</span>
 										</td>
 										<td>
-											<div ng-repeat="tag in img.RepoTags">{{tag}}</div>
+											<div ng-repeat="tag in img.RepoTags">
+												<span>{{tag}}</span>
+												<button ng-click="removeTag(tag)" ng-show="img.RepoTags.length > 1" class="btn btn-danger btn-xs" translate>X</button>
+											</div>
 										</td>
 										<td>
 											<span>{{img.VirtualSize | humanSize}}</span>
