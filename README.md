@@ -21,7 +21,7 @@ http://tsaikd.org/kdocker-web/
 * /etc/default/docker
 
 ```
-DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock"
+DOCKER_OPTS="--api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock"
 ```
 
 ## Install
