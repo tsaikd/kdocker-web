@@ -24,6 +24,14 @@ http://tsaikd.org/kdocker-web/
 DOCKER_OPTS="--api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock"
 ```
 
+## Config Docker Startup Options (ex: Boot2Docker on Mac), thanks [scourgen](https://github.com/tsaikd/kdocker-web/issues/2)
+
+* /var/lib/boot2docker/profile
+
+```
+EXTRA_ARGS="--api-enable-cors"
+```
+
 ## Install
 
 In fact, you can open http://tsaikd.org/kdocker-web/ instead of installation. :D
@@ -34,7 +42,13 @@ Open your browser and go to the project folder.
 
 Enjoy!
 
-Another method by [Mat Lee]:
+Method 2: (If you installed python)
+
+```
+python -m SimpleHTTPServer 9527
+```
+
+Method 3 by [Mat Lee]: (If you installed php command line)
 
 ```
 KDPORT="127.0.0.1:9527"; ( php -S $KDPORT -t `git rev-parse --show-toplevel` &) ; "xdg-open http://$KDPORT"
@@ -61,6 +75,14 @@ DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/dock
 	* -H tcp://0.0.0.0:4243 是要監聽所有網卡的 4243 Port
 	* 更多的設定項目請參考 [Docker] 官網
 
+## Docker 設定 (ex: Boot2Docker on Mac), 感謝 [scourgen](https://github.com/tsaikd/kdocker-web/issues/2)
+
+* /var/lib/boot2docker/profile
+
+```
+EXTRA_ARGS="--api-enable-cors"
+```
+
 ## 安裝
 
 事實上，你可以直接打開 http://tsaikd.org/kdocker-web/
@@ -74,6 +96,12 @@ DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/dock
 一開始會跳到設定頁面去設定 [Docker Remote API] 的參數
 
 重新載入頁面就可以用了
+
+第二種方式，用 python 內建的 http server
+
+```
+python -m SimpleHTTPServer 9527
+```
 
 [Mat Lee] 另外提供了一個單行指令給大家參考:
 
