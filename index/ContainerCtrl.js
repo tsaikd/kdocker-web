@@ -26,6 +26,7 @@ app
 			angular.forEach(data, function(v) {
 				v.name = v.Names.join().substr(1);
 				v.running = !!v.Status.match(/^Up /);
+				v.paused = !!v.Status.match(/Paused/);
 			});
 			$scope.DockerData.containers = data;
 			$scope.loadingCtrl.container = false;
@@ -84,6 +85,26 @@ app
 		$http
 		.delete(DockerData.apiurl + "/containers/" + container.Id + "?v=1&force=1", {
 			errmsg: "Remove container failed"
+		})
+		.success(function() {
+			$scope.reload();
+		});
+	};
+
+	$scope.pause = function(container) {
+		$http
+		.post(DockerData.apiurl + "/containers/" + container.Id + "/pause", {}, {
+			errmsg: "Pause container failed"
+		})
+		.success(function() {
+			$scope.reload();
+		});
+	};
+
+	$scope.unpause = function(container) {
+		$http
+		.post(DockerData.apiurl + "/containers/" + container.Id + "/unpause", {}, {
+			errmsg: "Unpause container failed"
 		})
 		.success(function() {
 			$scope.reload();
