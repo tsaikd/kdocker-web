@@ -1,0 +1,25 @@
+<style type="text/css">
+
+.InspectContainerModal .inspect-elem-child-noname {
+	list-style-type: none;
+}
+
+.InspectContainerModal .inspect-elem-ul,
+.InspectContainerModal .inspect-elem-li {
+	padding-left: 1em;
+	text-indent: 0;
+}
+
+</style>
+
+<div class="InspectContainerModal">
+	<div class="modal-header">
+		<h3>Container: {{name}}</h3>
+	</div>
+	<div class="modal-body" style="overflow: auto; padding-left: 2em;">
+		<inspect-elem attr="inspect"></inspect-elem>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="close()" translate>Close</button>
+	</div>
+</div>

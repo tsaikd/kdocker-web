@@ -187,6 +187,25 @@ app
 			});
 	};
 
+	$scope.openInspectContainerModal = function(container) {
+		$http
+		.get(DockerData.apiurl + "/containers/" + container.Id + "/json", {}, {
+			errmsg: "Inspect container failed"
+		})
+		.success(function(inspect) {
+			$modal.open({
+				templateUrl: "index/InspectContainerModalContent.html",
+				controller: "InspectContainerModalCtrl",
+				size: "lg",
+				resolve: {
+					inspect: function() {
+						return inspect;
+					}
+				}
+			});
+		});
+	};
+
 	$scope.closeContainer = function(container) {
 		for (var i=0 ; i<$scope.tabs.length ; i++) {
 			if (container.Id === $scope.tabs[i].Id) {

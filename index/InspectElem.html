@@ -1,0 +1,19 @@
+<div>
+	<span ng-show="name">{{name}}</span>
+	<span ng-show="(value || name) && childArray">[]</span>
+	<span ng-show="(value || name) && childObjArray">[]</span>
+	<span ng-show="(value || name) && childObject">{}</span>
+	<span ng-show="name">:</span>
+	<span ng-show="value !== undefined">{{value}}</span>
+</div>
+<ul ng-class="{'inspect-elem-child-noname': name && childObjArray}" class="inspect-elem-ul">
+	<li ng-repeat="child in childArray" class="inspect-elem-li">
+		<span>{{toVal(child)}}</span>
+	</li>
+	<li ng-repeat="child in childObjArray" class="inspect-elem-li">
+		<inspect-elem attr="child"></inspect-elem>
+	</li>
+	<li ng-repeat="(name,child) in childObject" class="inspect-elem-li">
+		<inspect-elem name="name" attr="child"></inspect-elem>
+	</li>
+</ul>
