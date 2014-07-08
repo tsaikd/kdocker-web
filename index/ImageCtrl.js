@@ -64,6 +64,9 @@ app
 		}
 	});
 
+	// reload when open page
+	$scope.reload();
+
 }])
 
 ;
