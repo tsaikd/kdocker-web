@@ -24,10 +24,12 @@ app
 		Binds: [],
 		PortBindings: {},
 		PublishAllPorts: true,
-		Privileged: false
+		Privileged: false,
+		VolumesFrom: []
 	};
 	$scope.extra = {
 		Volumes: "",
+		VolumesFrom: "",
 		Ports: ""
 	};
 	$scope.moreOptions = false;
@@ -60,6 +62,9 @@ app
 				}
 			}
 		});
+		if ($scope.extra.VolumesFrom) {
+			$scope.startconfig.VolumesFrom = [$scope.extra.VolumesFrom.trim()];
+		}
 		angular.forEach($scope.extra.Ports.split(/\s+/), function(v) {
 			v = (v || "").trim();
 			if (v) {

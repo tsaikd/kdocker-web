@@ -5,13 +5,25 @@ app
 
 	$scope.DockerData = DockerData;
 	$scope.param = {
+		Binds: [""],
 		PortBindings: {},
 		PublishAllPorts: true,
-		Privileged: false
+		Privileged: false,
+		VolumesFrom: []
 	};
 	$scope.PortBindings = [{}];
+	$scope.VolumesFrom = [{}];
 
 	$scope.ok = function () {
+		var binds = [];
+		angular.forEach($scope.param.Binds, function(v) {
+			v = (v || "").trim();
+			if (v) {
+				binds.push(v);
+			}
+		});
+		$scope.param.Binds = binds;
+
 		angular.forEach($scope.PortBindings, function(v) {
 			v.pubports = (v.pubports || "").trim();
 			v.priport = (v.priport || "").trim();
@@ -30,6 +42,19 @@ app
 				$scope.param.PortBindings[v.priport + "/" + v.porttype.toLowerCase()] = pbs;
 			}
 		});
+
+		angular.forEach($scope.VolumesFrom, function(v) {
+			if (v) {
+				if (v.name) {
+					var vol = v.name.trim();
+					if (v.ro) {
+						vol += ":ro";
+					}
+					$scope.param.VolumesFrom.push(vol);
+				}
+			}
+		});
+
 		$modalInstance.close({
 			container: container,
 			param: $scope.param

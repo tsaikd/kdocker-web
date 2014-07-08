@@ -9,6 +9,10 @@
 	white-space: nowrap;
 }
 
+.StartContainerModal input[type=text] {
+	text-indent: 0.2em;
+}
+
 </style>
 
 <div class="StartContainerModal">
@@ -17,6 +21,55 @@
 	</div>
 	<div class="modal-body">
 		<table>
+			<tr>
+				<th style="vertical-align: top;">
+					<div>Binds</div>
+					<div><button ng-click="param.Binds.push('')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></button></div>
+				</th>
+				<td>
+					<table style="width: 100%;">
+						<tr>
+							<th colspan="2">Host Path : Container Path</th>
+						</tr>
+						<tr ng-repeat="bind in param.Binds track by $index">
+							<td>
+								<input type="text" ng-model="param.Binds[$index]" placeholder="/tmp:/tmp" style="width: 100%;"/>
+							</td>
+							<td style="width: 1em;">
+								<button ng-click="param.Binds.splice($index, 1)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<th style="vertical-align: top;">
+					<div>VolumesFrom</div>
+					<div><button ng-click="param.VolumesFrom.push('')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></button></div>
+				</th>
+				<td>
+					<table style="width: 100%;">
+						<tr ng-repeat="vol in VolumesFrom">
+							<td>
+								<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.containers" ng-model="vol.name">
+									<option value="">-- Container --</option>
+								</select>
+							</td>
+							<td style="white-space: nowrap;">
+								<label tooltip="{{'Readonly' | translate}}">
+									<span>RO</span>
+									<input type="checkbox" ng-model="vol.ro"/>
+								</label>
+							</td>
+							<td style="width: 100%;">
+							</td>
+							<td style="width: 1em;">
+								<button ng-click="VolumesFrom.splice($index, 1)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
 			<tr>
 				<th style="vertical-align: top;">
 					<div>PortBindings</div>

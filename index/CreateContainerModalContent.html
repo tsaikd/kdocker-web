@@ -78,6 +78,14 @@
 				</td>
 			</tr>
 			<tr>
+				<th translate>VolumesFrom</th>
+				<td>
+					<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.containers" ng-model="extra.VolumesFrom">
+						<option value="">-- Container --</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<th translate>Ports</th>
 				<td>
 					<input type="text" ng-model="extra.Ports" placeholder="49080:80 hostPort:containerPort" style="width: 20em;"/>
@@ -89,7 +97,7 @@
 					<input type="checkbox" ng-model="startconfig.PublishAllPorts"/>
 				</td>
 			</tr>
-			<tr>
+			<tr ng-show="moreOptions">
 				<th translate>Privileged</th>
 				<td>
 					<input type="checkbox" ng-model="startconfig.Privileged"/>

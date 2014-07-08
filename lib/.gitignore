@@ -2,3 +2,7 @@
 /jquery/
 /sizzle/
 /animate.css/source/
+/bootstrap/*
+!/bootstrap/dist/
+!/bootstrap/bower.json
+!/bootstrap/package.json
