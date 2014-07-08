@@ -8,7 +8,7 @@
 		<title>KDockerWeb</title>
 		<link rel="shortcut icon" href="favicon.png">
 		<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="index/main.min.css"/>
+		<link rel="stylesheet" href="index/main.min.css">
 		<script src="lib/angular/angular.min.js"></script>
 		<script src="lib/angular-ui-bootstrap-bower/ui-bootstrap-tpls.min.js"></script>
 		<script src="index/main.min.js"></script>
@@ -69,15 +69,15 @@
 								</td>
 							</tr>
 							<tr>
-								<th translate>Port</th>
+								<th><span translate>Port</span>*</th>
 								<td>
-									<input type="number" ng-model="DockerData.port" class="form-control input-sm"/>
+									<input type="number" placeholder="4243" ng-model="DockerData.port" class="form-control input-sm"/>
 								</td>
 							</tr>
 							<tr>
 								<th translate>API Version</th>
 								<td>
-									<input type="text" placeholder="v1.9" ng-model="DockerData.apiver" class="form-control input-sm"/>
+									<input type="text" placeholder="v1.13" ng-model="DockerData.apiver" class="form-control input-sm"/>
 								</td>
 							</tr>
 							<tr>
@@ -150,7 +150,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="c in DockerData.containers" ng-class="{danger: !c.running}">
+									<tr ng-repeat="c in DockerData.containers" ng-class="{danger: !c.running, warning: c.paused}">
 										<td>
 											<span title="{{c.Id}}" style="white-space: nowrap;">{{c.Id.substr(0, 8)}} ...</span>
 										</td>
@@ -178,9 +178,11 @@
 										</td>
 										<td>
 											<button ng-click="attach($event, c)" tooltip="{{'Press [SHIFT] to load full logs.' | translate}}" tooltip-placement="left" class="btn btn-primary btn-xs" translate>Attach</button>
+											<button ng-click="pause(c)" ng-show="c.running && !c.paused" class="btn btn-success btn-xs" translate>Pause</button>
+											<button ng-click="unpause(c)" ng-show="c.running && c.paused" class="btn btn-success btn-xs" translate>Resume</button>
 											<button ng-click="openStartContainerModal(c)" ng-show="!c.running" class="btn btn-info btn-xs" translate>Start</button>
-											<button ng-click="stop(c)" ng-show="c.running" class="btn btn-warning btn-xs" translate>Stop</button>
-											<button ng-click="remove(c)" class="btn btn-danger btn-xs" translate>Remove</button>
+											<button ng-click="stop(c)" ng-show="c.running && !c.paused" class="btn btn-warning btn-xs" translate>Stop</button>
+											<button ng-click="remove(c)" ng-show="!c.paused" class="btn btn-danger btn-xs" translate>Remove</button>
 										</td>
 									</tr>
 								</tbody>
