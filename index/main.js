@@ -27,10 +27,11 @@ app
 
 	$scope.devMode = false;
 
-	$scope.locale = $translate.use();
+	$scope.locale = angular.lowercase($translate.use());
 	$scope.updateLocale = function() {
 		$translate.use($scope.locale);
 	};
+	$scope.updateLocale();
 
 	$scope.alerts = [];
 	$scope.log = function() {
