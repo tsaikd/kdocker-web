@@ -16,7 +16,7 @@ Docker simple web UI
 
 http://tsaikd.org/kdocker-web/
 
-## Config Docker Startup Options (ex: Ubuntu)
+## Config Docker Startup Options (Ubuntu)
 
 * /etc/default/docker
 
@@ -24,12 +24,62 @@ http://tsaikd.org/kdocker-web/
 DOCKER_OPTS="--api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock"
 ```
 
-## Config Docker Startup Options (ex: Boot2Docker on Mac), thanks [scourgen](https://github.com/tsaikd/kdocker-web/issues/2)
+## Config Docker Startup Options (Boot2Docker on Mac), thanks [scourgen](https://github.com/tsaikd/kdocker-web/issues/2)
 
 * /var/lib/boot2docker/profile
 
 ```
 EXTRA_ARGS="--api-enable-cors"
+```
+
+## Config Docker Startup Options (CoreOS)
+
+* /var/lib/coreos-install/user_data (Cloud-Config)
+	* http://coreos.com/docs/launching-containers/building/customizing-docker/
+
+```
+#cloud-config
+
+coreos:
+  units:
+    - name: docker.service
+      command: restart
+      content: |
+        [Unit]
+        Description=Docker Application Container Engine
+        Documentation=http://docs.docker.io
+
+        [Service]
+        Environment="TMPDIR=/var/tmp/"
+        ExecStartPre=/bin/mount --make-rprivate /
+        # Run docker but don't have docker automatically restart
+        # containers. This is a job for systemd and unit files.
+        ExecStart=/usr/bin/docker -d -s=btrfs -r=false -H fd:// --api-enable-cors=true
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: docker-tcp.socket
+      command: start
+      content: |
+        [Unit]
+        Description=Docker Socket for the API
+
+        [Socket]
+        ListenStream=4243
+        Service=docker.service
+        BindIPv6Only=both
+
+        [Install]
+        WantedBy=sockets.target
+    - name: enable-docker-tcp.service
+      command: start
+      content: |
+        [Unit]
+        Description=Enable the Docker Socket for the API
+
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/bin/systemctl enable docker-tcp.socket
 ```
 
 ## Install
@@ -75,12 +125,62 @@ DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/dock
 	* -H tcp://0.0.0.0:4243 是要監聽所有網卡的 4243 Port
 	* 更多的設定項目請參考 [Docker] 官網
 
-## Docker 設定 (ex: Boot2Docker on Mac), 感謝 [scourgen](https://github.com/tsaikd/kdocker-web/issues/2)
+## Docker 設定 (Boot2Docker on Mac), 感謝 [scourgen](https://github.com/tsaikd/kdocker-web/issues/2)
 
 * /var/lib/boot2docker/profile
 
 ```
 EXTRA_ARGS="--api-enable-cors"
+```
+
+## Docker 設定 (CoreOS)
+
+* /var/lib/coreos-install/user_data (Cloud-Config)
+	* http://coreos.com/docs/launching-containers/building/customizing-docker/
+
+```
+#cloud-config
+
+coreos:
+  units:
+    - name: docker.service
+      command: restart
+      content: |
+        [Unit]
+        Description=Docker Application Container Engine
+        Documentation=http://docs.docker.io
+
+        [Service]
+        Environment="TMPDIR=/var/tmp/"
+        ExecStartPre=/bin/mount --make-rprivate /
+        # Run docker but don't have docker automatically restart
+        # containers. This is a job for systemd and unit files.
+        ExecStart=/usr/bin/docker -d -s=btrfs -r=false -H fd:// --api-enable-cors=true
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: docker-tcp.socket
+      command: start
+      content: |
+        [Unit]
+        Description=Docker Socket for the API
+
+        [Socket]
+        ListenStream=4243
+        Service=docker.service
+        BindIPv6Only=both
+
+        [Install]
+        WantedBy=sockets.target
+    - name: enable-docker-tcp.service
+      command: start
+      content: |
+        [Unit]
+        Description=Enable the Docker Socket for the API
+
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/bin/systemctl enable docker-tcp.socket
 ```
 
 ## 安裝
