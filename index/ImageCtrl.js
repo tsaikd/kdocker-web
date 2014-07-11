@@ -1,8 +1,8 @@
 app
 
 .controller("ImageCtrl"
-	, [       "$scope", "DockerData", "$http", "$rootScope"
-	, function($scope,   DockerData,   $http,   $rootScope) {
+	, [       "$scope", "DockerData", "$http", "$rootScope", "$modal"
+	, function($scope,   DockerData,   $http,   $rootScope,   $modal) {
 
 	$scope.DockerData = DockerData;
 	DockerData.ImageCtrl = $scope;
@@ -52,6 +52,47 @@ app
 		.success(function(data) {
 			$scope.reload();
 		});
+	};
+
+	$scope.copyImage = function(image, toDockers) {
+		if (!toDockers || !toDockers.length) {
+			return;
+		}
+
+		$http
+		.get(DockerData.apiurl + "/images/" + image.Id + "/get", {
+			responseType: "blob",
+			errmsg: "Get image blob failed"
+		})
+		.success(function(data) {
+			angular.forEach(toDockers, function(docker) {
+				$http
+				.post(docker.apiurl + "/images/load", data, {
+					errmsg: "Upload image blob failed"
+				})
+				.success(function() {
+					$http
+					.post(docker.apiurl + "/images/" + image.Id + "/tag?repo=" + image.RepoTags[0], {}, {
+						errmsg: "Tag image failed"
+					})
+					.success(function() {
+						// clean docker images cache
+						docker.images.splice(0);
+					});
+				});
+			});
+		});
+	};
+
+	$scope.openCopyImageModal = function(image) {
+		$modal.open({
+			templateUrl: "index/CopyImageModalContent.html",
+			controller: "CopyImageModalCtrl"
+		})
+		.result
+			.then(function(data) {
+				$scope.copyImage(image, data.dockers);
+			});
 	};
 
 	$rootScope.$on("reload-image", function() {

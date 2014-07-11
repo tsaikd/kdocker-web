@@ -1,0 +1,29 @@
+<div class="CopyImageModal">
+	<div class="modal-header">
+		<h3 translate>Select Docker Hosts</h3>
+	</div>
+	<div class="modal-body">
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped table-hover table-condensed" style="">
+				<thead>
+					<tr>
+						<th></th>
+						<th translate>Nickname</th>
+						<th translate>API Url</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="docker in DockerData.dockerList" ng-click="clickDocker($index)" ng-class="{warning: (docker.apiurl == DockerData.apiurl)}" style="cursor: pointer;">
+						<td><input type="checkbox" ng-model="checkList[$index].checked" ng-disabled="checkList[$index].disabled"/></td>
+						<td>{{docker.nickname}}</td>
+						<td>{{docker.apiurl}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="ok()" translate>OK</button>
+		<button class="btn btn-warning" ng-click="cancel()" translate>Cancel</button>
+	</div>
+</div>
