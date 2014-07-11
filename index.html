@@ -125,7 +125,8 @@
 					<div ng-controller="ContainerCtrl" ng-show="tab == 'Containers'">
 						<div class="tab-header-bar">
 							<span translate>Containers</span>
-							<span ng-show="DockerData.nickname">in {{DockerData.nickname}}</span>
+							<span>in</span>
+							<select-docker></select-docker>
 							<button ng-click="curtab=null;reload($event)" tooltip="{{'Press [SHIFT] to reload image list too.' | translate}}" class="btn btn-default">
 								<span ng-class="{spinner: loadingCtrl.container}" class="glyphicon glyphicon-refresh"></span>
 							</button>
@@ -195,7 +196,8 @@
 					<div ng-controller="ImageCtrl" ng-show="tab == 'Images'">
 						<div class="tab-header-bar">
 							<span translate>Images</span>
-							<span ng-show="DockerData.nickname">in {{DockerData.nickname}}</span>
+							<span>in</span>
+							<select-docker></select-docker>
 							<button ng-click="reload($event)" tooltip="{{'Press [SHIFT] to reload container list too.' | translate}}" class="btn btn-default">
 								<span ng-class="{spinner: loadingCtrl.image}" class="glyphicon glyphicon-refresh"></span>
 							</button>
@@ -229,6 +231,7 @@
 											<span>{{img.Created * 1000 | date:'yyyy-MM-dd HH:mm'}}</span>
 										</td>
 										<td>
+											<button ng-click="openCopyImageModal(img)" ng-show="DockerData.dockerList.length > 1" class="btn btn-info btn-xs" translate>Copy</button>
 											<button ng-click="remove(img)" class="btn btn-danger btn-xs" translate>Remove</button>
 										</td>
 									</tr>
@@ -246,6 +249,7 @@
 			<table style="position: fixed; width: 100%; height: 100%; top: 0px; left: 0px;">
 				<tr>
 					<td style="text-align: center;">
+						<img class="shaker" src="logo.png" style="max-width: 100%; max-height: 100%; object-fit: contain; display: inline-block;"/>
 						<img src="index/loading.png" class="spinner" style="width: 128px; height: 128px; display: inline-block;"/>
 					</td>
 				</tr>
