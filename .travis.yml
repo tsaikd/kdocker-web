@@ -1,6 +1,16 @@
 language: node_js
+
 node_js:
-  - "0.10"
+  - 0.10
+
+rvm:
+  - 2.1
+
+before_install:
+  - gem install sass
+
 before_script:
   - npm install -g grunt-cli
+
+script:
   - grunt
