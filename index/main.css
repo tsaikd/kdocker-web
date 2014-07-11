@@ -1,115 +1,184 @@
+/* animate spinner */
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+.spinner {
+  -webkit-animation: spinner 2s infinite linear;
+  -moz-animation: spinner 2s infinite linear;
+  -o-animation: spinner 2s infinite linear;
+  animation: spinner 2s infinite linear; }
+
+/* animate shaker */
+@-webkit-keyframes shaker {
+  0% {
+    -webkit-transform: rotate(-15deg);
+    -moz-transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    transform: rotate(-15deg); }
+
+  50% {
+    -webkit-transform: rotate(15deg);
+    -moz-transform: rotate(15deg);
+    -o-transform: rotate(15deg);
+    transform: rotate(15deg); }
+
+  100% {
+    -webkit-transform: rotate(-15deg);
+    -moz-transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    transform: rotate(-15deg); } }
+
+@-moz-keyframes shaker {
+  0% {
+    -webkit-transform: rotate(-15deg);
+    -moz-transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    transform: rotate(-15deg); }
+
+  50% {
+    -webkit-transform: rotate(15deg);
+    -moz-transform: rotate(15deg);
+    -o-transform: rotate(15deg);
+    transform: rotate(15deg); }
+
+  100% {
+    -webkit-transform: rotate(-15deg);
+    -moz-transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    transform: rotate(-15deg); } }
+
+@-o-keyframes shaker {
+  0% {
+    -webkit-transform: rotate(-15deg);
+    -moz-transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    transform: rotate(-15deg); }
+
+  50% {
+    -webkit-transform: rotate(15deg);
+    -moz-transform: rotate(15deg);
+    -o-transform: rotate(15deg);
+    transform: rotate(15deg); }
+
+  100% {
+    -webkit-transform: rotate(-15deg);
+    -moz-transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    transform: rotate(-15deg); } }
+
+@keyframes shaker {
+  0% {
+    -webkit-transform: rotate(-15deg);
+    -moz-transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    transform: rotate(-15deg); }
+
+  50% {
+    -webkit-transform: rotate(15deg);
+    -moz-transform: rotate(15deg);
+    -o-transform: rotate(15deg);
+    transform: rotate(15deg); }
+
+  100% {
+    -webkit-transform: rotate(-15deg);
+    -moz-transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    transform: rotate(-15deg); } }
+
+.shaker {
+  -webkit-animation: shaker 2s infinite linear;
+  -moz-animation: shaker 2s infinite linear;
+  -o-animation: shaker 2s infinite linear;
+  animation: shaker 2s infinite linear; }
+
 html, body {
-	height: 100%;
-}
+  height: 100%; }
 
 .ellipsis {
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
-}
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden; }
 
 .terminal {
-	border: #000 solid 5px;
-	font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
-	font-size: 11px;
-	color: #f0f0f0;
-	background: #000;
-}
-
-/* https://github.com/cferdinandi/spinners */
-/*  The class that applies the animation. */
-.spinner {
-	display: none;
-	-webkit-animation: spin 1.5s infinite linear;
-	-moz-animation: spin 1.5s infinite linear;
-	-ms-animation: spin 1.5s infinite linear;
-	-o-animation: spin 1.5s infinite linear;
-	animation: spin 1.5s infinite linear;
-}
-
-/*  The vendor-specific and generic animation keyframes.
- *  These control the direction and nature of the animation. */
-@-webkit-keyframes spin {
-	0% {
-		-webkit-transform: rotate(0deg);
-	}
-
-	100% {
-		-webkit-transform: rotate(360deg);
-	}
-}
-
-@-moz-keyframes spin {
-	0% {
-		-moz-transform: rotate(0deg);
-	}
-
-	100% {
-		-moz-transform: rotate(360deg);
-	}
-}
-
-@-ms-keyframes spin {
-	0% {
-		-ms-transform: rotate(0deg);
-	}
-
-	100% {
-		-ms-transform: rotate(360deg);
-	}
-}
-
-@-o-keyframes spin {
-	0% {
-		-o-transform: rotate(0deg);
-	}
-
-	100% {
-		-o-transform: rotate(360deg);
-	}
-}
-
-@keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
-
-	100% {
-		transform: rotate(360deg);
-	}
-}
+  border: #000 solid 5px;
+  font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+  font-size: 11px;
+  color: #f0f0f0;
+  background: #000; }
 
 .glyphicon-refresh {
-	display: inline-block;
-}
+  display: inline-block; }
 
 .tab-header-bar {
-	margin-bottom: 1em;
-}
+  margin-bottom: 1em; }
 
 .loading-block {
-	background: #000;
-}
+  background: #000; }
 
 .loading-block.ng-hide-add,
 .loading-block.ng-hide-remove {
-	-webkit-transition:all linear 0.5s;
-	-moz-transition:all linear 0.5s;
-	-o-transition:all linear 0.5s;
-	transition:all linear 0.5s;
-}
+  -webkit-transition: all linear 0.5s;
+  -moz-transition: all linear 0.5s;
+  -o-transition: all linear 0.5s;
+  transition: all linear 0.5s; }
 
 .loading-block.ng-hide-add.ng-hide-add-active,
 .loading-block.ng-hide-remove {
-	opacity: 0;
-}
+  opacity: 0; }
 
 .loading-block,
 .loading-block.ng-hide-add,
 .loading-block.ng-hide-remove.ng-hide-remove-active {
-	opacity: 0.5;
-}
+  opacity: 0.5; }
 
-*[ng-controller="ConfigCtrl"] .table>tbody>tr>th {
-	vertical-align: middle;
-}
+*[ng-controller="ConfigCtrl"] .table > tbody > tr > th {
+  vertical-align: middle; }

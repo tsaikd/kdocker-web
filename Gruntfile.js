@@ -40,6 +40,13 @@ module.exports = function(grunt) {
 				dest: "<%= meta.dist %>"
 			}
 		},
+		sass: {
+			dist: {
+				files: {
+					"index/main.css": "index/main.scss"
+				}
+			}
+		},
 		cssmin: {
 			options: {
 				banner: "<%= meta.banner %>"
@@ -80,6 +87,10 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
+			css: {
+				files: ["**/*.scss"],
+				tasks: ["sass"]
+			},
 			livereload: {
 				options: {
 					livereload: true
@@ -95,7 +106,7 @@ module.exports = function(grunt) {
 	});
 
 	require("load-grunt-tasks")(grunt);
-	grunt.registerTask("build", ["copy", "ngtemplates", "useminPrepare", "concat", "cssmin", "uglify", "usemin", "version"]);
+	grunt.registerTask("build", ["copy", "ngtemplates", "useminPrepare", "concat", "sass", "cssmin", "uglify", "usemin", "version"]);
 	grunt.registerTask("default", ["clean", "sync", "build"]);
 	grunt.registerTask("dev", ["default", "connect", "watch"]);
 
