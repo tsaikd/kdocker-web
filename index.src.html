@@ -22,6 +22,7 @@
 		<script src="lib/term.js/src/term.js"></script>
 		<script src="lib/app.js"></script>
 		<script src="lib/locale.js"></script>
+		<script src="directives/selectDocker.js"></script>
 		<script src="index/ConfigCtrl.js"></script>
 		<script src="index/ContainerCtrl.js"></script>
 		<script src="index/CreateContainerModalCtrl.js"></script>
@@ -147,7 +148,8 @@
 					<div ng-controller="ContainerCtrl" ng-show="tab == 'Containers'">
 						<div class="tab-header-bar">
 							<span translate>Containers</span>
-							<span ng-show="DockerData.nickname">in {{DockerData.nickname}}</span>
+							<span>in</span>
+							<select-docker></select-docker>
 							<button ng-click="curtab=null;reload($event)" tooltip="{{'Press [SHIFT] to reload image list too.' | translate}}" class="btn btn-default">
 								<span ng-class="{spinner: loadingCtrl.container}" class="glyphicon glyphicon-refresh"></span>
 							</button>
@@ -217,7 +219,8 @@
 					<div ng-controller="ImageCtrl" ng-show="tab == 'Images'">
 						<div class="tab-header-bar">
 							<span translate>Images</span>
-							<span ng-show="DockerData.nickname">in {{DockerData.nickname}}</span>
+							<span>in</span>
+							<select-docker></select-docker>
 							<button ng-click="reload($event)" tooltip="{{'Press [SHIFT] to reload container list too.' | translate}}" class="btn btn-default">
 								<span ng-class="{spinner: loadingCtrl.image}" class="glyphicon glyphicon-refresh"></span>
 							</button>

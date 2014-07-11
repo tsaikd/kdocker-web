@@ -1,7 +1,8 @@
 app
 
-.controller("ConfigCtrl", ["$scope", "DockerData"
-	, function($scope, DockerData) {
+.controller("ConfigCtrl"
+	, [       "$scope", "DockerData", "$rootScope"
+	, function($scope,   DockerData,   $rootScope) {
 
 	$scope.DockerData = DockerData;
 	DockerData.ConfigCtrl = $scope;
@@ -48,6 +49,10 @@ app
 		list.splice(idx+1, 0, list.splice(idx, 1)[0]);
 		$scope.DockerData.dockerList = list;
 	};
+
+	$rootScope.$on("ConfigCtrl.setDocker", function(e, docker) {
+		$scope.setDocker(docker);
+	});
 
 }])
 
