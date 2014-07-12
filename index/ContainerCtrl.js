@@ -57,6 +57,29 @@ app
 
 		if (!container.terminal) {
 			container.terminal = new Terminal();
+			container.terminal.on("key", function(key, ev) {
+				if (ev) {
+					if (ev.ctrlKey) {
+						switch (ev.keyCode) {
+						case 67: // 'C'
+						case 86: // 'V'
+							break;
+						default:
+							ev.preventDefault();
+							break;
+						}
+					}
+					if (ev.shiftKey) {
+						switch (ev.keyCode) {
+						case 45: // [Insert]
+							break;
+						default:
+							ev.preventDefault();
+							break;
+						}
+					}
+				}
+			});
 			$scope.setupWebsocket(evt, container);
 		}
 	};
