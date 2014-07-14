@@ -141,17 +141,35 @@
 							<table ng-show="!curtab" class="table table-bordered table-striped table-hover table-condensed">
 								<thead>
 									<tr>
-										<th translate>ID</th>
-										<th translate>Description</th>
-										<th translate>Image</th>
-										<th translate>Command</th>
-										<th translate>Port</th>
-										<th translate>Status</th>
+										<th ng-click="sortConfig('Id')">
+											<span translate>ID</span>
+											<span ng-show="predicate == 'Id'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+										</th>
+										<th ng-click="sortConfig('name')">
+											<span translate>Description</span>
+											<span ng-show="predicate == 'name'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+										</th>
+										<th ng-click="sortConfig('Image')">
+											<span translate>Image</span>
+											<span ng-show="predicate == 'Image'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+										</th>
+										<th ng-click="sortConfig('Command')">
+											<span translate>Command</span>
+											<span ng-show="predicate == 'Command'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+										</th>
+										<th ng-click="sortConfig('Ports')">
+											<span translate>Port</span>
+											<span ng-show="predicate == 'Ports'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+										</th>
+										<th ng-click="sortConfig('Status')">
+											<span translate>Status</span>
+											<span ng-show="predicate == 'Status'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+										</th>
 										<th translate>Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="c in DockerData.containers" ng-class="{danger: !c.running, warning: c.paused}">
+									<tr ng-repeat="c in DockerData.containers | orderBy:predicate:reverse" ng-class="{danger: !c.running, warning: c.paused}">
 										<td>
 											<span title="{{c.Id}}" style="white-space: nowrap;">{{c.Id.substr(0, 8)}} ...</span>
 										</td>
@@ -206,15 +224,27 @@
 							<table class="table table-bordered table-striped table-hover table-condensed">
 								<thead>
 									<tr>
-										<th translate>ID</th>
-										<th translate>Tags</th>
-										<th translate>Size</th>
-										<th translate>Create Time</th>
+										<th ng-click="sortConfig('Id')">
+											<span translate>ID</span>
+											<span ng-show="predicate == 'Id'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+										</th>
+										<th ng-click="sortConfig('RepoTags')">
+											<span translate>Tags</span>
+											<span ng-show="predicate == 'RepoTags'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+										</th>
+										<th ng-click="sortConfig('VirtualSize')">
+											<span translate>Size</span>
+											<span ng-show="predicate == 'VirtualSize'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+										</th>
+										<th ng-click="sortConfig('Created')" translate translate>
+											<span translate>Create Time</span>
+											<span ng-show="predicate == 'Created'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+										</th>
 										<th translate>Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="img in DockerData.images">
+									<tr ng-repeat="img in DockerData.images | orderBy:predicate:reverse">
 										<td>
 											<span title="{{img.Id}}" style="white-space: nowrap;">{{img.Id.substr(0, 8)}} ...</span>
 										</td>
