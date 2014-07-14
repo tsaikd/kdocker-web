@@ -6,12 +6,25 @@ app
 
 	$scope.DockerData = DockerData;
 	DockerData.ImageCtrl = $scope;
+	$scope.predicate = "";
+	$scope.reverse = false;
+
+	$scope.sortConfig = function(field) {
+		if ($scope.predicate === field) {
+			$scope.reverse = !$scope.reverse;
+		} else {
+			$scope.predicate = field;
+			$scope.reverse = false;
+		}
+	};
 
 	$scope.reload = function(evt) {
 		if (!DockerData.host || $scope.loadingCtrl.image) {
 			return;
 		}
 		$scope.loadingCtrl.image = true;
+		$scope.predicate = "";
+		$scope.reverse = false;
 		if (evt && evt.shiftKey) {
 			$rootScope.$emit("reload-container");
 		}
