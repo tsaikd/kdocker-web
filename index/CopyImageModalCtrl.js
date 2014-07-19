@@ -7,10 +7,10 @@ app
 	$scope.DockerData = DockerData;
 	$scope.checkList = [];
 
-	angular.forEach(DockerData.dockerList, function(docker) {
+	angular.forEach(DockerData.dockerHosts, function(dockerHost) {
 		$scope.checkList.push({
 			checked: false,
-			disabled: !!(docker.apiurl === DockerData.apiurl)
+			disabled: !!(dockerHost.apiurl === DockerData.dockerHost.apiurl)
 		});
 	});
 
@@ -25,7 +25,7 @@ app
 		var dockers = [];
 		angular.forEach($scope.checkList, function(check, idx) {
 			if (check.checked) {
-				dockers.push(DockerData.dockerList[idx]);
+				dockers.push(DockerData.dockerHosts[idx]);
 			}
 		});
 		$modalInstance.close({

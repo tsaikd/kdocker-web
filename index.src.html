@@ -23,11 +23,11 @@
 		<script src="lib/xterm.js/src/xterm.js"></script>
 		<script src="lib/app.js"></script>
 		<script src="lib/locale.js"></script>
+		<script src="directives/dockerContainers.js"></script>
+		<script src="directives/dockerHostConfig.js"></script>
+		<script src="directives/dockerImages.js"></script>
 		<script src="directives/selectDocker.js"></script>
-		<script src="index/ConfigCtrl.js"></script>
-		<script src="index/ContainerCtrl.js"></script>
 		<script src="index/CreateContainerModalCtrl.js"></script>
-		<script src="index/ImageCtrl.js"></script>
 		<script src="index/StartContainerModalCtrl.js"></script>
 		<script src="index/InspectContainerModalCtrl.js"></script>
 		<script src="index/CopyImageModalCtrl.js"></script>
@@ -74,225 +74,16 @@
 				</td>
 				<td style="vertical-align: top;">
 
-					<div ng-controller="ConfigCtrl" ng-show="tab == 'Config'">
-						<div class="tab-header-bar">
-							<span translate>Config</span>
-							<button ng-click="DockerData.reset()" class="btn btn-primary" translate>Reset</button>
-						</div>
-						<table class="table table-hover table-condensed" style="float: left; width: auto; min-width: 20em;">
-							<tr>
-								<th translate>Nickname</th>
-								<td style="white-space: nowrap;">
-									<input type="text" placeholder="My home server" ng-model="DockerData.nickname" class="form-control input-sm"/>
-								</td>
-							</tr>
-							<tr>
-								<th><span translate>Hostname</span>*</th>
-								<td>
-									<input type="text" placeholder="127.0.0.1" ng-model="DockerData.host" class="form-control input-sm"/>
-								</td>
-							</tr>
-							<tr>
-								<th><span translate>Port</span>*</th>
-								<td>
-									<input type="number" placeholder="4243" ng-model="DockerData.port" class="form-control input-sm"/>
-								</td>
-							</tr>
-							<tr>
-								<th translate>API Version</th>
-								<td>
-									<input type="text" placeholder="v1.13" ng-model="DockerData.apiver" class="form-control input-sm"/>
-								</td>
-							</tr>
-							<tr>
-								<td ng-show="DockerData.apiurl" colspan="2">
-									<span>{{DockerData.apiurl}}</span>
-									<button ng-click="addDocker()" class="btn btn-info btn-xs" style="float: right;" translate><span class="glyphicon glyphicon-plus"></span></button>
-								</td>
-							</tr>
-						</table>
-						<div style="float: left; margin-left: 2em;">
-							<div translate>Tips:</div>
-							<div translate>If you connect to docker remote api failed, try the following steps:</div>
-							<ul>
-								<li style="list-style-type: decimal;" translate>Check docker remote api port is opened, and not blocked by firewall.</li>
-								<li style="list-style-type: decimal;" translate>Downgrade the api version, like v1.9, v1.8...etc, or keep empty.</li>
-								<li style="list-style-type: decimal;" translate>Click Reset button and try again.</li>
-							</ul>
-						</div>
-						<table ng-show="DockerData.dockerList && DockerData.dockerList.length" class="table table-bordered table-striped table-hover table-condensed" style="float: left; clear: both; margin-top: 2em; width: auto;">
-							<thead>
-								<tr>
-									<th translate>Nickname</th>
-									<th translate>API Url</th>
-									<th translate>Containers</th>
-									<th translate>Images</th>
-									<th translate>Action</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="docker in DockerData.dockerList" ng-class="{info: (docker.apiurl == DockerData.apiurl)}">
-									<td ng-click="setDocker(docker)" style="cursor: pointer;">{{docker.nickname}}</td>
-									<td ng-click="setDocker(docker)" style="cursor: pointer;">{{docker.apiurl}}</td>
-									<td ng-click="setDocker(docker)" style="cursor: pointer;">{{docker.containers.length}}</td>
-									<td ng-click="setDocker(docker)" style="cursor: pointer;">{{docker.images.length}}</td>
-									<td>
-										<button ng-click="delDocker($index)" class="btn btn-danger btn-xs" translate><span class="glyphicon glyphicon-remove"></span></button>
-										<button ng-click="moveUp($index)" ng-show="$index > 0" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-up"></span></button>
-										<button ng-click="moveDown($index)" ng-show="!$last" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-down"></span></button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+					<div ng-controller="dockerHostConfigCtrl" ng-show="tab == 'Config'">
+						<docker-host-config></docker-host-config>
 					</div>
 
-					<div ng-controller="ContainerCtrl" ng-show="tab == 'Containers'">
-						<div class="tab-header-bar">
-							<span translate>Containers</span>
-							<span>in</span>
-							<select-docker></select-docker>
-							<button ng-click="curtab=null;reload($event)" tooltip="{{'Press [SHIFT] to reload image list too.' | translate}}" class="btn btn-default">
-								<span ng-class="{spinner: loadingCtrl.container}" class="glyphicon glyphicon-refresh"></span>
-							</button>
-							<button ng-show="curtab" ng-click="attach()" class="btn btn-primary" translate>Back</button>
-							<span ng-repeat="c in tabs">
-								<button class="btn btn-primary" title="{{c.Id}}" ng-click="attach(c)">{{c.name}}</button>
-								<button class="btn btn-primary" ng-click="closeContainer(c)">X</button>
-							</span>
-							<button ng-click="openCreateContainerModal()" class="btn btn-info" translate>Create</button>
-						</div>
-						<div class="table-responsive" style="position: relative;">
-							<table ng-show="!curtab" class="table table-bordered table-striped table-hover table-condensed">
-								<thead>
-									<tr>
-										<th ng-click="sortConfig('Id')">
-											<span translate>ID</span>
-											<span ng-show="predicate == 'Id'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
-										</th>
-										<th ng-click="sortConfig('name')">
-											<span translate>Description</span>
-											<span ng-show="predicate == 'name'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
-										</th>
-										<th ng-click="sortConfig('Image')">
-											<span translate>Image</span>
-											<span ng-show="predicate == 'Image'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
-										</th>
-										<th ng-click="sortConfig('Command')">
-											<span translate>Command</span>
-											<span ng-show="predicate == 'Command'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
-										</th>
-										<th ng-click="sortConfig('Ports')">
-											<span translate>Port</span>
-											<span ng-show="predicate == 'Ports'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
-										</th>
-										<th ng-click="sortConfig('Status')">
-											<span translate>Status</span>
-											<span ng-show="predicate == 'Status'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
-										</th>
-										<th translate>Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="c in DockerData.containers | orderBy:predicate:reverse" ng-class="{danger: !c.running, warning: c.paused}">
-										<td>
-											<span title="{{c.Id}}" style="white-space: nowrap;">{{c.Id.substr(0, 8)}} ...</span>
-										</td>
-										<td>
-											<span>{{c.name}}</span>
-										</td>
-										<td>
-											<span>{{c.Image}}</span>
-										</td>
-										<td>
-											<span>{{c.Command}}</span>
-										</td>
-										<td>
-											<div ng-repeat="p in c.Ports" style="white-space: nowrap;">
-												<a ng-show="p.PublicPort && p.PrivatePort" href="http://{{DockerData.host}}:{{p.PublicPort}}/" target="_blank">
-													<span ng-show="p.Type != 'tcp'">{{p.Type}}: </span>{{p.PublicPort}} -&gt; {{p.PrivatePort}}
-												</a>
-												<span ng-show="!p.PublicPort || !p.PrivatePort">
-													<span ng-show="p.Type != 'tcp'">{{p.Type}}: </span> -&gt; {{p.PublicPort}}{{p.PrivatePort}}
-												</span>
-											</div>
-										</td>
-										<td ng-click="openInspectContainerModal(c)" style="cursor: pointer;">
-											<span>{{c.Status}}</span>
-										</td>
-										<td>
-											<button ng-click="attach($event, c)" tooltip="{{'Press [SHIFT] to load full logs.' | translate}}" tooltip-placement="left" class="btn btn-primary btn-xs" translate>Attach</button>
-											<button ng-click="pause(c)" ng-show="c.running && !c.paused" class="btn btn-success btn-xs" translate>Pause</button>
-											<button ng-click="unpause(c)" ng-show="c.running && c.paused" class="btn btn-success btn-xs" translate>Resume</button>
-											<button ng-click="openStartContainerModal(c)" ng-show="!c.running" class="btn btn-info btn-xs" translate>Start</button>
-											<button ng-click="stop(c)" ng-show="c.running && !c.paused" class="btn btn-warning btn-xs" translate>Stop</button>
-											<button ng-click="remove(c)" ng-show="!c.paused" class="btn btn-danger btn-xs" translate>Remove</button>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-							<div ng-show="loading" class="loading-block" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></div>
-						</div>
-						<div ng-repeat="c in tabs" id="{{c.Id}}_terminal" ng-show="curtab.Id === c.Id"></div>
+					<div ng-controller="dockerContainersCtrl" ng-show="tab == 'Containers'">
+						<docker-containers></docker-containers>
 					</div>
 
-					<div ng-controller="ImageCtrl" ng-show="tab == 'Images'">
-						<div class="tab-header-bar">
-							<span translate>Images</span>
-							<span>in</span>
-							<select-docker></select-docker>
-							<button ng-click="reload($event)" tooltip="{{'Press [SHIFT] to reload container list too.' | translate}}" class="btn btn-default">
-								<span ng-class="{spinner: loadingCtrl.image}" class="glyphicon glyphicon-refresh"></span>
-							</button>
-						</div>
-						<div style="position: relative;">
-							<table class="table table-bordered table-striped table-hover table-condensed">
-								<thead>
-									<tr>
-										<th ng-click="sortConfig('Id')">
-											<span translate>ID</span>
-											<span ng-show="predicate == 'Id'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
-										</th>
-										<th ng-click="sortConfig('RepoTags')">
-											<span translate>Tags</span>
-											<span ng-show="predicate == 'RepoTags'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
-										</th>
-										<th ng-click="sortConfig('VirtualSize')">
-											<span translate>Size</span>
-											<span ng-show="predicate == 'VirtualSize'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
-										</th>
-										<th ng-click="sortConfig('Created')" translate translate>
-											<span translate>Create Time</span>
-											<span ng-show="predicate == 'Created'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
-										</th>
-										<th translate>Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="img in DockerData.images | orderBy:predicate:reverse">
-										<td>
-											<span title="{{img.Id}}" style="white-space: nowrap;">{{img.Id.substr(0, 8)}} ...</span>
-										</td>
-										<td>
-											<div ng-repeat="tag in img.RepoTags">
-												<span>{{tag}}</span>
-												<button ng-click="removeTag(tag)" ng-show="img.RepoTags.length > 1" class="btn btn-danger btn-xs" translate>X</button>
-											</div>
-										</td>
-										<td>
-											<span>{{img.VirtualSize | humanSize}}</span>
-										</td>
-										<td>
-											<span>{{img.Created * 1000 | date:'yyyy-MM-dd HH:mm'}}</span>
-										</td>
-										<td>
-											<button ng-click="openCopyImageModal(img)" ng-show="DockerData.dockerList.length > 1" class="btn btn-info btn-xs" translate>Copy</button>
-											<button ng-click="remove(img)" class="btn btn-danger btn-xs" translate>Remove</button>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-							<div ng-show="loading" class="loading-block" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></div>
-						</div>
+					<div ng-controller="dockerImagesCtrl" ng-show="tab == 'Images'">
+						<docker-images></docker-images>
 					</div>
 
 				</td>

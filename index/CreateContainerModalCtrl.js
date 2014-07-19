@@ -37,14 +37,15 @@ app
 		ExposedPorts: ""
 	};
 
-	if (DockerData.lastCreateImage) {
-		$scope.param.Image = DockerData.lastCreateImage;
-	} else if (DockerData.images[0]) {
-		$scope.param.Image = DockerData.images[0].Id;
+	if (DockerData.dockerHost.lastCreateImage) {
+		$scope.param.Image = DockerData.dockerHost.lastCreateImage;
+	} else if (DockerData.dockerHost.images[0]) {
+		$scope.param.Image = DockerData.dockerHost.images[0].Id;
 	}
 
 	$scope.ok = function () {
-		DockerData.lastCreateImage = $scope.param.Image;
+		DockerData.dockerHost.lastCreateImage = $scope.param.Image;
+		DockerData.save();
 		angular.forEach($scope.form.ExposedPorts.split(/\s+/), function(v) {
 			v = (v || "").trim();
 			if (v) {

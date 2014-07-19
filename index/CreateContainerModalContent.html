@@ -24,7 +24,7 @@
 			<tr>
 				<th translate>Image</th>
 				<td>
-					<select ng-options="img.Id as img.RepoTags[0] for img in DockerData.images" ng-model="param.Image"></select>
+					<select ng-options="img.Id as img.RepoTags[0] for img in DockerData.dockerHost.images" ng-model="param.Image"></select>
 				</td>
 			</tr>
 			<tr>
@@ -80,7 +80,7 @@
 			<tr>
 				<th translate>VolumesFrom</th>
 				<td>
-					<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.containers" ng-model="extra.VolumesFrom">
+					<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.dockerHost.containers" ng-model="extra.VolumesFrom">
 						<option value="">-- Container --</option>
 					</select>
 				</td>

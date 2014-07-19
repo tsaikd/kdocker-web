@@ -67,7 +67,7 @@ module.exports = function(grunt) {
 		},
 		ngtemplates: {
 			"index": {
-				src: ["<%= meta.dist %>/index/*.html"],
+				src: ["<%= meta.dist %>/index/*.html", "<%= meta.dist %>/directives/*.html"],
 				dest: "<%= meta.dist %>/index/angular-template.tmp.js",
 				options: {
 					usemin: "<%= meta.dist %>/index/index.min.js",

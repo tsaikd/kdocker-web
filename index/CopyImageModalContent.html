@@ -13,10 +13,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="docker in DockerData.dockerList" ng-click="clickDocker($index)" ng-class="{warning: (docker.apiurl == DockerData.apiurl)}" style="cursor: pointer;">
+					<tr ng-repeat="dockerHost in DockerData.dockerHosts" ng-click="clickDocker($index)" ng-class="{warning: (dockerHost.apiurl == DockerData.dockerHost.apiurl)}" style="cursor: pointer;">
 						<td><input type="checkbox" ng-model="checkList[$index].checked" ng-disabled="checkList[$index].disabled"/></td>
-						<td>{{docker.nickname}}</td>
-						<td>{{docker.apiurl}}</td>
+						<td>{{dockerHost.name}}</td>
+						<td>{{dockerHost.apiurl}}</td>
 					</tr>
 				</tbody>
 			</table>

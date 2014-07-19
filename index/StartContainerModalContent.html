@@ -51,7 +51,7 @@
 					<table style="width: 100%;">
 						<tr ng-repeat="vol in VolumesFrom">
 							<td>
-								<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.containers" ng-model="vol.name">
+								<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.dockerHost.containers" ng-model="vol.name">
 									<option value="">-- Container --</option>
 								</select>
 							</td>

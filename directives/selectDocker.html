@@ -1,6 +1,7 @@
 <span>
-	<span ng-show="!DockerData.dockerList.length">{{DockerData.nickname || DockerData.apiurl}}</span>
-	<select ng-show="DockerData.dockerList.length"
-		ng-options="docker as (docker.nickname || docker.apiurl) for docker in DockerData.dockerList"
-		ng-change="changeDocker()" ng-model="curDocker"></select>
+	<span ng-show="!DockerData.dockerHosts.length">{{DockerData.dockerHost.name || DockerData.dockerHost.apiurl}}</span>
+	<select ng-show="DockerData.dockerHosts.length"
+		ng-options="idx as (dockerHost.name || dockerHost.apiurl) for (idx, dockerHost) in DockerData.dockerHosts"
+		ng-model="DockerData.curDockerIdx">
+	</select>
 </span>

@@ -64,13 +64,13 @@ app
 	};
 
 	$scope.connectEvents = function() {
-		if (!XMLHttpRequest || !DockerData.apiurl) {
+		if (!XMLHttpRequest || !DockerData.dockerHost.apiurl) {
 			return;
 		}
 		$scope.closeConnectEvents();
 		$scope.xhr = new XMLHttpRequest();
 		$scope.xhr.readlen = 0;
-		$scope.xhr.open("GET", DockerData.apiurl + "/events?since=" + (Math.floor(new Date().getTime() / 1000) - 30));
+		$scope.xhr.open("GET", DockerData.dockerHost.apiurl + "/events?since=" + (Math.floor(new Date().getTime() / 1000) - 30));
 		$scope.xhr.onprogress = function() {
 			var textarea = $scope.xhr.responseText.substr($scope.xhr.readlen);
 			$scope.xhr.readlen += textarea.length;
@@ -120,16 +120,16 @@ app
 		}
 	};
 
-	$scope.$watch("DockerData.apiurl", function(val) {
+	$scope.$watch("DockerData.dockerHost.apiurl", function(val) {
 		$scope.closeConnectEvents();
+		$scope.checkConnectEvents();
 	}, true);
 
 	$scope.$watch("tab", function(val) {
 		LocationHash.tab = val;
-		$scope.checkConnectEvents();
 	}, true);
 
-	if (DockerData.host) {
+	if (DockerData.dockerHost.valid) {
 		$scope.tab = LocationHash.tab || "Containers";
 	} else {
 		$scope.tab = "Config";

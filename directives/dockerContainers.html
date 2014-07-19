@@ -1,0 +1,88 @@
+<div>
+	<div class="tab-header-bar">
+		<span translate>Containers</span>
+		<span>in</span>
+		<select-docker></select-docker>
+		<button ng-click="curtab=null;reload($event)" tooltip="{{'Press [SHIFT] to reload image list too.' | translate}}" class="btn btn-default">
+			<span ng-class="{spinner: loadingCtrl.container}" class="glyphicon glyphicon-refresh"></span>
+		</button>
+		<button ng-show="curtab" ng-click="attach()" class="btn btn-primary" translate>Back</button>
+		<span ng-repeat="c in tabs">
+			<button class="btn btn-primary" title="{{c.Id}}" ng-click="attach(c)">{{c.name}}</button>
+			<button class="btn btn-primary" ng-click="closeContainer(c)">X</button>
+		</span>
+		<button ng-click="openCreateContainerModal()" class="btn btn-info" translate>Create</button>
+	</div>
+	<div class="table-responsive" style="position: relative;">
+		<table ng-show="!curtab" class="table table-bordered table-striped table-hover table-condensed">
+			<thead>
+				<tr>
+					<th ng-click="sortConfig('Id')">
+						<span translate>ID</span>
+						<span ng-show="predicate == 'Id'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+					</th>
+					<th ng-click="sortConfig('name')">
+						<span translate>Description</span>
+						<span ng-show="predicate == 'name'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+					</th>
+					<th ng-click="sortConfig('Image')">
+						<span translate>Image</span>
+						<span ng-show="predicate == 'Image'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+					</th>
+					<th ng-click="sortConfig('Command')">
+						<span translate>Command</span>
+						<span ng-show="predicate == 'Command'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+					</th>
+					<th ng-click="sortConfig('Ports')">
+						<span translate>Port</span>
+						<span ng-show="predicate == 'Ports'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+					</th>
+					<th ng-click="sortConfig('Status')">
+						<span translate>Status</span>
+						<span ng-show="predicate == 'Status'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+					</th>
+					<th translate>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="c in DockerData.dockerHost.containers | orderBy:predicate:reverse" ng-class="{danger: !c.running, warning: c.paused}">
+					<td>
+						<span title="{{c.Id}}" style="white-space: nowrap;">{{c.Id.substr(0, 8)}} ...</span>
+					</td>
+					<td>
+						<span>{{c.name}}</span>
+					</td>
+					<td>
+						<span>{{c.Image}}</span>
+					</td>
+					<td>
+						<span>{{c.Command}}</span>
+					</td>
+					<td>
+						<div ng-repeat="p in c.Ports" style="white-space: nowrap;">
+							<a ng-show="p.PublicPort && p.PrivatePort" href="http://{{DockerData.dockerHost.host}}:{{p.PublicPort}}/" target="_blank">
+								<span ng-show="p.Type != 'tcp'">{{p.Type}}: </span>{{p.PublicPort}} -&gt; {{p.PrivatePort}}
+							</a>
+							<span ng-show="!p.PublicPort || !p.PrivatePort">
+								<span ng-show="p.Type != 'tcp'">{{p.Type}}: </span> -&gt; {{p.PublicPort}}{{p.PrivatePort}}
+							</span>
+						</div>
+					</td>
+					<td ng-click="openInspectContainerModal(c)" style="cursor: pointer;">
+						<span>{{c.Status}}</span>
+					</td>
+					<td>
+						<button ng-click="attach($event, c)" tooltip="{{'Press [SHIFT] to load full logs.' | translate}}" tooltip-placement="left" class="btn btn-primary btn-xs" translate>Attach</button>
+						<button ng-click="pause(c)" ng-show="c.running && !c.paused" class="btn btn-success btn-xs" translate>Pause</button>
+						<button ng-click="unpause(c)" ng-show="c.running && c.paused" class="btn btn-success btn-xs" translate>Resume</button>
+						<button ng-click="openStartContainerModal(c)" ng-show="!c.running" class="btn btn-info btn-xs" translate>Start</button>
+						<button ng-click="stop(c)" ng-show="c.running && !c.paused" class="btn btn-warning btn-xs" translate>Stop</button>
+						<button ng-click="remove(c)" ng-show="!c.paused" class="btn btn-danger btn-xs" translate>Remove</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div ng-show="loading" class="loading-block" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></div>
+	</div>
+	<div ng-repeat="c in tabs" id="{{c.Id}}_terminal" ng-show="curtab.Id === c.Id"></div>
+</div>

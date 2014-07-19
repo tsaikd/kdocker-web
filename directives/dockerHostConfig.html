@@ -1,0 +1,71 @@
+<div>
+	<div class="tab-header-bar">
+		<span translate>Config</span>
+		<button ng-click="reset()" class="btn btn-primary" translate>Reset</button>
+	</div>
+	<table class="table table-hover table-condensed" style="float: left; width: auto; min-width: 20em;">
+		<tr>
+			<th translate>Nickname</th>
+			<td style="white-space: nowrap;">
+				<input type="text" placeholder="My home server" ng-model="dockerHost.name" class="form-control input-sm"/>
+			</td>
+		</tr>
+		<tr>
+			<th><span translate>Hostname</span>*</th>
+			<td>
+				<input type="text" placeholder="127.0.0.1" ng-model="dockerHost.host" class="form-control input-sm"/>
+			</td>
+		</tr>
+		<tr>
+			<th><span translate>Port</span>*</th>
+			<td>
+				<input type="number" placeholder="4243" ng-model="dockerHost.port" class="form-control input-sm"/>
+			</td>
+		</tr>
+		<tr>
+			<th translate>API Version</th>
+			<td>
+				<input type="text" placeholder="v1.13" ng-model="dockerHost.apiver" class="form-control input-sm"/>
+			</td>
+		</tr>
+		<tr>
+			<td ng-show="dockerHost.apiurl" colspan="2">
+				<span>{{dockerHost.apiurl}}</span>
+				<button ng-click="addDocker()" class="btn btn-info btn-xs" style="float: right;" translate><span class="glyphicon glyphicon-plus"></span></button>
+			</td>
+		</tr>
+	</table>
+	<div style="float: left; margin-left: 2em;">
+		<div translate>Tips:</div>
+		<div translate>If you connect to docker remote api failed, try the following steps:</div>
+		<ul>
+			<li style="list-style-type: decimal;" translate>Check docker remote api port is opened, and not blocked by firewall.</li>
+			<li style="list-style-type: decimal;" translate>Downgrade the api version, like v1.9, v1.8...etc, or keep empty.</li>
+			<li style="list-style-type: decimal;" translate>Click Reset button and try again.</li>
+		</ul>
+	</div>
+	<table ng-show="DockerData.dockerHosts.length" class="table table-bordered table-striped table-hover table-condensed" style="float: left; clear: both; margin-top: 2em; width: auto;">
+		<thead>
+			<tr>
+				<th translate>Nickname</th>
+				<th translate>API Url</th>
+				<th translate>Containers</th>
+				<th translate>Images</th>
+				<th translate>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="dockerHost in DockerData.dockerHosts" ng-class="{info: (DockerData.curDockerIdx == $index)}">
+				<td ng-click="setDocker($index)" style="cursor: pointer;">{{dockerHost.name}}</td>
+				<td ng-click="setDocker($index)" style="cursor: pointer;">{{dockerHost.apiurl}}</td>
+				<td ng-click="setDocker($index)" style="cursor: pointer;">{{dockerHost.containers.length}}</td>
+				<td ng-click="setDocker($index)" style="cursor: pointer;">{{dockerHost.images.length}}</td>
+				<td>
+					<button ng-click="delDocker($index)" class="btn btn-danger btn-xs" translate><span class="glyphicon glyphicon-remove"></span></button>
+					<button ng-click="moveUp($index)" ng-show="$index > 0" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-up"></span></button>
+					<button ng-click="moveDown($index)" ng-show="!$last" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-down"></span></button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
