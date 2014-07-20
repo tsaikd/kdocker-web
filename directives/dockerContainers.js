@@ -272,6 +272,10 @@ app
 				}
 			});
 
+			$scope.$watch("DockerData.curDockerIdx", function() {
+				$scope.checkReload();
+			});
+
 			// reload when open page
 			$scope.reload();
 

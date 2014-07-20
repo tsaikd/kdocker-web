@@ -126,12 +126,6 @@ app
 				}
 			});
 
-			$scope.$watch("DockerData.IndexCtrl.tab", function(tab) {
-				if (tab in {"Images":1, "Containers":1}) {
-					$scope.checkReload();
-				}
-			});
-
 			$scope.$watch("DockerData.curDockerIdx", function() {
 				$scope.checkReload();
 			});

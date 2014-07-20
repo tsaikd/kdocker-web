@@ -20,6 +20,7 @@ app
 				dockerHost.containers = [];
 				dockerHost.images = [];
 				DockerData.dockerHosts.unshift(dockerHost);
+				DockerData.curDockerIdx = "0";
 			};
 
 			$scope.delDocker = function(idx) {
