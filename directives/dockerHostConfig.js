@@ -3,8 +3,8 @@ app
 .controller("dockerHostConfigCtrl", function() {})
 
 .directive("dockerHostConfig"
-	, [       "$rootScope", "DockerData", "DockerHost"
-	, function($rootScope,   DockerData,   DockerHost) {
+	, [       "$rootScope", "$modal", "DockerData", "DockerHost"
+	, function($rootScope,   $modal,   DockerData,   DockerHost) {
 	return {
 		restrict: "E",
 		templateUrl: "directives/dockerHostConfig.html",
@@ -44,6 +44,30 @@ app
 
 			$scope.reset = function() {
 				DockerData.reset();
+			};
+
+			$scope.openExportConfigModal = function() {
+				$modal.open({
+					templateUrl: "index/ExportConfigModalContent.html",
+					controller: "ExportConfigModalCtrl"
+				});
+			};
+
+			$scope.openImportConfigModal = function() {
+				$modal.open({
+					templateUrl: "index/ImportConfigModalContent.html",
+					controller: "ImportConfigModalCtrl"
+				})
+				.result
+					.then(function(data) {
+						DockerData.curDockerIdx = -1;
+						DockerData.dockerHosts.splice(0);
+						angular.forEach(data.config, function(dockerHostConfig) {
+							var dockerHost = new DockerHost(dockerHostConfig);
+							DockerData.dockerHosts.push(dockerHost);
+							DockerData.curDockerIdx = "0";
+						});
+					});
 			};
 
 			$rootScope.$on("ConfigCtrl.setDocker", function(e, idx) {
