@@ -9,10 +9,14 @@ app
 		PortBindings: {},
 		PublishAllPorts: true,
 		Privileged: false,
-		VolumesFrom: []
+		VolumesFrom: [],
+		Links: []
 	};
 	$scope.PortBindings = [{}];
-	$scope.VolumesFrom = [{}];
+	$scope.form = {
+		VolumesFrom: [{}],
+		Links: [{}]
+	};
 
 	$scope.ok = function () {
 		var binds = [];
@@ -43,15 +47,25 @@ app
 			}
 		});
 
-		angular.forEach($scope.VolumesFrom, function(v) {
-			if (v) {
-				if (v.name) {
-					var vol = v.name.trim();
-					if (v.ro) {
-						vol += ":ro";
-					}
-					$scope.param.VolumesFrom.push(vol);
+		$scope.param.VolumesFrom = [];
+		angular.forEach($scope.form.VolumesFrom, function(vol) {
+			vol.from = vol.from || "";
+			if (vol.from) {
+				if (vol.ro) {
+					vol.from += ":ro";
 				}
+				$scope.param.VolumesFrom.push(vol.from);
+			}
+		});
+
+		$scope.param.Links = [];
+		angular.forEach($scope.form.Links, function(link) {
+			link.from = link.from || "";
+			if (link.from) {
+				link.from = link.from.replace(/^\//, "");
+				link.to = link.to || link.from;
+				link.to = link.to.replace(/^\//, "");
+				$scope.param.Links.push(link.from + ":" + link.to);
 			}
 		});
 

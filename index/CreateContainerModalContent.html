@@ -34,7 +34,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th translate>Cmd</th>
+				<th>Cmd</th>
 				<td>
 					<input type="text" ng-model="param.Cmd" placeholder="/bin/bash"/>
 					<button ng-click="param.Cmd = '/bin/bash'" class="btn btn-info btn-xs">
@@ -43,25 +43,25 @@
 				</td>
 			</tr>
 			<tr>
-				<th translate>ExposedPorts</th>
+				<th>ExposedPorts</th>
 				<td>
 					<input type="text" ng-model="form.ExposedPorts" placeholder="22 80 8080 53/udp"/>
 				</td>
 			</tr>
 			<tr ng-repeat="key in ['Hostname', 'User']" ng-show="moreOptions">
-				<th translate>{{key}}</th>
+				<th>{{key}}</th>
 				<td>
 					<input type="text" ng-model="param[key]"/>
 				</td>
 			</tr>
 			<tr ng-repeat="key in ['Memory', 'MemorySwap']" ng-show="moreOptions">
-				<th translate>{{key}}</th>
+				<th>{{key}}</th>
 				<td>
 					<input type="number" ng-model="param[key]"/>
 				</td>
 			</tr>
 			<tr ng-repeat="key in ['AttachStdin', 'AttachStdout', 'AttachStderr', 'Tty', 'OpenStdin', 'StdinOnce']" ng-show="moreOptions">
-				<th translate>{{key}}</th>
+				<th>{{key}}</th>
 				<td>
 					<input type="checkbox" ng-model="param[key]"/>
 				</td>
@@ -72,33 +72,55 @@
 				</td>
 			</tr>
 			<tr>
-				<th translate>Volumes</th>
+				<th>Volumes</th>
 				<td>
 					<input type="text" ng-model="extra.Volumes" placeholder="/host/path:/container/path" style="width: 20em;"/>
 				</td>
 			</tr>
 			<tr>
-				<th translate>VolumesFrom</th>
+				<th style="vertical-align: top;">VolumesFrom</th>
 				<td>
-					<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.dockerHost.containers" ng-model="extra.VolumesFrom">
-						<option value="">-- Container --</option>
-					</select>
+					<div ng-repeat="vol in form.VolumesFrom track by $index">
+						<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.dockerHost.containers" ng-model="vol.from">
+							<option value="">-- Container --</option>
+						</select>
+						<label tooltip="{{'Readonly' | translate}}" style="margin-left: 1em; margin-right: 1em;">
+							<input type="checkbox" ng-model="vol.ro"/>
+							<span>RO</span>
+						</label>
+						<span ng-click="form.VolumesFrom.push({})" ng-show="$index === 0" class="glyphicon glyphicon-plus"></span>
+						<span ng-click="form.VolumesFrom.splice($index, 1)" ng-show="$index > 0" class="glyphicon glyphicon-remove"></span>
+					</div>
 				</td>
 			</tr>
 			<tr>
-				<th translate>Ports</th>
+				<th style="vertical-align: top;">Links</th>
+				<td>
+					<div ng-repeat="link in form.Links track by $index">
+						<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.dockerHost.containers | filter:{running: true}" ng-model="link.from">
+							<option value="">-- Container --</option>
+						</select>
+						<span>:</span>
+						<input type="text" ng-model="link.to" placeholder="{{link.from}}"/>
+						<span ng-click="form.Links.push({})" ng-show="$index === 0" class="glyphicon glyphicon-plus"></span>
+						<span ng-click="form.Links.splice($index, 1)" ng-show="$index > 0" class="glyphicon glyphicon-remove"></span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>Ports</th>
 				<td>
 					<input type="text" ng-model="extra.Ports" placeholder="49080:80 hostPort:containerPort" style="width: 20em;"/>
 				</td>
 			</tr>
 			<tr>
-				<th translate>PublishAllPorts</th>
+				<th>PublishAllPorts</th>
 				<td>
 					<input type="checkbox" ng-model="startconfig.PublishAllPorts"/>
 				</td>
 			</tr>
 			<tr ng-show="moreOptions">
-				<th translate>Privileged</th>
+				<th>Privileged</th>
 				<td>
 					<input type="checkbox" ng-model="startconfig.Privileged"/>
 				</td>

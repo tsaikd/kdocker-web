@@ -214,20 +214,24 @@ app
 					});
 			};
 
-			$scope.openStartContainerModal = function(container) {
-				$modal.open({
-					templateUrl: "index/StartContainerModalContent.html",
-					controller: "StartContainerModalCtrl",
-					resolve: {
-						container: function() {
-							return container;
+			$scope.openStartContainerModal = function(evt, container) {
+				if (evt.shiftKey) {
+					$modal.open({
+						templateUrl: "index/StartContainerModalContent.html",
+						controller: "StartContainerModalCtrl",
+						resolve: {
+							container: function() {
+								return container;
+							}
 						}
-					}
-				})
-				.result
-					.then(function(data) {
-						$scope.start(data.container, data.param);
-					});
+					})
+					.result
+						.then(function(data) {
+							$scope.start(data.container, data.param);
+						});
+				} else {
+					$scope.start(container, {});
+				}
 			};
 
 			$scope.openInspectContainerModal = function(container) {

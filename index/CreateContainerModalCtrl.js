@@ -18,6 +18,7 @@ app
 		OpenStdin: true,
 		StdinOnce: false,
 		Volumes: {},
+		Links: [],
 		ExposedPorts: {}
 	};
 	$scope.startconfig = {
@@ -25,16 +26,18 @@ app
 		PortBindings: {},
 		PublishAllPorts: true,
 		Privileged: false,
-		VolumesFrom: []
+		VolumesFrom: [],
+		Links: []
 	};
 	$scope.extra = {
 		Volumes: "",
-		VolumesFrom: "",
 		Ports: ""
 	};
 	$scope.moreOptions = false;
 	$scope.form = {
-		ExposedPorts: ""
+		ExposedPorts: "",
+		VolumesFrom: [{}],
+		Links: [{}]
 	};
 
 	if (DockerData.dockerHost.lastCreateImage) {
@@ -46,12 +49,25 @@ app
 	$scope.ok = function () {
 		DockerData.dockerHost.lastCreateImage = $scope.param.Image;
 		DockerData.save();
+
 		angular.forEach($scope.form.ExposedPorts.split(/\s+/), function(v) {
 			v = (v || "").trim();
 			if (v) {
 				$scope.param.ExposedPorts[v] = {};
 			}
 		});
+
+		$scope.startconfig.Links = [];
+		angular.forEach($scope.form.Links, function(link) {
+			link.from = link.from || "";
+			if (link.from) {
+				link.from = link.from.replace(/^\//, "");
+				link.to = link.to || link.from;
+				link.to = link.to.replace(/^\//, "");
+				$scope.startconfig.Links.push(link.from + ":" + link.to);
+			}
+		});
+
 		angular.forEach($scope.extra.Volumes.split(/\s+/), function(v) {
 			v = (v || "").trim();
 			if (v) {
@@ -63,9 +79,18 @@ app
 				}
 			}
 		});
-		if ($scope.extra.VolumesFrom) {
-			$scope.startconfig.VolumesFrom = [$scope.extra.VolumesFrom.trim()];
-		}
+
+		$scope.startconfig.VolumesFrom = [];
+		angular.forEach($scope.form.VolumesFrom, function(vol) {
+			vol.from = vol.from || "";
+			if (vol.from) {
+				if (vol.ro) {
+					vol.from += ":ro";
+				}
+				$scope.startconfig.VolumesFrom.push(vol.from);
+			}
+		});
+
 		angular.forEach($scope.extra.Ports.split(/\s+/), function(v) {
 			v = (v || "").trim();
 			if (v) {
@@ -81,6 +106,7 @@ app
 				}
 			}
 		});
+
 		$modalInstance.close({
 			param: $scope.param,
 			startconfig: $scope.startconfig

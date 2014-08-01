@@ -43,31 +43,33 @@
 				</td>
 			</tr>
 			<tr>
-				<th style="vertical-align: top;">
-					<div>VolumesFrom</div>
-					<div><button ng-click="param.VolumesFrom.push('')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></button></div>
-				</th>
+				<th style="vertical-align: top;">VolumesFrom</th>
 				<td>
-					<table style="width: 100%;">
-						<tr ng-repeat="vol in VolumesFrom">
-							<td>
-								<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.dockerHost.containers" ng-model="vol.name">
-									<option value="">-- Container --</option>
-								</select>
-							</td>
-							<td style="white-space: nowrap;">
-								<label tooltip="{{'Readonly' | translate}}">
-									<span>RO</span>
-									<input type="checkbox" ng-model="vol.ro"/>
-								</label>
-							</td>
-							<td style="width: 100%;">
-							</td>
-							<td style="width: 1em;">
-								<button ng-click="VolumesFrom.splice($index, 1)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
-							</td>
-						</tr>
-					</table>
+					<div ng-repeat="vol in form.VolumesFrom track by $index">
+						<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.dockerHost.containers" ng-model="vol.from">
+							<option value="">-- Container --</option>
+						</select>
+						<label tooltip="{{'Readonly' | translate}}" style="margin-left: 1em; margin-right: 1em;">
+							<input type="checkbox" ng-model="vol.ro"/>
+							<span>RO</span>
+						</label>
+						<span ng-click="form.VolumesFrom.push({})" ng-show="$index === 0" class="glyphicon glyphicon-plus"></span>
+						<span ng-click="form.VolumesFrom.splice($index, 1)" ng-show="$index > 0" class="glyphicon glyphicon-remove"></span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th style="vertical-align: top;">Links</th>
+				<td>
+					<div ng-repeat="link in form.Links track by $index">
+						<select ng-options="container.Names[0] as container.Names[0] for container in DockerData.dockerHost.containers | filter:{running: true}" ng-model="link.from">
+							<option value="">-- Container --</option>
+						</select>
+						<span>:</span>
+						<input type="text" ng-model="link.to" placeholder="{{link.from}}"/>
+						<span ng-click="form.Links.push({})" ng-show="$index === 0" class="glyphicon glyphicon-plus"></span>
+						<span ng-click="form.Links.splice($index, 1)" ng-show="$index > 0" class="glyphicon glyphicon-remove"></span>
+					</div>
 				</td>
 			</tr>
 			<tr>
