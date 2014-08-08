@@ -6,9 +6,9 @@
 		<button ng-click="curtab=null;reload($event)" tooltip="{{'Press [SHIFT] to reload image list too.' | translate}}" class="btn btn-default">
 			<span ng-class="{spinner: loadingCtrl.container}" class="glyphicon glyphicon-refresh"></span>
 		</button>
-		<button ng-show="curtab" ng-click="attach()" class="btn btn-primary" translate>Back</button>
+		<button ng-show="curtab" ng-click="attach($event)" class="btn btn-primary" translate>Back</button>
 		<span ng-repeat="c in tabs">
-			<button class="btn btn-primary" title="{{c.Id}}" ng-click="attach(c)">{{c.name}}</button>
+			<button class="btn btn-primary" title="{{c.Id}}" ng-click="attach($event, c)">{{c.name}}</button>
 			<button class="btn btn-primary" ng-click="closeContainer(c)">X</button>
 		</span>
 		<button ng-click="openCreateContainerModal()" class="btn btn-info" translate>Create</button>
