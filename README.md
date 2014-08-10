@@ -21,7 +21,7 @@ http://tsaikd.org/kdocker-web/
 * /etc/default/docker
 
 ```
-DOCKER_OPTS="--api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock"
+DOCKER_OPTS="--api-enable-cors=true -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock"
 ```
 
 ## Config Docker Startup Options (Boot2Docker on Mac), thanks [scourgen](https://github.com/tsaikd/kdocker-web/issues/2)
@@ -65,7 +65,7 @@ coreos:
         Description=Docker Socket for the API
 
         [Socket]
-        ListenStream=4243
+        ListenStream=2375
         Service=docker.service
         BindIPv6Only=both
 
@@ -118,11 +118,11 @@ Please use the firewall for security by hand.
 * /etc/default/docker
 
 ```
-DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock"
+DOCKER_OPTS="-api-enable-cors=true -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock"
 ```
 
 	* -api-enable-cors=true 是為了要在 Browser 直接連 [Docker Remote API]
-	* -H tcp://0.0.0.0:4243 是要監聽所有網卡的 4243 Port
+	* -H tcp://0.0.0.0:2375 是要監聽所有網卡的 2375 Port
 	* 更多的設定項目請參考 [Docker] 官網
 
 ## Docker 設定 (Boot2Docker on Mac), 感謝 [scourgen](https://github.com/tsaikd/kdocker-web/issues/2)
@@ -166,7 +166,7 @@ coreos:
         Description=Docker Socket for the API
 
         [Socket]
-        ListenStream=4243
+        ListenStream=2375
         Service=docker.service
         BindIPv6Only=both
 
