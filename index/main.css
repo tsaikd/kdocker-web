@@ -11,6 +11,7 @@
     -moz-transform: rotate(360deg);
     -o-transform: rotate(360deg);
     transform: rotate(360deg); } }
+
 @-moz-keyframes spinner {
   0% {
     -webkit-transform: rotate(0deg);
@@ -23,6 +24,7 @@
     -moz-transform: rotate(360deg);
     -o-transform: rotate(360deg);
     transform: rotate(360deg); } }
+
 @-o-keyframes spinner {
   0% {
     -webkit-transform: rotate(0deg);
@@ -35,6 +37,7 @@
     -moz-transform: rotate(360deg);
     -o-transform: rotate(360deg);
     transform: rotate(360deg); } }
+
 @keyframes spinner {
   0% {
     -webkit-transform: rotate(0deg);
@@ -47,6 +50,7 @@
     -moz-transform: rotate(360deg);
     -o-transform: rotate(360deg);
     transform: rotate(360deg); } }
+
 .spinner {
   -webkit-animation: spinner 2s infinite linear;
   -moz-animation: spinner 2s infinite linear;
@@ -72,6 +76,7 @@
     -moz-transform: rotate(-15deg);
     -o-transform: rotate(-15deg);
     transform: rotate(-15deg); } }
+
 @-moz-keyframes shaker {
   0% {
     -webkit-transform: rotate(-15deg);
@@ -90,6 +95,7 @@
     -moz-transform: rotate(-15deg);
     -o-transform: rotate(-15deg);
     transform: rotate(-15deg); } }
+
 @-o-keyframes shaker {
   0% {
     -webkit-transform: rotate(-15deg);
@@ -108,6 +114,7 @@
     -moz-transform: rotate(-15deg);
     -o-transform: rotate(-15deg);
     transform: rotate(-15deg); } }
+
 @keyframes shaker {
   0% {
     -webkit-transform: rotate(-15deg);
@@ -126,6 +133,7 @@
     -moz-transform: rotate(-15deg);
     -o-transform: rotate(-15deg);
     transform: rotate(-15deg); } }
+
 .shaker {
   -webkit-animation: shaker 2s infinite linear;
   -moz-animation: shaker 2s infinite linear;
