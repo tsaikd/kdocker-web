@@ -10,7 +10,8 @@ before_install:
   - gem install sass
 
 before_script:
-  - npm install -g grunt-cli
+  - npm install -g gulp
+  - npm update
 
 script:
-  - grunt
+  - gulp build
