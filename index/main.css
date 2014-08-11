@@ -164,20 +164,16 @@ html, body {
 .loading-block {
   background: #000; }
 
-.loading-block.ng-hide-add,
-.loading-block.ng-hide-remove {
+.loading-block.ng-hide-add, .loading-block.ng-hide-remove {
   -webkit-transition: all linear 0.5s;
   -moz-transition: all linear 0.5s;
   -o-transition: all linear 0.5s;
   transition: all linear 0.5s; }
 
-.loading-block.ng-hide-add.ng-hide-add-active,
-.loading-block.ng-hide-remove {
+.loading-block.ng-hide-add.ng-hide-add-active, .loading-block.ng-hide-remove {
   opacity: 0; }
 
-.loading-block,
-.loading-block.ng-hide-add,
-.loading-block.ng-hide-remove.ng-hide-remove-active {
+.loading-block, .loading-block.ng-hide-add, .loading-block.ng-hide-remove.ng-hide-remove-active {
   opacity: 0.5; }
 
 *[ng-controller="ConfigCtrl"] .table > tbody > tr > th {
