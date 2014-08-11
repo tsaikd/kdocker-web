@@ -1,0 +1,46 @@
+<style type="text/css">
+
+.CommitContainerModal th,
+.CommitContainerModal td {
+	padding: 0.2em 0.5em;
+}
+
+.CommitContainerModal input[type="text"] {
+	text-indent: 0.3em;
+}
+
+</style>
+
+<div class="CommitContainerModal">
+	<div class="modal-header">
+		<h3 translate>Commit container to image</h3>
+	</div>
+	<div class="modal-body">
+		<table>
+			<tr>
+				<th translate>Name</th>
+				<td>{{container.Names[0]}}</td>
+			</tr>
+			<tr>
+				<th translate>Image</th>
+				<td>{{container.Image}}</td>
+			</tr>
+			<tr>
+				<th translate>Repo</th>
+				<td>
+					<input type="text" ng-model="query.repo"/>
+				</td>
+			</tr>
+			<tr>
+				<th translate>Tag</th>
+				<td>
+					<input type="text" ng-model="query.tag"/>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="ok()" translate>OK</button>
+		<button class="btn btn-warning" ng-click="cancel()" translate>Cancel</button>
+	</div>
+</div>

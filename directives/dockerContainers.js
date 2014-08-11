@@ -154,6 +154,16 @@ app
 				});
 			};
 
+			$scope.commit = function(container, query, param) {
+				$http
+				.post(DockerData.dockerHost.apiurl + "/commit?container=" + container.Id + "&repo=" + query.repo + "&tag=" + query.tag, param, {
+					errmsg: "Commit container failed"
+				})
+				.success(function() {
+					$rootScope.$emit("reload-image");
+				});
+			};
+
 			$scope.setupWebsocket = function(evt, container) {
 				if (!document.getElementById(container.Id + "_terminal")) {
 					setTimeout(function() {
@@ -251,6 +261,22 @@ app
 						}
 					});
 				});
+			};
+
+			$scope.openCommitContainerModal = function(container) {
+				$modal.open({
+					templateUrl: "index/CommitContainerModalContent.html",
+					controller: "CommitContainerModalCtrl",
+					resolve: {
+						container: function() {
+							return container;
+						}
+					}
+				})
+				.result
+					.then(function(data) {
+						$scope.commit(container, data.query, data.param);
+					});
 			};
 
 			$scope.closeContainer = function(container) {

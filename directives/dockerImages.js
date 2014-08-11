@@ -91,8 +91,14 @@ app
 							errmsg: "Upload image blob failed"
 						})
 						.success(function() {
+							var repotag = "";
+							if (image.RepoTags && image.RepoTags[0]) {
+								repotag = image.RepoTags[0];
+							}
+							var repo = repotag.replace(/:.*?$/, "");
+							var tag = repotag.replace(/^.*:/, "");
 							$http
-							.post(docker.apiurl + "/images/" + image.Id + "/tag?repo=" + image.RepoTags[0], {}, {
+							.post(docker.apiurl + "/images/" + image.Id + "/tag?repo=" + repo + "&tag=" + tag, {}, {
 								errmsg: "Tag image failed"
 							})
 							.success(function() {
