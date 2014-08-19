@@ -6,6 +6,9 @@
 		<button ng-click="reload($event)" tooltip="{{'Press [SHIFT] to reload container list too.' | translate}}" class="btn btn-default">
 			<span ng-class="{spinner: loadingCtrl.image}" class="glyphicon glyphicon-refresh"></span>
 		</button>
+		<button ng-click="clean()" tooltip="{{'Clean all images without tag.' | translate}}" class="btn btn-danger">
+			<span class="glyphicon glyphicon-trash"></span>
+		</button>
 	</div>
 	<div style="position: relative;">
 		<table class="table table-bordered table-striped table-hover table-condensed">

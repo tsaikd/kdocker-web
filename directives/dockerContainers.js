@@ -32,6 +32,9 @@ app
 				if (!DockerData.dockerHost.valid) {
 					return;
 				}
+				if ($scope.loadingCtrl.container) {
+					return;
+				}
 				$scope.loadingCtrl.container = true;
 				$scope.predicate = "";
 				$scope.reverse = false;

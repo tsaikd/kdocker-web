@@ -29,6 +29,9 @@ app
 				if (!DockerData.dockerHost.valid) {
 					return;
 				}
+				if ($scope.loadingCtrl.image) {
+					return;
+				}
 				$scope.loadingCtrl.image = true;
 				$scope.predicate = "";
 				$scope.reverse = false;
@@ -108,6 +111,14 @@ app
 							});
 						});
 					});
+				});
+			};
+
+			$scope.clean = function() {
+				angular.forEach(DockerData.dockerHost.images, function(image) {
+					if (image && image.RepoTags && image.RepoTags.length === 1 && image.RepoTags[0] === "<none>:<none>") {
+						$scope.remove(image);
+					}
 				});
 			};
 
