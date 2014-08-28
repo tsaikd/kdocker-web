@@ -51,6 +51,7 @@
 						<span>{{img.Created * 1000 | date:'yyyy-MM-dd HH:mm'}}</span>
 					</td>
 					<td>
+						<button ng-click="openCreateContainerModal(img)" class="btn btn-primary btn-xs" translate>Create</button>
 						<button ng-click="openCopyImageModal(img)" ng-show="DockerData.dockerHosts.length > 1" class="btn btn-info btn-xs" translate>Copy</button>
 						<button ng-click="remove(img)" class="btn btn-danger btn-xs" translate>Remove</button>
 					</td>

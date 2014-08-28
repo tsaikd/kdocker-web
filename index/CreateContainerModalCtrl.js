@@ -1,7 +1,8 @@
 app
 
-.controller("CreateContainerModalCtrl", ["$scope", "$modalInstance", "DockerData"
-	, function($scope, $modalInstance, DockerData) {
+.controller("CreateContainerModalCtrl"
+	, [       "$scope", "$modalInstance", "DockerData", "image"
+	, function($scope,   $modalInstance,   DockerData,   image) {
 
 	$scope.DockerData = DockerData;
 	$scope.param = {
@@ -40,7 +41,9 @@ app
 		Links: [{}]
 	};
 
-	if (DockerData.dockerHost.lastCreateImage) {
+	if (image && image.Id) {
+		$scope.param.Image = image.Id;
+	} else if (DockerData.dockerHost.lastCreateImage) {
 		$scope.param.Image = DockerData.dockerHost.lastCreateImage;
 	} else if (DockerData.dockerHost.images[0]) {
 		$scope.param.Image = DockerData.dockerHost.images[0].Id;

@@ -3,8 +3,8 @@ app
 .controller("dockerContainersCtrl", function() {})
 
 .directive("dockerContainers"
-	, [       "$filter", "$http", "DockerData", "$modal", "$rootScope"
-	, function($filter,   $http,   DockerData,   $modal,   $rootScope) {
+	, [       "$filter", "$http", "DockerData", "$modal", "$rootScope", "DockerAction"
+	, function($filter,   $http,   DockerData,   $modal,   $rootScope,   DockerAction) {
 	return {
 		restrict: "E",
 		templateUrl: "directives/dockerContainers.html",
@@ -12,6 +12,7 @@ app
 
 			var $scope = scope;
 			$scope.DockerData = DockerData;
+			$scope.DockerAction = DockerAction;
 			DockerData.ContainerCtrl = $scope;
 
 			$scope.tabs = [];
@@ -107,16 +108,6 @@ app
 				}
 			};
 
-			$scope.start = function(container, param) {
-				$http
-				.post(DockerData.dockerHost.apiurl + "/containers/" + container.Id + "/start", param, {
-					errmsg: "Start container failed"
-				})
-				.success(function() {
-					$scope.reload();
-				});
-			};
-
 			$scope.stop = function(container) {
 				$http
 				.post(DockerData.dockerHost.apiurl + "/containers/" + container.Id + "/stop", {}, {
@@ -207,23 +198,9 @@ app
 			};
 
 			$scope.openCreateContainerModal = function() {
-				$modal.open({
-					templateUrl: "index/CreateContainerModalContent.html",
-					controller: "CreateContainerModalCtrl"
-				})
-				.result
-					.then(function(data) {
-						var query = "";
-						if (data.param.Name) {
-							query = "?name=" + data.param.Name;
-						}
-						$http
-						.post(DockerData.dockerHost.apiurl + "/containers/create" + query, data.param, {
-							errmsg: "Create container failed"
-						})
-						.success(function(retcontainer) {
-							$scope.start(retcontainer, data.startconfig);
-						});
+				DockerAction.openCreateContainerModal()
+					.then(function() {
+						$scope.reload();
 					});
 			};
 
@@ -240,10 +217,10 @@ app
 					})
 					.result
 						.then(function(data) {
-							$scope.start(data.container, data.param);
+							DockerAction.containerStart(data.container, data.param);
 						});
 				} else {
-					$scope.start(container, {});
+					DockerAction.containerStart(container, {});
 				}
 			};
 

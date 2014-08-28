@@ -3,8 +3,8 @@ app
 .controller("dockerImagesCtrl", function() {})
 
 .directive("dockerImages"
-	, [       "DockerData", "$http", "$rootScope", "$modal", "$filter"
-	, function(DockerData,   $http,   $rootScope,   $modal,   $filter) {
+	, [       "DockerData", "$http", "$rootScope", "$modal", "$filter", "DockerAction"
+	, function(DockerData,   $http,   $rootScope,   $modal,   $filter,   DockerAction) {
 	return {
 		restrict: "E",
 		templateUrl: "directives/dockerImages.html",
@@ -120,6 +120,10 @@ app
 						$scope.remove(image);
 					}
 				});
+			};
+
+			$scope.openCreateContainerModal = function(image) {
+				DockerAction.openCreateContainerModal(image);
 			};
 
 			$scope.openCopyImageModal = function(image) {
