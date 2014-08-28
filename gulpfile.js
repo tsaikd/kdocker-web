@@ -25,7 +25,7 @@ var pkg = require("./package.json"),
 		"index.html": ["index.html"],
 		"index.src.html": ["index.src.html"],
 		"tmpl": ["directives/*.html", "index/*.html"],
-		"js": ["directives/*.js", "index/*.js", "lib/*.js", "!**/*.tmp.js"],
+		"js": ["config/*.js", "directives/*.js", "index/*.js", "services/*.js", "!**/*.tmp.js"],
 		"css": ["index/*.css"],
 		"sass": ["index/*.scss"]
 	};
