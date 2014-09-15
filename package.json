@@ -1,6 +1,6 @@
 {
   "name": "kdocker-web",
-  "version": "0.1.14-1",
+  "version": "0.1.14-2",
   "description": "Simple Docker Web UI",
   "devDependencies": {
     "dateformat": ">=0",
