@@ -19,6 +19,29 @@ app
 		return deferred.promise;
 	};
 
+	DockerAction.prototype.tagImage = function(dockerHost, imageid, repotag) {
+		var deferred = $q.defer();
+		var ma = repotag.match(/(.*):(.*?)$/);
+		var repo, tag;
+		if (ma) {
+			repo = ma[1];
+			tag = ma[2] || "latest";
+		} else {
+			repo = repotag;
+			tag = "latest";
+		}
+		$http
+		.post(dockerHost.apiurl + "/images/" + imageid + "/tag?repo=" + repo + "&tag=" + tag, {}, {
+			errmsg: "Tag image failed"
+		})
+		.success(function() {
+			// clean docker images cache
+			dockerHost.images.splice(0);
+			deferred.resolve();
+		});
+		return deferred.promise;
+	};
+
 	DockerAction.prototype.openCreateContainerModal = function(image) {
 		var deferred = $q.defer();
 		$modal.open({
@@ -45,6 +68,26 @@ app
 						.then(function() {
 							deferred.resolve();
 						});
+				});
+			});
+		return deferred.promise;
+	};
+
+	DockerAction.prototype.openTagImageModal = function(image) {
+		var deferred = $q.defer();
+		$modal.open({
+			templateUrl: "index/TagImageModalContent.html",
+			controller: "TagImageModalCtrl",
+			resolve: {
+				image: function() {
+					return image;
+				}
+			}
+		})
+		.result
+			.then(function(data) {
+				$scope.tagImage(DockerData.dockerHost, data.query.Id, data.query.repotag).then(function() {
+					deferred.resolve();
 				});
 			});
 		return deferred.promise;

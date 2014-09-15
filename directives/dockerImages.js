@@ -3,8 +3,8 @@ app
 .controller("dockerImagesCtrl", function() {})
 
 .directive("dockerImages"
-	, [       "DockerData", "$http", "$rootScope", "$modal", "$filter", "DockerAction"
-	, function(DockerData,   $http,   $rootScope,   $modal,   $filter,   DockerAction) {
+	, [       "DockerData", "$http", "$rootScope", "$modal", "$filter", "DockerAction", "$q"
+	, function(DockerData,   $http,   $rootScope,   $modal,   $filter,   DockerAction,   $q) {
 	return {
 		restrict: "E",
 		templateUrl: "directives/dockerImages.html",
@@ -12,6 +12,7 @@ app
 
 			var $scope = scope;
 			$scope.DockerData = DockerData;
+			$scope.DockerAction = DockerAction;
 			DockerData.ImageCtrl = $scope;
 			$scope.predicate = "";
 			$scope.reverse = false;
@@ -94,19 +95,11 @@ app
 							errmsg: "Upload image blob failed"
 						})
 						.success(function() {
-							var repotag = "";
-							if (image.RepoTags && image.RepoTags[0]) {
-								repotag = image.RepoTags[0];
-							}
-							var repo = repotag.replace(/:.*?$/, "");
-							var tag = repotag.replace(/^.*:/, "");
-							$http
-							.post(docker.apiurl + "/images/" + image.Id + "/tag?repo=" + repo + "&tag=" + tag, {}, {
-								errmsg: "Tag image failed"
-							})
-							.success(function() {
-								// clean docker images cache
-								docker.images.splice(0);
+							var promises = [];
+							angular.forEach(image.RepoTags, function(repotag) {
+								promises.push(DockerAction.tagImage(docker, image.Id, repotag));
+							});
+							$q.all(promises).then(function() {
 								alert($filter("translate")("Image copyed"));
 							});
 						});
@@ -136,6 +129,12 @@ app
 						$scope.copyImage(image, data.dockers);
 					});
 			};
+
+			$scope.openTagImageModal = function(image) {
+				DockerAction.openTagImageModal(image).then(function() {
+					$scope.reload();
+				});
+			}
 
 			$rootScope.$on("reload-image", function() {
 				$scope.reload();
