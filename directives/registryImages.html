@@ -1,0 +1,51 @@
+<div>
+	<div class="tab-header-bar">
+		<span translate>Images</span>
+		<span>in</span>
+		<select-registry></select-registry>
+		<button ng-click="reload($event)" class="btn btn-default">
+			<span ng-class="{spinner: loadingCtrl.image}" class="glyphicon glyphicon-refresh"></span>
+		</button>
+	</div>
+	<div style="position: relative;">
+		<table class="table table-bordered table-striped table-hover table-condensed">
+			<thead>
+				<tr>
+					<th>
+						<span translate>ID</span>
+					</th>
+					<th ng-click="sortConfig('name')">
+						<span translate>Repo</span>
+						<span ng-show="predicate == 'name'" ng-class="{'glyphicon-chevron-down': reverse, 'glyphicon-chevron-up': !reverse}" class="glyphicon"></span>
+					</th>
+					<th>
+						<span translate>Tags</span>
+					</th>
+					<th translate>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="img in DockerData.registryHost.images | orderBy:predicate:reverse">
+					<td>
+						<div ng-repeat="(tag, id) in img.tags">
+							<span title="{{id}}" style="white-space: nowrap;">{{id.substr(0, 8)}} ...</span>
+						</div>
+					</td>
+					<td>
+						<span>{{img.name}}</span>
+					</td>
+					<td>
+						<div ng-repeat="(tag, id) in img.tags">
+							<span>{{tag}}</span>
+							<button ng-click="removeTag(img, tag)" class="btn btn-danger btn-xs" translate>X</button>
+						</div>
+					</td>
+					<td>
+						<button ng-click="remove(img)" class="btn btn-danger btn-xs" translate>Remove</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div ng-show="loading" class="loading-block" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></div>
+	</div>
+</div>

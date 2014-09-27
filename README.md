@@ -81,6 +81,19 @@ coreos:
         ExecStart=/usr/bin/systemctl enable docker-tcp.socket
 ```
 
+## Config private docker registry
+
+* `WARNING`: Release 0.8.1 is not supported CORS well, if you want to try, build it from github yourself, or wait for >=0.8.2 release
+
+```
+docker run \
+  -e CORS_ORIGINS="'*'" \
+  -p 5000:5000 \
+  registry:latest
+```
+
+* see https://github.com/docker/docker-registry for more information
+
 ## Install
 
 In fact, you can open http://tsaikd.org/kdocker-web/ instead of installation. :D
@@ -181,6 +194,19 @@ coreos:
         Type=oneshot
         ExecStart=/usr/bin/systemctl enable docker-tcp.socket
 ```
+
+## 設定私人 Docker Registry
+
+* `注意`: 發行版 0.8.1 還沒有把 CORS 完全做好，想要嘗鮮的話就自己抓 github 上的程式碼來 build 吧，不然就只好乖乖等到 >=0.8.2 版本釋出了
+
+```
+docker run \
+  -e CORS_ORIGINS="'*'" \
+  -p 5000:5000 \
+  registry:latest
+```
+
+* 查閱官方文件 https://github.com/docker/docker-registry 可以看到更多參數的說明
 
 ## 安裝
 

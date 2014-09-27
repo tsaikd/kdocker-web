@@ -1,8 +1,8 @@
 app
 
 .factory("DockerData"
-	, [       "localStorageService", "DockerHost"
-	, function(localStorageService,   DockerHost) {
+	, [       "localStorageService", "DockerHost", "RegistryHost"
+	, function(localStorageService,   DockerHost,   RegistryHost) {
 
 	function DockerData() {
 		var $scope = this;
@@ -23,43 +23,65 @@ app
 		function init() {
 			$scope.curDockerIdx = -1;
 			$scope.dockerHosts = [];
+			$scope.curRegistryIdx = -1;
+			$scope.registryHosts = [];
 		};
 
 		$scope.load = function() {
+			var key, value;
+
 			init();
-			var keys = ["curDockerIdx"];
-			angular.forEach(keys, function(key) {
-				var value = localStorageService.get(key);
-				if (value !== undefined && value !== null) {
-					$scope[key] = "" + value;
-				}
-			});
-			var keys = ["dockerHosts"];
-			angular.forEach(keys, function(key) {
-				var values = localStorageService.get(key);
-				if (values !== undefined && values !== null) {
-					$scope[key] = [];
-					angular.forEach(values, function(value) {
-						$scope[key].push(new DockerHost(value));
-					});
-				}
-			});
+
+			key = "curDockerIdx";
+			value = localStorageService.get(key);
+			if (value !== undefined && value !== null) {
+				$scope[key] = "" + value;
+			}
+
+			key = "dockerHosts";
+			value = localStorageService.get(key);
+			if (value !== undefined && value !== null) {
+				angular.forEach(value, function(val) {
+					$scope[key].push(new DockerHost(val));
+				});
+			}
+
+			key = "curRegistryIdx";
+			value = localStorageService.get(key);
+			if (value !== undefined && value !== null) {
+				$scope[key] = "" + value;
+			}
+
+			key = "registryHosts";
+			value = localStorageService.get(key);
+			if (value !== undefined && value !== null) {
+				angular.forEach(value, function(val) {
+					$scope[key].push(new RegistryHost(val));
+				});
+			}
 		};
 		$scope.load();
 
 		$scope.save = function() {
-			var key = "curDockerIdx";
-			if ($scope[key] >= 0) {
-				localStorageService.set(key, $scope[key]);
-			} else {
-				localStorageService.remove(key);
-			}
-			key = "dockerHosts";
-			if ($scope[key] && $scope[key].length) {
-				localStorageService.set(key, $scope[key]);
-			} else {
-				localStorageService.remove(key);
-			}
+			var keys;
+
+			keys = ["curDockerIdx", "curRegistryIdx"];
+			angular.forEach(keys, function(key) {
+				if ($scope[key] >= 0) {
+					localStorageService.set(key, $scope[key]);
+				} else {
+					localStorageService.remove(key);
+				}
+			});
+
+			keys = ["dockerHosts", "registryHosts"];
+			angular.forEach(keys, function(key) {
+				if ($scope[key] && $scope[key].length) {
+					localStorageService.set(key, $scope[key]);
+				} else {
+					localStorageService.remove(key);
+				}
+			});
 		};
 
 		$scope.reset = function() {
@@ -95,6 +117,24 @@ app
 				emptyDockerHost = new DockerHost();
 			}
 			return emptyDockerHost;
+		});
+
+		var emptyRegistryHost = new RegistryHost();
+		$scope.__defineGetter__("registryHost", function() {
+			var $scope = this;
+			if ($scope.curRegistryIdx >= 0) {
+				if ($scope.registryHosts[$scope.curRegistryIdx]) {
+					return $scope.registryHosts[$scope.curRegistryIdx];
+				}
+				if ($scope.registryHosts[0]) {
+					$scope.curRegistryIdx = 0;
+					return $scope.registryHosts[$scope.curRegistryIdx];
+				}
+			}
+			if (emptyRegistryHost.valid) {
+				emptyRegistryHost = new DockerHost();
+			}
+			return emptyRegistryHost;
 		});
 
 	}

@@ -3,8 +3,8 @@ app
 .controller("dockerHostConfigCtrl", function() {})
 
 .directive("dockerHostConfig"
-	, [       "$rootScope", "$modal", "DockerData", "DockerHost"
-	, function($rootScope,   $modal,   DockerData,   DockerHost) {
+	, [       "$rootScope", "$modal", "DockerData", "DockerHost", "RegistryHost"
+	, function($rootScope,   $modal,   DockerData,   DockerHost,   RegistryHost) {
 	return {
 		restrict: "E",
 		templateUrl: "directives/dockerHostConfig.html",
@@ -12,6 +12,7 @@ app
 
 			var $scope = scope;
 			$scope.dockerHost = new DockerHost(DockerData.dockerHost);
+			$scope.registryHost = new RegistryHost(DockerData.registryHost);
 			$scope.DockerData = DockerData;
 			DockerData.ConfigCtrl = $scope;
 
@@ -32,13 +33,26 @@ app
 				$scope.dockerHost = new DockerHost(DockerData.dockerHost);
 			};
 
-			$scope.moveUp = function(idx) {
-				var list = DockerData.dockerHosts;
+			$scope.addRegistry = function() {
+				var registryHost = new RegistryHost($scope.registryHost);
+				DockerData.registryHosts.unshift(registryHost);
+				DockerData.curRegistryIdx = "0";
+			};
+
+			$scope.delRegistry = function(idx) {
+				DockerData.registryHosts.splice(idx, 1);
+			};
+
+			$scope.setRegistry = function(idx) {
+				DockerData.curRegistryIdx = "" + idx;
+				$scope.registryHost = new RegistryHost(DockerData.registryHost);
+			};
+
+			$scope.moveUp = function(list, idx) {
 				list.splice(idx-1, 0, list.splice(idx, 1)[0]);
 			};
 
-			$scope.moveDown = function(idx) {
-				var list = DockerData.dockerHosts;
+			$scope.moveDown = function(list, idx) {
 				list.splice(idx+1, 0, list.splice(idx, 1)[0]);
 			};
 

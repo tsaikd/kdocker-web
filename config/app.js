@@ -26,6 +26,9 @@ var app = angular.module("KDockerWeb", [
 	$rootScope.$watch("DockerData.curDockerIdx", save);
 	$rootScope.$watchCollection("DockerData.dockerHost", save);
 	$rootScope.$watchCollection("DockerData.dockerHosts", save);
+	$rootScope.$watch("DockerData.curRegistryIdx", save);
+	$rootScope.$watchCollection("DockerData.registryHost", save);
+	$rootScope.$watchCollection("DockerData.registryHosts", save);
 
 }])
 

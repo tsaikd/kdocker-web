@@ -3,6 +3,9 @@
 		<span translate>Config</span>
 		<button ng-click="reset()" class="btn btn-primary" translate>Reset</button>
 	</div>
+	<div style="clear: both;">
+		<span translate>Docker Host Config</span>
+	</div>
 	<table class="table table-hover table-condensed" style="float: left; width: auto; min-width: 20em;">
 		<tr>
 			<th translate>Nickname</th>
@@ -44,7 +47,7 @@
 			<li style="list-style-type: decimal;" translate>Click Reset button and try again.</li>
 		</ul>
 	</div>
-	<table ng-show="DockerData.dockerHosts.length" class="table table-bordered table-striped table-hover table-condensed" style="float: left; clear: both; margin-top: 2em; width: auto;">
+	<table ng-show="DockerData.dockerHosts.length" class="table table-bordered table-striped table-hover table-condensed" style="float: left; clear: both; width: auto;">
 		<thead>
 			<tr>
 				<th translate>Nickname</th>
@@ -62,8 +65,63 @@
 				<td ng-click="setDocker($index)" style="cursor: pointer;">{{dockerHost.images.length}}</td>
 				<td>
 					<button ng-click="delDocker($index)" class="btn btn-danger btn-xs" translate><span class="glyphicon glyphicon-remove"></span></button>
-					<button ng-click="moveUp($index)" ng-show="$index > 0" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-up"></span></button>
-					<button ng-click="moveDown($index)" ng-show="!$last" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-down"></span></button>
+					<button ng-click="moveUp(DockerData.dockerHosts, $index)" ng-show="$index > 0" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-up"></span></button>
+					<button ng-click="moveDown(DockerData.dockerHosts, $index)" ng-show="!$last" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-down"></span></button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div style="clear: both; float: left; margin-top: 2em;">
+		<span translate>Private Registry Config</span>
+	</div>
+	<table class="table table-hover table-condensed" style="float: left; width: auto; min-width: 20em; clear: left;">
+		<tr>
+			<th translate>Nickname</th>
+			<td style="white-space: nowrap;">
+				<input type="text" placeholder="My private registry" ng-model="registryHost.name" class="form-control input-sm"/>
+			</td>
+		</tr>
+		<tr>
+			<th><span translate>Hostname</span>*</th>
+			<td>
+				<input type="text" placeholder="127.0.0.1" ng-model="registryHost.host" class="form-control input-sm"/>
+			</td>
+		</tr>
+		<tr>
+			<th><span translate>Port</span>*</th>
+			<td>
+				<input type="number" placeholder="5000" ng-model="registryHost.port" class="form-control input-sm"/>
+			</td>
+		</tr>
+		<tr>
+			<th translate>API Version</th>
+			<td>
+				<input type="text" placeholder="v1" ng-model="registryHost.apiver" class="form-control input-sm"/>
+			</td>
+		</tr>
+		<tr>
+			<td ng-show="registryHost.apiurl" colspan="2">
+				<span>{{registryHost.apiurl}}</span>
+				<button ng-click="addRegistry()" class="btn btn-info btn-xs" style="float: right;" translate><span class="glyphicon glyphicon-plus"></span></button>
+			</td>
+		</tr>
+	</table>
+	<table ng-show="DockerData.registryHosts.length" class="table table-bordered table-striped table-hover table-condensed" style="float: left; clear: both; width: auto;">
+		<thead>
+			<tr>
+				<th translate>Nickname</th>
+				<th translate>API Url</th>
+				<th translate>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="registryHost in DockerData.registryHosts" ng-class="{info: (DockerData.curRegistryIdx == $index)}">
+				<td ng-click="setRegistry($index)" style="cursor: pointer;">{{registryHost.name}}</td>
+				<td ng-click="setRegistry($index)" style="cursor: pointer;">{{registryHost.apiurl}}</td>
+				<td>
+					<button ng-click="delRegistry($index)" class="btn btn-danger btn-xs" translate><span class="glyphicon glyphicon-remove"></span></button>
+					<button ng-click="moveUp(DockerData.registryHosts, $index)" ng-show="$index > 0" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-up"></span></button>
+					<button ng-click="moveDown(DockerData.registryHosts, $index)" ng-show="!$last" class="btn btn-info btn-xs" translate><span class="glyphicon glyphicon-arrow-down"></span></button>
 				</td>
 			</tr>
 		</tbody>

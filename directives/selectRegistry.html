@@ -1,0 +1,7 @@
+<span>
+	<span ng-show="!DockerData.registryHosts.length">{{DockerData.registryHost.name || DockerData.registryHost.apiurl}}</span>
+	<select ng-show="DockerData.registryHosts.length"
+		ng-options="idx as (registryHost.name || registryHost.apiurl) for (idx, registryHost) in DockerData.registryHosts"
+		ng-model="DockerData.curRegistryIdx">
+	</select>
+</span>

@@ -27,10 +27,14 @@
 		<script src="services/DockerData.js"></script>
 		<script src="services/DockerHost.js"></script>
 		<script src="services/DockerAction.js"></script>
+		<script src="services/RegistryAction.js"></script>
+		<script src="services/RegistryHost.js"></script>
 		<script src="directives/dockerContainers.js"></script>
 		<script src="directives/dockerHostConfig.js"></script>
 		<script src="directives/dockerImages.js"></script>
+		<script src="directives/registryImages.js"></script>
 		<script src="directives/selectDocker.js"></script>
+		<script src="directives/selectRegistry.js"></script>
 		<script src="index/CommitContainerModalCtrl.js"></script>
 		<script src="index/CreateContainerModalCtrl.js"></script>
 		<script src="index/StartContainerModalCtrl.js"></script>
@@ -69,13 +73,16 @@
 			<tr>
 				<td style="vertical-align: top; width: 10em; padding-top: 1em; line-height: 3em;">
 					<div>
-						<button ng-class="{'animated tada': loadingCtrl.container}" ng-model="tab" btn-radio="'Containers'" class="btn btn-primary">{{"Containers" | translate}}</button>
+						<button ng-class="{'animated tada': loadingCtrl.container}" ng-model="tab" btn-radio="'Containers'" class="btn btn-primary">Containers</button>
 					</div>
 					<div>
-						<button ng-class="{'animated tada': loadingCtrl.image}" ng-model="tab" btn-radio="'Images'" class="btn btn-primary">{{"Images" | translate}}</button>
+						<button ng-class="{'animated tada': loadingCtrl.image}" ng-model="tab" btn-radio="'Images'" class="btn btn-primary">Images</button>
 					</div>
 					<div>
-						<button ng-model="tab" btn-radio="'Config'" class="btn btn-primary">{{"Config" | translate}}</button>
+						<button ng-class="{'animated tada': loadingCtrl.registry}" ng-model="tab" btn-radio="'Registry'" class="btn btn-primary">Registry</button>
+					</div>
+					<div>
+						<button ng-model="tab" btn-radio="'Config'" class="btn btn-primary">{{ "Config" | translate }}</button>
 					</div>
 				</td>
 				<td style="vertical-align: top;">
@@ -90,6 +97,10 @@
 
 					<div ng-controller="dockerImagesCtrl" ng-show="tab == 'Images'">
 						<docker-images></docker-images>
+					</div>
+
+					<div ng-controller="dockerImagesCtrl" ng-show="tab == 'Registry'">
+						<registry-images></registry-images>
 					</div>
 
 				</td>

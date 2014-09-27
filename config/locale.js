@@ -59,7 +59,9 @@ app
 		"Empty input data": "沒有輸入資料",
 		"Please copy the following data to your clipboard by [Ctrl] + 'C' or [CMD] + 'C'": "請將下面的資料複製到剪貼簿，可用快速鍵 [Ctrl] + 'C' 或是 [CMD] + 'C'",
 		"Please paste the config data to the following input box": "請將匯出的設定資料貼入下面的輸入框",
-		"Clean all images without tag.": "清理沒有標籤的 Image"
+		"Clean all images without tag.": "清理沒有標籤的 Image",
+		"Docker Host Config": "Docker 主機設定",
+		"Private Registry Config": "私人 Registry 設定"
 	});
 
 	var defTrans = {};
