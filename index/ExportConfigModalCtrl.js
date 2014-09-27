@@ -25,11 +25,17 @@ app
 	$scope.DockerData = DockerData;
 
 	function convConfig2Json() {
-		var confHosts = [];
+		var config = {
+			dockerHosts: [],
+			registryHosts: []
+		};
 		angular.forEach(DockerData.dockerHosts, function(dockerHost) {
-			confHosts.push(dockerHost.export());
+			config.dockerHosts.push(dockerHost.export());
 		});
-		return JSON.stringify(confHosts);
+		angular.forEach(DockerData.registryHosts, function(registryHost) {
+			config.registryHosts.push(registryHost.export());
+		});
+		return JSON.stringify(config);
 	}
 
 	$scope.configJson = convConfig2Json();

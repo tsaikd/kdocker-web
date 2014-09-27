@@ -73,13 +73,21 @@ app
 					controller: "ImportConfigModalCtrl"
 				})
 				.result
-					.then(function(data) {
+					.then(function(config) {
 						DockerData.curDockerIdx = -1;
 						DockerData.dockerHosts.splice(0);
-						angular.forEach(data.config, function(dockerHostConfig) {
+						DockerData.curRegistryIdx = -1;
+						DockerData.registryHosts.splice(0);
+
+						angular.forEach(config.dockerHosts, function(dockerHostConfig) {
 							var dockerHost = new DockerHost(dockerHostConfig);
 							DockerData.dockerHosts.push(dockerHost);
 							DockerData.curDockerIdx = "0";
+						});
+						angular.forEach(config.registryHosts, function(registryHostConfig) {
+							var registryHost = new RegistryHost(registryHostConfig);
+							DockerData.registryHosts.push(registryHost);
+							DockerData.curRegistryIdx = "0";
 						});
 					});
 			};

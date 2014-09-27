@@ -18,9 +18,7 @@ app
 		try {
 			$scope.data.errMsg = "";
 			var config = JSON.parse($scope.data.configJson);
-			$modalInstance.close({
-				config: config
-			});
+			$modalInstance.close(config);
 		} catch(e) {
 			$scope.data.errMsg = ("" + e.message) || $filter("translate")("Parse JSON ERROR");
 		}
