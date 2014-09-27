@@ -38,7 +38,7 @@ var app = angular.module("KDockerWeb", [
 		, function($q, DockerData, $filter) {
 		return {
 			responseError: function(rejection) {
-				if (DockerData.IndexCtrl && rejection.config.errmsg) {
+				if (DockerData.IndexCtrl && rejection.config && rejection.config.errmsg) {
 					DockerData.IndexCtrl.error(
 						"[" + rejection.status + "]",
 						$filter("translate")(rejection.config.errmsg),

@@ -26,6 +26,10 @@ app
 				}
 			};
 
+			$scope.isPrivateRegistryTag = function(tag) {
+				return !!tag.match(/^.+:\d+\/.+:.+$/);
+			};
+
 			$scope.reload = function(evt) {
 				if (!DockerData.dockerHost.valid) {
 					return;
@@ -76,6 +80,16 @@ app
 				.success(function(data) {
 					$scope.reload();
 				});
+			};
+
+			$scope.pullImage = function(tag) {
+				DockerAction.pullImage(DockerData.dockerHost, tag).then(function() {
+					$scope.reload();
+				});
+			};
+
+			$scope.pushImage = function(tag) {
+				DockerAction.pushImage(DockerData.dockerHost, tag);
 			};
 
 			$scope.copyImage = function(image, toDockers) {
