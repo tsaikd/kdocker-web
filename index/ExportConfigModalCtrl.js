@@ -1,23 +1,5 @@
 app
 
-.directive("selectOnClick", function () {
-	return {
-		restrict: "A",
-		link: function (scope, element, attrs) {
-			var focusedElement;
-			element.on("click", function () {
-				if (focusedElement !== this) {
-					focusedElement = this;
-					this.select();
-				}
-			});
-			element.on("blur", function() {
-				focusedElement = null;
-			});
-		}
-	};
-})
-
 .controller("ExportConfigModalCtrl"
 	, [       "$scope", "$modalInstance", "DockerData"
 	, function($scope,   $modalInstance,   DockerData) {
