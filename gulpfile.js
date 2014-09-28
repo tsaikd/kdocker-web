@@ -12,7 +12,8 @@ var gulp = require("gulp"),
 	minifyCss = require("gulp-minify-css"),
 	minifyHtml = require("gulp-minify-html"),
 	replace = require("gulp-replace"),
-	connect = require("gulp-connect");
+	connect = require("gulp-connect"),
+	karma = require("gulp-karma");
 
 var pkg = require("./package.json"),
 	banner = [
@@ -25,9 +26,19 @@ var pkg = require("./package.json"),
 		"index.html": ["index.html"],
 		"index.src.html": ["index.src.html"],
 		"tmpl": ["directives/*.html", "index/*.html"],
-		"js": ["config/*.js", "directives/*.js", "index/*.js", "services/*.js", "!**/*.tmp.js"],
+		"js": ["!**/*.tmp.js", "!**/*.test.js",
+			"config/*.js", "directives/*.js", "index/*.js", "services/*.js"],
 		"css": ["index/*.css"],
-		"sass": ["index/*.scss"]
+		"sass": ["index/*.scss"],
+		"test": ["!**/*.tmp.js", "!config/ga.js",
+			"lib/angular/angular.js",
+			"lib/angular-mocks/angular-mocks.js",
+			"lib/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js",
+			"lib/angular-animate/angular-animate.js",
+			"lib/angular-local-storage/angular-local-storage.js",
+			"lib/angular-translate/angular-translate.js",
+			"lib/xterm.js/src/xterm.js",
+			"config/*.js", "directives/*.js", "index/*.js", "services/*.js"]
 	};
 
 gulp.task("build", sync.sync([
@@ -126,3 +137,15 @@ gulp.task("connect", ["build"], function() {
 	});
 });
 
+gulp.task("test", function(done) {
+	gulp.src(paths.test)
+		.pipe(karma({
+			configFile: "karma.config.js",
+			action: "run"
+		}))
+		.on("error", function(err) {
+			console.log(err);
+			this.emit("end");
+		})
+		.on("end", done);
+});
