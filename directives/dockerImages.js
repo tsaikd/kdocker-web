@@ -30,6 +30,14 @@ app
 				return !!tag.match(/^.+:\d+\/.+:.+$/);
 			};
 
+			$scope.isNoneTagImage = function(image) {
+				if (image && image.RepoTags && image.RepoTags.length === 1 && image.RepoTags[0] === "<none>:<none>") {
+					return true;
+				} else {
+					return false;
+				}
+			};
+
 			$scope.reload = function(evt) {
 				if (!DockerData.dockerHost.valid) {
 					return;
@@ -123,7 +131,7 @@ app
 
 			$scope.clean = function() {
 				angular.forEach(DockerData.dockerHost.images, function(image) {
-					if (image && image.RepoTags && image.RepoTags.length === 1 && image.RepoTags[0] === "<none>:<none>") {
+					if ($scope.isNoneTagImage(image)) {
 						$scope.remove(image);
 					}
 				});

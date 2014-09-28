@@ -41,7 +41,7 @@
 					<td>
 						<div ng-repeat="tag in img.RepoTags">
 							<span class="ng-dblclick-sel-text">{{tag}}</span>
-							<button ng-click="pullImage(tag)" tooltip="{{'Pull image from registry' | translate}}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-arrow-down"></span></button>
+							<button ng-click="pullImage(tag)" ng-show="!isNoneTagImage(img)" tooltip="{{'Pull image from registry' | translate}}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-arrow-down"></span></button>
 							<button ng-click="pushImage(tag)" ng-show="isPrivateRegistryTag(tag)" tooltip="{{'Push image to registry' | translate}}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-arrow-up"></span></button>
 							<button ng-click="removeTag(tag)" ng-show="img.RepoTags.length > 1" class="btn btn-danger btn-xs">X</button>
 						</div>
