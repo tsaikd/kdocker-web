@@ -1,4 +1,5 @@
 var gulp = require("gulp"),
+	path = require("path"),
 	dateformat = require("dateformat"),
 	sync = require("gulp-sync")(gulp),
 	concat = require("gulp-concat"),
@@ -80,7 +81,9 @@ gulp.task("tmpl", function(done) {
 	gulp.src(paths.tmpl)
 		.pipe(templatecache("angular-template.tmp.js", {
 			module: "KDockerWeb",
-			root: "./index/"
+			base: function(file) {
+				return path.relative(".", file.path);
+			}
 		}))
 		.pipe(gulp.dest("./index/"))
 		.pipe(connect.reload())
@@ -109,7 +112,8 @@ gulp.task("index.html", function(done) {
 			],
 			html: [
 				minifyHtml({ empty: true })
-			]
+			],
+			enableHtmlComment: true
 		}))
 		.pipe(gulp.dest("./"))
 		.pipe(connect.reload())
