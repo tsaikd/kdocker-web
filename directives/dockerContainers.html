@@ -50,7 +50,7 @@
 						<span title="{{c.Id}}" style="white-space: nowrap;">{{c.Id.substr(0, 8)}} ...</span>
 					</td>
 					<td>
-						<span class="ng-dblclick-sel-text">{{c.name}}</span>
+						<div ng-repeat="name in c.Names" class="ng-dblclick-sel-text">{{name | containerName}}</div>
 					</td>
 					<td>
 						<span class="ng-dblclick-sel-text">{{c.Image}}</span>
